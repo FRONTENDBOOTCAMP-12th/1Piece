@@ -1,21 +1,21 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default tseslint.config(
   {
-    ignores: ["dist"],
+    ignores: ['dist'],
   },
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
     ...jsxA11y.flatConfigs.recommended,
     settings: {
       react: {
-        version: "19.0.0",
+        version: '19.0.0',
       },
     },
     languageOptions: {
@@ -25,7 +25,7 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: { jsx: true },
       },
@@ -39,31 +39,34 @@ export default tseslint.config(
     ],
     plugins: {
       react,
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
+
     rules: {
       ...react.configs.flat.recommended.rules,
-      ...react.configs["jsx-runtime"].rules,
+      ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
-      "react/prop-types": "off",
-      "jsx-a11y/click-events-have-key-events": "off",
-      "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unsafe-call": "off",
-      "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/no-misused-promises": "off",
-      "react-refresh/only-export-components": [
-        "warn",
+      'no-unused-vars': 'error',
+      'react/prop-types': 'off',
+      'jsx-a11y/click-events-have-key-events': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+
+      'react-refresh/only-export-components': [
+        'warn',
         {
           allowConstantExport: true,
         },
       ],
-      "react/self-closing-comp": [
-        "error",
+      'react/self-closing-comp': [
+        'error',
         {
           component: true,
         },
       ],
     },
-  },
+  }
 );
