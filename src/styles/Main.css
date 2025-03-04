@@ -1,0 +1,120 @@
+@font-face {
+  font-family: 'DungGeunMo';
+  font-weight: 600;
+  src: url('../fonts/DungGeunMo.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Pretendard-Regular.subset.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Pretendard-Medium.subset.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Pretendard-SemiBold.subset.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Pretendard-Bold.subset.woff2') format('woff2');
+}
+
+body {
+  font-family: 'DungGeunMo';
+}
+
+:root {
+  /* color */
+  --black: #000000;
+  --bookmark: #ff8c82;
+  --primary: #33becd;
+  --white: #ffffff;
+  --line-gray: #adadad;
+
+  /* number */
+  --font-scale: 0.078125rem; /* 1.25px */
+
+  --default: 1rem; /* 16px */
+  --base-space: 0.25rem; /* 4px */
+
+  --space-1: var(--base-space); /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 1.75rem; /* 28px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
+  --space-10: 2.5rem; /* 40px */
+  --space-11: 2.75rem; /* 44px */
+  --space-12: 3rem; /* 48px */
+  --space-13: 3.25rem; /* 52px */
+  --space-14: 3.5rem; /* 56px */
+  --space-15: 3.75rem; /* 60px */
+  --space-16: 4rem; /* 64px */
+  --space-17: 4.25rem; /* 68px */
+  --space-18: 4.5rem; /* 72px */
+  --space-19: 4.75rem; /* 76px */
+  --space-20: 5rem; /* 80px */
+  --space-21: 5.25rem; /* 84px */
+  --space-22: 5.5rem; /* 88px */
+  --space-23: 5.75rem; /* 92px */
+  --space-24: 6rem; /* 96px */
+
+  --small: 0.75rem; /* 12px */
+  --medium: var(--default); /* 16px */
+  --large: 1.25rem; /* 20px */
+  --xl: 1.75rem; /* 28px */
+  --xxl: 2.25rem; /* 36px */
+  --xxxl: 2.75rem; /* 44px */
+
+  --regular: 400; /* 400 */
+  --semi-bold: 600;
+  --bold: 700;
+
+  --radius-small: 0.25rem; /* 4px */
+  --radius-medium: 0.5rem; /* 8px */
+  --radius-large: 0.75rem; /* 12px */
+  --radius-xl: 1rem; /* 16px */
+
+  /* linear-gradient */
+  --gray-g: linear-gradient(#fff, #e2e2e2);
+  --dark-gray-g: linear-gradient(#fff, #adadad);
+  --primary-g: linear-gradient(#fff, #7fdcf0);
+  --primary-2-g: linear-gradient(#fff, #56bdff);
+  --secondary-g: linear-gradient(#fff, #ffc9c4);
+  --tertiary-g: linear-gradient(#fff, #ffff56);
+
+  /* clicked gradient */
+  --clicked-dark-gray-g: linear-gradient(#808080, #dadada);
+  --clicked-gray-g: linear-gradient(#bfbfbf, #ebebeb);
+  --clicked-primary-g: linear-gradient(#8ee1f2, #e4e4e4);
+  --clicked-primary-2-g: linear-gradient(#d6d6d6, #4aa3dc);
+  --clicked-secondary-g: linear-gradient(#eec1bd, #f6dada);
+  --clicked-tertiary-g: linear-gradient(#f9f9f9, #cece4b);
+
+  --clicked-shadow:
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    -2px -4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+
+  /* string */
+  --pretendard: Pretendard;
+}
