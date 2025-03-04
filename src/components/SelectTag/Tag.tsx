@@ -27,7 +27,13 @@ function Tag({
   };
 
   return (
-    <button className={S.tagItem} onClick={handleChangeState} {...restProps}>
+    <button
+      type="button"
+      aria-pressed={pick}
+      className={S.tagItem}
+      onClick={handleChangeState}
+      {...restProps}
+    >
       #{children}
     </button>
   );
