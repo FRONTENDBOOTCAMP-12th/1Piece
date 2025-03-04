@@ -26,6 +26,7 @@ function Tag({
     onUpdate?.(subject, nextPick);
   };
 
+  // aria-pressed로 현재 클릭된 상태인지 체크
   return (
     <button
       type="button"

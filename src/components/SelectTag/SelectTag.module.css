@@ -14,6 +14,7 @@
   cursor: pointer;
   font-size: 1.5rem;
 
+  /* aria-pressed가 참(눌려있는 상태로 인식)이라면 글자의 색상 변경 */
   &[aria-pressed='true'] {
     color: var(--bookmark);
   }
