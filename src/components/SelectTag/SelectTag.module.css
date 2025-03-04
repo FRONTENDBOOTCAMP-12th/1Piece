@@ -8,6 +8,7 @@
   margin-inline: auto;
   padding-block: 5rem;
   padding-inline: 9.5rem;
+  min-width: 72rem;
 }
 
 .tagItem {
