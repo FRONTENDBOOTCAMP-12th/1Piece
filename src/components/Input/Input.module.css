@@ -1,0 +1,35 @@
+.inputBox {
+  display: flex;
+  width: 660px;
+  height: 91px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.input {
+  width: 432px;
+  height: 64px;
+  flex-shrink: 0;
+  background: var(--white);
+  box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.inputContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 0 0;
+  align-self: stretch;
+  color: var(--black);
+  text-align: right;
+  font-size: 21.3px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 31.95px */
+}
+
+.input::placeholder {
+  color: var(--black);
+  text-align: center;
+}
