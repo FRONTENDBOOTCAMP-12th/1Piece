@@ -1,0 +1,16 @@
+.tagContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem 15rem;
+  width: 60vw;
+  border: 2px solid var(--black);
+  box-shadow: 1rem 1rem 0 0 var(--black);
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 9.5rem;
+}
+
+.tagItem {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
