@@ -3,10 +3,9 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { reactClickToComponent } from 'vite-plugin-react-click-to-component';
 
-const viteConfig = defineConfig((env) => {
-  const isDevMode = env.mode.includes('dev');
+const viteConfig = defineConfig(() => {
   return {
-    base: isDevMode ? '/' : '/1Piece/',
+    base: '/',
     plugins: [
       react({
         jsxRuntime: 'automatic',
