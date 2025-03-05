@@ -4,7 +4,7 @@ import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
 type BookMarkProps = React.ComponentProps<'button'> & {
   checked: boolean;
-  onUpdate: () => void;
+  onUpdate?: () => void;
 };
 
 function BookMark({ checked, onUpdate }: BookMarkProps) {
@@ -25,7 +25,13 @@ function BookMark({ checked, onUpdate }: BookMarkProps) {
       {isBookMark ? (
         <IoBookmarkOutline size={32} />
       ) : (
-        <IoBookmark color={`var(--tertiary)`} size={32} />
+        <IoBookmark
+          color={`var(--tertiary)`}
+          size={32}
+          stroke={`var(--black)`}
+          strokeWidth={32}
+          style={{ boxSizing: 'border-box' }}
+        />
       )}
     </button>
   );
