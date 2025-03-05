@@ -1,0 +1,26 @@
+@import '../../styles/Main.css';
+
+.button {
+  width: 31.25rem;
+  height: 7.75rem;
+  border-radius: 1.875rem; /* 30px */
+  border: 0.125rem solid #a6a6a6;
+  background: var(--gray-g);
+  box-shadow: 0rem 0.3125rem 0.25rem 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.clicked {
+  background: var(--clicked-gray-g);
+}
+
+.correct {
+  border: var(--space-1) solid var(--primary);
+}
+
+.wrong {
+  border: var(--space-1) solid var(--bookmark);
+}

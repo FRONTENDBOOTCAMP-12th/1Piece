@@ -11,4 +11,5 @@
   padding-inline-end: var(--space-4);
   padding-block: var(--space-2);
   text-align: center;
+  white-space: nowrap;
 }
