@@ -1,5 +1,5 @@
 import S from './Footer.module.css';
-import FooterNavigation from './FooterNav/FooterNav';
+import FooterNavigation from './FooterNav';
 
 function Footer() {
   const navigation = {

@@ -1,4 +1,4 @@
-import S from './FooterNav.module.css';
+import S from './Footer.module.css';
 import { Link } from 'react-router';
 
 function FooterNavigation({
