@@ -21,7 +21,15 @@
   display: flex;
   flex-flow: column;
   justify-content: space-around;
-  font-size: var(--large-2);
+  width: 60%;
+
+  .problemTitle {
+    width: 100%;
+    display: block;
+    font-size: var(--large-2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .tagContainer {
