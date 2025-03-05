@@ -1,7 +1,9 @@
 @font-face {
-  font-family: 'DungGeunMo';
-  font-weight: 600;
-  src: url('../fonts/DungGeunMo.ttf') format('truetype');
+  font-family: 'NeoDunggeunmoPro';
+  font-style: normal;
+  font-display: swap;
+  font-variant-numeric: diagonal-fractions;
+  src: url('/fonts/NeoDunggeunmoPro-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -37,7 +39,8 @@
 }
 
 body {
-  font-family: 'DungGeunMo';
+  font-family: 'NeoDunggeunmoPro';
+  font-feature-settings: 'frac';
 }
 
 :root {
