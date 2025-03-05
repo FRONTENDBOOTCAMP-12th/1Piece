@@ -92,7 +92,7 @@
   margin-top: var(--space-7);
 }
 
-.buttons {
+.btns {
   display: flex;
   gap: var(--space-8);
   height: 100px;
@@ -100,7 +100,8 @@
   justify-content: center;
 }
 
-.button {
+.btnExit,
+.btnIn {
   /* 공통컴포넌트로 교체할 예정 */
   width: 120px;
   height: 65px;

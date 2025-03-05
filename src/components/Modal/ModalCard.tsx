@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import S from './ModalQuestion.module.css';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
+import { useState } from 'react';
+import S from './ModalCard.module.css';
 
-function ModalQuestion() {
+function ModalCard() {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
@@ -23,23 +23,18 @@ function ModalQuestion() {
           />
           <div className={S.info}>
             {' '}
-            <p className={S.title}>
-              문제 제목문제 제목문제 제목문제 제목문제 제목문제 제목문제
-              제목문제 제목문제 제목문제 제목문제 제목문제 제목문제 제목문제
-              제목
-            </p>
+            <p className={S.title}>문제 제목 최대 10자</p>
             <ProblemCardTag>영어</ProblemCardTag>
             <p className={S.description}>
-              문제 상세 설명문제 상세 설명문제 상세 설명문제 상세 설명문제 상세
-              설명문제 상세 설명문제 상세 설명문제 상세 설명문제 상
+              문제 설명 최대 30자 혹은 30자 넘으면 ...으로 표시되도록 기능 넣기
             </p>
           </div>
         </div>
-        <div className={S.buttons}>
-          <div className={S.button} onClick={handleClose}>
+        <div className={S.btns}>
+          <div className={S.btnExit} onClick={handleClose}>
             취소
           </div>
-          <div className={S.button} onClick={handleClose}>
+          <div className={S.btnIn} onClick={handleClose}>
             풀기
           </div>
         </div>
@@ -48,4 +43,4 @@ function ModalQuestion() {
   );
 }
 
-export default ModalQuestion;
+export default ModalCard;
