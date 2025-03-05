@@ -6,15 +6,23 @@ interface InputProps {
   placeholder?: string;
   maxLength?: number;
   className?: string;
+  hiddenLabel?: boolean;
 }
 
-function Input({ label, type, placeholder, maxLength, className }: InputProps) {
+function Input({
+  label,
+  type,
+  placeholder,
+  maxLength,
+  className,
+  hiddenLabel,
+}: InputProps) {
   const isProblemSet = className === S.inputProblemSet;
   return (
     <div
       className={`${S.inputBox} ${isProblemSet ? S.inputBoxProblemSet : ''}`}
     >
-      <label className={S.inputContent}>{label}</label>
+      {!hiddenLabel && <label className={S.inputContent}>{label}</label>}
       <input
         className={`${S.input} ${className ? className : ''}`}
         type={type}
