@@ -5,7 +5,7 @@ type ProblemCardTagProps = React.ComponentProps<'div'>;
 function ProblemCardTag({ children, ...restProps }: ProblemCardTagProps) {
   return (
     <div className={S.cardTag} {...restProps}>
-      <img src="/icon/problem-card-tag-icon.svg" alt="" />
+      <img src="/icon/problem_card_tag_icon.svg" alt="" />
       <div>{children}</div>
     </div>
   );
