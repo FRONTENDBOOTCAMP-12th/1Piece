@@ -82,6 +82,7 @@ body {
   --small: 0.75rem; /* 12px */
   --medium: var(--default); /* 16px */
   --large: 1.25rem; /* 20px */
+  --large-2: 1.5rem; /* 24px */
   --xl: 1.75rem; /* 28px */
   --xxl: 2.25rem; /* 36px */
   --xxxl: 2.75rem; /* 44px */
@@ -117,4 +118,16 @@ body {
 
   /* string */
   --pretendard: Pretendard;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  clip: rect(0 0 0 0);
 }
