@@ -1,5 +1,6 @@
 .problemCardContainer {
   display: flex;
+  position: relative;
   gap: var(--space-8);
   width: 25vw;
   background: var(--primary-g);
@@ -27,4 +28,10 @@
   display: flex;
   flex-flow: row;
   gap: var(--space-4);
+}
+
+.bookmarkIcon {
+  position: absolute;
+  right: var(--space-3);
+  top: var(--space-4);
 }
