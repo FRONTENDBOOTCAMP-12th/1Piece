@@ -64,13 +64,11 @@
   font-size: var(--xxl);
   font-weight: var(--semi-bold);
   color: var(--black);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
 }
 
 .tagContainer {
   display: flex;
-  padding-top: var(--space-19);
-  width: 100%;
 }
 
 .description {
@@ -78,7 +76,7 @@
   font-size: var(--large-2);
   font-weight: var(--regular);
   color: var(--black);
-  margin-top: var(--space-5);
+  margin-top: var(--space-7);
 }
 
 .buttons {

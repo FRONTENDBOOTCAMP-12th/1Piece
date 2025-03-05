@@ -23,7 +23,7 @@ function ModalQuestion() {
         <div className={S.info}>
           {' '}
           <p className={S.title}>문제 제목</p>
-          <ProblemCardTag className={S.tagContainer}>영어</ProblemCardTag>
+          <ProblemCardTag>영어</ProblemCardTag>
           <p className={S.description}>문제 상세 설명</p>
         </div>
       </div>
