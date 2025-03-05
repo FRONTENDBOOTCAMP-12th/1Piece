@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "start": "pnpm dev --open",
     "dev": "vite --host",
