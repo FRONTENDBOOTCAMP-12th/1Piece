@@ -1,0 +1,17 @@
+@import '../../styles/Main.css';
+
+.button {
+  background: var(--dark-gray-g);
+  border-radius: 16px;
+  border: 2px solid var(--black);
+  width: 320px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:active {
+  background: var(--clicked-dark-gray-g);
+}
