@@ -4,9 +4,9 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  left: 40%;
+  left: 50%;
   top: 50%;
-  transform: translate(-70%, -50%);
+  transform: translate(-50%, -50%);
   filter: drop-shadow(0px 20px var(--space-13) var(--line-gray));
   background: var(--gray-g);
   border: 3px solid var(--black);
@@ -25,8 +25,6 @@
   background: var(--primary-2-g);
   border-bottom: 3px solid var(--black);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-
-  padding: var(--space-4);
 }
 
 .alert {
@@ -40,31 +38,50 @@
 
 .content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  padding: 0 104px;
-  text-align: center;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: var(--space-5);
+  gap: var(--space-10);
 }
 
 .icon {
-  width: 100px;
-  height: 100px;
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-16);
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--black);
+  border-radius: 999px;
+  margin: var(--space-13) 0 0 var(--space-13);
 }
 
-.text {
-  font-size: var(--xxl);
-  font-weight: (--regular);
+.info {
+  width: 600px;
+  height: 200px;
+  padding-top: var(--space-20);
+  padding-left: var(--space-3);
+}
+
+.title {
+  font-size: var(--xl);
+  font-weight: var(--semi-bold);
   color: var(--black);
+}
+
+.description {
+  font-size: var(--lg);
+  font-weight: var(--regular);
+  color: var(--black);
+  margin-top: var(--space-19);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-8);
+  margin-top: var(--space-5);
+  justify-content: center;
 }
 
 .button {
   width: 120px;
   height: 65px;
-  margin-top: var(--space-11);
   background: var(--white);
   border: 2px solid var(--black);
   box-shadow: inset -10px -10px 10px rgba(0, 0, 0, 0.25);
