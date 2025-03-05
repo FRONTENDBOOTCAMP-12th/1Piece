@@ -1,4 +1,5 @@
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
+import BookMark from './BookMark';
 import S from './ProblemCard.module.css';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
@@ -21,6 +22,7 @@ function ProblemCard({ src, tags, userName, children }: ProblemCardProps) {
           ))}
         </div>
       </div>
+      <BookMark checked={false} />
     </div>
   );
 }
