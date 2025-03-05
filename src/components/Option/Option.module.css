@@ -16,3 +16,11 @@
 .clicked {
   background: linear-gradient(0deg, #fff 0%, #e2e2e2 100%);
 }
+
+.correct {
+  border: 0.3125rem solid var(--primary);
+}
+
+.wrong {
+  border: 0.3125rem solid var(--bookmark);
+}
