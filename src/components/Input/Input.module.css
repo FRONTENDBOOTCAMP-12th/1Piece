@@ -1,9 +1,9 @@
 .inputBox {
   display: flex;
+  flex-direction: row;
   width: 41.25rem;
   height: var(--space-23, 5.75rem);
-  flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-5, 1.25rem);
 }
 
@@ -36,14 +36,13 @@
   flex-shrink: 0;
   background: var(--white, #fff);
   box-shadow: 8px 8px 4px 0px var(--line-gray, #adadad) inset;
+  padding: var(--space-3, 0.75rem);
 }
 
 .inputContent {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   flex: 1 0 0;
-  align-self: flex-start;
   color: var(--Black, #000);
 
   text-align: right;
