@@ -19,9 +19,17 @@
 
 .radioHidden {
   display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .radioIcon {
-  font-size: 1.5rem;
+  font-size: var(--space-16, 4rem);
   color: var(--tertiary-g);
+}
+
+.radioIconLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }

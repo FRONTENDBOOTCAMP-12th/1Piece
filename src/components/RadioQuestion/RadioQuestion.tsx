@@ -24,11 +24,13 @@ function RadioQuestion({ options }: RadioQuestionProps) {
               onChange={() => setAnswer(option)}
               className={S.radioHidden}
             />
-            {answer === option ? (
-              <FaCheckCircle className={S.radioIcon} />
-            ) : (
-              <FaRegCircle className={S.radioIcon} />
-            )}
+            <label htmlFor={id} className={S.radioIconLabel}>
+              {answer === option ? (
+                <FaCheckCircle className={S.radioIcon} />
+              ) : (
+                <FaRegCircle className={S.radioIcon} />
+              )}
+            </label>
             <Input
               label={option}
               type="text"
