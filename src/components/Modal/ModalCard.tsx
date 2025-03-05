@@ -2,7 +2,20 @@ import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import { useState } from 'react';
 import S from './ModalCard.module.css';
 
-function ModalCard() {
+type ProblemCardProps = React.ComponentProps<'img'> &
+  React.ComponentProps<'div'> & {
+    userName: string;
+    tags: string[];
+    description: string;
+  };
+
+function ModalCard({
+  src,
+  tags,
+  userName,
+  children,
+  description,
+}: ProblemCardProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
@@ -16,18 +29,15 @@ function ModalCard() {
           <p className={S.alert}>문제를 푸시겠습니까?</p>
         </div>
         <div className={S.content}>
-          <img
-            src="/icons/error_red_circle.svg"
-            alt="Alert Icon"
-            className={S.icon}
-          />
+          <img src={src} alt={userName} className={S.profileImg} />
           <div className={S.info}>
-            {' '}
-            <p className={S.title}>문제 제목 최대 10자</p>
-            <ProblemCardTag>영어</ProblemCardTag>
-            <p className={S.description}>
-              문제 설명 최대 30자 혹은 30자 넘으면 ...으로 표시되도록 기능 넣기
-            </p>
+            <p className={S.problemTitle}>{children}</p>
+            <div className={S.tagContainer}>
+              {tags.map((item) => (
+                <ProblemCardTag key={item}>{item}</ProblemCardTag>
+              ))}
+            </div>{' '}
+            <p className={S.description}>{description}</p>
           </div>
         </div>
         <div className={S.btns}>
