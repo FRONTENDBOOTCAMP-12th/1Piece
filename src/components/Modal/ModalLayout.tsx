@@ -1,18 +1,27 @@
 import { useState } from 'react';
-import S from './ModalMinCard.module.css';
+import S from './ModalLayout.module.css';
 
-function ModalMinCard() {
+type ModalLayoutProps = {
+  title: string;
+  text: string;
+  onClose?: () => void;
+};
+
+function ModalLayout({ title, text, onClose }: ModalLayoutProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
     setIsVisible(false);
+    if (onClose) onClose();
   };
 
+  if (!isVisible) return null;
+
   return (
-    <div className={`${S.backdrop} ${!isVisible ? S.close : ''}`}>
+    <div className={S.backdrop}>
       <div className={S.modal}>
         <div className={S.header}>
-          <p className={S.alert}>문제 생성 실패!</p>
+          <p className={S.alert}>{title}</p>
         </div>
         <div className={S.content}>
           <img
@@ -20,7 +29,7 @@ function ModalMinCard() {
             alt="Alert Icon"
             className={S.icon}
           />
-          <p className={S.text}>최소 2개의 카드를 만들어야 합니다!</p>
+          <p className={S.text}>{text}</p>
         </div>
         <div className={S.button} onClick={handleClose}>
           확인
@@ -30,4 +39,4 @@ function ModalMinCard() {
   );
 }
 
-export default ModalMinCard;
+export default ModalLayout;
