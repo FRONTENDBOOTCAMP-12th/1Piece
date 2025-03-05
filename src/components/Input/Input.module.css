@@ -1,0 +1,67 @@
+.inputBox {
+  display: flex;
+  flex-direction: row;
+  width: 41.25rem;
+  height: var(--space-23, 5.75rem);
+  align-items: center;
+  gap: var(--space-5, 1.25rem);
+}
+
+.inputBoxProblemSet {
+  display: flex;
+  flex-direction: column;
+  color: var(--black, #000);
+  font-family: 'Plus Jakarta Sans';
+
+  .inputContent {
+    font-size: var(--large-2, 1.5rem);
+    font-style: normal;
+    font-weight: var(--semi-bold, 600);
+    line-height: 200%;
+  }
+
+  .input::placeholder {
+    font-size: var(--medium, 1rem);
+    font-style: normal;
+    font-weight: var(--semi-bold, 600);
+    line-height: 150%;
+    letter-spacing: -0.48px;
+    text-align: start;
+  }
+}
+
+.input {
+  width: 27rem;
+  height: var(--space-16, 4rem);
+  flex-shrink: 0;
+  background: var(--white, #fff);
+  box-shadow: 8px 8px 4px 0px var(--line-gray, #adadad) inset;
+  padding: var(--space-3, 0.75rem);
+}
+
+.inputContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  color: var(--Black, #000);
+
+  text-align: right;
+  font-size: var(--large, 1.25rem);
+  font-style: normal;
+  font-weight: var(--regular, 400);
+  line-height: 150%;
+}
+
+.input::placeholder {
+  color: var(--black, #000);
+  text-align: center;
+}
+
+.inputProblemSet {
+  width: 70.375rem;
+  height: var(--space-11, 2.75rem);
+  max-height: var(--space-22, 5.5rem);
+  border: 1.5px solid var(--black, #000);
+  background: var(--white, #fff);
+  box-shadow: 5px 5px 5px 0px var(--line-gray, #adadad) inset;
+}
