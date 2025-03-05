@@ -8,12 +8,8 @@ function ModalMinCard() {
     setIsVisible(false);
   };
 
-  if (!isVisible) {
-    return null;
-  }
-
   return (
-    <div className={S.modal}>
+    <div className={`${S.modal} ${!isVisible ? S.close : ''}`}>
       <div className={S.header}>
         <p className={S.alert}>문제 생성 실패!</p>
       </div>
