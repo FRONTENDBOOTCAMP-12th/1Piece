@@ -6,7 +6,7 @@
   border-radius: 1.875rem; /* 30px */
   border: 0.125rem solid #a6a6a6;
   background: var(--gray-g);
-  box-shadow: 0rem 0.3125rem 0.25rem 0rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0rem 0.3125rem 0.25rem 0px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,13 +14,13 @@
 }
 
 .clicked {
-  background: linear-gradient(0deg, #fff 0%, #e2e2e2 100%);
+  background: var(--clicked-gray-g);
 }
 
 .correct {
-  border: 0.3125rem solid var(--primary);
+  border: var(--space-1) solid var(--primary);
 }
 
 .wrong {
-  border: 0.3125rem solid var(--bookmark);
+  border: var(--space-1) solid var(--bookmark);
 }
