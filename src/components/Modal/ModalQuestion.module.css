@@ -23,7 +23,7 @@
   filter: drop-shadow(0px var(--space-5) var(--space-13) var(--line-gray));
   background: var(--gray-g);
   border: 3px solid var(--black);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-3xl);
 }
 
 .modal.close {
@@ -37,7 +37,7 @@
   justify-content: center;
   background: var(--primary-2-g);
   border-bottom: 3px solid var(--black);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-radius: var(--radius-3xl) var(--radius-3xl) 0 0;
 }
 
 .alert {
