@@ -2,10 +2,10 @@
 
 .button {
   background: var(--dark-gray-g);
-  border-radius: 16px;
-  border: 2px solid var(--black);
-  width: 320px;
-  height: 80px;
+  border-radius: var(--radius-xl);
+  border: 0.125rem solid var(--black);
+  width: 20rem;
+  height: 5rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
