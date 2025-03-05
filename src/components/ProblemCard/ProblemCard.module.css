@@ -22,3 +22,9 @@
   justify-content: space-around;
   font-size: var(--large-2);
 }
+
+.tagContainer {
+  display: flex;
+  flex-flow: row;
+  gap: var(--space-4);
+}
