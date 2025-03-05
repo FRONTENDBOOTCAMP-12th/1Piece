@@ -18,7 +18,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background: var(--primary-2-g);
   border-bottom: 3px solid var(--black);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -27,6 +26,7 @@
 }
 
 .alert {
+  width: 100%;
   font-size: var(--xl);
   color: var(--black);
   font-weight: var(--regular);
