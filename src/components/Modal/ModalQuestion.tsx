@@ -23,9 +23,16 @@ function ModalQuestion() {
           />
           <div className={S.info}>
             {' '}
-            <p className={S.title}>문제 제목</p>
+            <p className={S.title}>
+              문제 제목문제 제목문제 제목문제 제목문제 제목문제 제목문제
+              제목문제 제목문제 제목문제 제목문제 제목문제 제목문제 제목문제
+              제목
+            </p>
             <ProblemCardTag>영어</ProblemCardTag>
-            <p className={S.description}>문제 상세 설명</p>
+            <p className={S.description}>
+              문제 상세 설명문제 상세 설명문제 상세 설명문제 상세 설명문제 상세
+              설명문제 상세 설명문제 상세 설명문제 상세 설명문제 상
+            </p>
           </div>
         </div>
         <div className={S.buttons}>
