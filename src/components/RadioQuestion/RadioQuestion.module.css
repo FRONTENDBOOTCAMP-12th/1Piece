@@ -16,3 +16,12 @@
   align-items: center;
   gap: 1rem;
 }
+
+.radioHidden {
+  display: none;
+}
+
+.radioIcon {
+  font-size: 1.5rem;
+  color: var(--tertiary-g);
+}
