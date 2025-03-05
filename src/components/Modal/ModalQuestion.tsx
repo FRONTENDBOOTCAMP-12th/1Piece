@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import S from './ModalQuestion.module.css';
+import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 
 function ModalQuestion() {
   const [isVisible, setIsVisible] = useState(true);
@@ -22,6 +23,7 @@ function ModalQuestion() {
         <div className={S.info}>
           {' '}
           <p className={S.title}>문제 제목</p>
+          <ProblemCardTag className={S.tagContainer}>영어</ProblemCardTag>
           <p className={S.description}>문제 상세 설명</p>
         </div>
       </div>

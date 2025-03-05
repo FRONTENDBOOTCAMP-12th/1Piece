@@ -20,9 +20,9 @@ function ModalMinCard() {
           className={S.icon}
         />
         <p className={S.text}>최소 2개의 카드를 만들어야 합니다!</p>
-        <div className={S.button} onClick={handleClose}>
-          확인
-        </div>
+      </div>
+      <div className={S.button} onClick={handleClose}>
+        확인
       </div>
     </div>
   );
