@@ -1,22 +1,23 @@
 import { NavLink } from 'react-router';
 import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
-import { CiSearch } from 'react-icons/ci';
 import S from './Header.module.css';
 import RoundedButton from '@/components/RoundeButton/RoundedButton';
 import { useEffect, useState } from 'react';
+import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
+import LoggedOut from './components/LoggedOut';
+import LoggedIn from './components/LoggedIn';
 
+// 유저 프로필 사진을 props로 전달
 interface HeaderProps {
   src?: string;
 }
 
 function Header({ src }: HeaderProps) {
+  // 로그인 상태
   const [isLogin, setIsLogin] = useState(false);
 
-  const handleSearch = () => {
-    console.log(123);
-  };
-
+  // useEffect를 사용한 렌더링 차이
   useEffect(() => {
     const nextIsLogin = Boolean(src);
     setIsLogin(nextIsLogin);
@@ -26,6 +27,8 @@ function Header({ src }: HeaderProps) {
     <header>
       <div className={S.headerContainer}>
         <div className={S.logoContainer}>
+          {/* react-router를 활용한 링크 이동 */}
+          {/* 로고와 홈 버튼 모두 홈으로 이동 */}
           <NavLink to="/">
             <img src="/icons/logo.svg" alt="홈으로 이동" className={S.logo} />
           </NavLink>
@@ -34,50 +37,35 @@ function Header({ src }: HeaderProps) {
               홈
             </RoundedButton>
           </NavLink>
+          {/* 문제 목록 페이지로 이동 */}
           <NavLink to="/ProblemList">
             <RoundedButton color="darkgray" font="pretendard" size="regular">
               목록
             </RoundedButton>
           </NavLink>
         </div>
+
         <div className={S.userInfoContainer}>
-          <form className={S.headerForm} action={handleSearch}>
-            <label htmlFor="headerSearchBar" className="sr-only">
-              검색
-            </label>
-            <input
-              type="search"
-              id="headerSearchBar"
-              className={S.headerSearchBar}
-            />
-            <button type="submit" className={S.headerSearchBtn}>
-              <CiSearch size={24} />
-            </button>
-          </form>
+          {/* 검색 컴포넌트 */}
+          <HeaderSearchBar />
+          {/* 문제 생성 페이지로 이동 */}
           <NavLink to="/createProblem">
             <div className={S.headerSearchIcon}>
               <BiPlus size={24} />
             </div>
           </NavLink>
+          {/* 북마크 페이지로 이동 */}
           <NavLink to="/bookmark">
             <div className={S.headerSearchIcon}>
               <RiInbox2Line size={24} />
             </div>
           </NavLink>
+          {/* 로그인 상태에 따른 헤더 렌더링 다르게 */}
           {isLogin ? (
-            <NavLink to="/mypage">
-              <img
-                src={src}
-                alt="마이페이지 이동"
-                className={S.headerProfile}
-              />
-            </NavLink>
+            // 마이페이지로 이동(로그인 된 상태)
+            <LoggedIn src={src!} />
           ) : (
-            <NavLink to="/loginPage">
-              <RoundedButton color="secondary" font="pretendard">
-                로그인
-              </RoundedButton>
-            </NavLink>
+            <LoggedOut />
           )}
         </div>
       </div>
