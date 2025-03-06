@@ -58,6 +58,7 @@
   box-sizing: border-box;
   text-align: center;
   border-radius: var(--rounded-full);
+  cursor: pointer;
 }
 
 /* 크기에 따라 padding의 값과 글자 크기,stroke의 값을 변경 */
@@ -78,6 +79,7 @@
 /* 버튼에 사용될 폰트 속성 설정 */
 .pretendard {
   font-family: 'Pretendard';
+  font-weight: 600;
 }
 
 .neo {

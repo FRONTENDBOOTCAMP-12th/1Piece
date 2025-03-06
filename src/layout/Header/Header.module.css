@@ -1,0 +1,87 @@
+header {
+  background: var(--primary-2-g);
+  min-width: 48rem;
+  border-block-end: 1px solid var(--black);
+}
+
+.headerContainer {
+  width: 80%;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  margin-top: var(--space-2);
+  width: 8rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-7);
+}
+
+.userInfoContainer {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.headerForm {
+  position: relative;
+}
+
+.headerSearchBar {
+  background-color: var(--white);
+  border-radius: var(--rounded-full);
+  height: var(--space-10);
+  width: 17.5rem;
+  font-size: var(--medium);
+  padding-inline-start: 1rem;
+  border: 1px solid var(--black);
+}
+
+.headerSearchBtn {
+  position: absolute;
+  cursor: pointer;
+  right: var(--space-3);
+  top: var(--space-2);
+}
+
+.headerSearchIcon {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-2);
+  background: var(--dark-gray-g);
+  border-radius: var(--rounded-full);
+  border: 1px solid var(--black);
+  height: var(--space-10);
+  width: var(--space-10);
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    background: var(--clicked-dark-gray-g);
+  }
+}
+
+.headerProfile {
+  box-sizing: border-box;
+  width: var(--space-10);
+  border-radius: var(--rounded-full);
+  border: 1px solid var(--black);
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
