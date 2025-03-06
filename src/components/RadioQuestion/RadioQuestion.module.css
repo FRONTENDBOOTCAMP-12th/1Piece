@@ -23,11 +23,6 @@
   pointer-events: none;
 }
 
-.radioIcon {
-  font-size: var(--space-16, 4rem);
-  color: var(--tertiary-g);
-}
-
 .radioIconLabel {
   display: flex;
   align-items: center;

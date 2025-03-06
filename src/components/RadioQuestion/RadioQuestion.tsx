@@ -1,7 +1,8 @@
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
 import S from './RadioQuestion.module.css';
-import { FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+import RadioIcon from './RadioIcon';
+import RadioIconCheck from './RadioIconCheck';
 
 interface RadioQuestionProps {
   options: string[];
@@ -11,7 +12,9 @@ function RadioQuestion({ options }: RadioQuestionProps) {
   const [answer, setAnswer] = useState<string>('');
   return (
     <div>
-      <label className={S.radioLabel}>선지</label>
+      <label className={S.radioLabel} htmlFor="radio-0">
+        선지
+      </label>
       {options.map((option, index) => {
         const id = `radio-${index}`;
         return (
@@ -25,11 +28,7 @@ function RadioQuestion({ options }: RadioQuestionProps) {
               className={S.radioHidden}
             />
             <label htmlFor={id} className={S.radioIconLabel}>
-              {answer === option ? (
-                <FaCheckCircle className={S.radioIcon} />
-              ) : (
-                <FaRegCircle className={S.radioIcon} />
-              )}
+              {answer === option ? <RadioIconCheck /> : <RadioIcon />}
             </label>
             <Input
               label={option}
