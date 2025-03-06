@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import S from './ModalCard.module.css';
+import S from './ProblemCardModal.module.css';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import RoundedButton from '../RoundeButton/RoundedButton';
 
@@ -10,7 +10,7 @@ type ProblemCardProps = React.ComponentProps<'img'> &
     description: string;
   };
 
-function ModalCard({
+function ProblemCardModal({
   src,
   tags,
   userName,
@@ -64,4 +64,4 @@ function ModalCard({
   );
 }
 
-export default ModalCard;
+export default ProblemCardModal;
