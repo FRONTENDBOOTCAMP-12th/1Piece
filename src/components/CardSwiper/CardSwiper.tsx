@@ -17,7 +17,7 @@ function CardSwiper({ data }: CardSwiperProps) {
   const recommendCard = data.slice(0, 4);
 
   return (
-    <section className={S.CardSwipderContainer}>
+    <div className={S.CardSwipderContainer}>
       <div className={S.header}>
         <h2>이번 주 베스트 카드</h2>
         <button className={S.btnMoreHeader}>
@@ -25,22 +25,24 @@ function CardSwiper({ data }: CardSwiperProps) {
         </button>
       </div>
       <div className={S.swiperContainer}>
-        {recommendCard.map((card) => (
-          <ProblemCard
-            key={card.id}
-            src={card.src}
-            userName={card.userName}
-            tags={card.tags}
-            checked={card.checked}
-          >
-            {card.problemTitle}
-          </ProblemCard>
-        ))}
+        <div className={S.swiper}>
+          {recommendCard.map((card) => (
+            <ProblemCard
+              key={card.id}
+              src={card.src}
+              userName={card.userName}
+              tags={card.tags}
+              checked={card.checked}
+            >
+              {card.problemTitle}
+            </ProblemCard>
+          ))}
+        </div>
         <button className={S.btnNext}>
           <img src="../../../public/icons/btn-more-circle.svg" alt="Next" />
         </button>
       </div>
-    </section>
+    </div>
   );
 }
 
