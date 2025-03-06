@@ -1,3 +1,4 @@
+import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
 
@@ -13,6 +14,13 @@ function SignUpForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.password !== formData.passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+    }
   };
   return (
     <form>
@@ -57,6 +65,7 @@ function SignUpForm() {
         placeholder="Qzelly@gmail.com"
         onChange={handleChange}
       />
+      <Button label="회원가입" type="button" onClick={() => handleSubmit} />
     </form>
   );
 }
