@@ -2,20 +2,26 @@ import S from './input.module.css';
 
 interface InputProps {
   label: string;
+  name?: string;
   type: string;
   placeholder?: string;
   maxLength?: number;
   className?: string;
   hiddenLabel?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Input({
   label,
+  name,
   type,
   placeholder,
   maxLength,
   className,
   hiddenLabel,
+  value,
+  onChange,
 }: InputProps) {
   const isProblemSet = className === S.inputProblemSet;
   return (
@@ -25,9 +31,12 @@ function Input({
       {!hiddenLabel && <label className={S.inputContent}>{label}</label>}
       <input
         className={`${S.input} ${className ?? ''}`}
+        name={name}
         type={type}
+        value={value}
         placeholder={placeholder}
         maxLength={maxLength}
+        onChange={onChange}
       />
     </div>
   );
