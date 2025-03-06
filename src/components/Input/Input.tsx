@@ -16,7 +16,7 @@ function Input({ label, type, placeholder, maxLength, className }: InputProps) {
     >
       <label className={S.inputContent}>{label}</label>
       <input
-        className={`${S.input} ${className ? className : ''}`}
+        className={`${S.input} ${className ?? ''}`}
         type={type}
         placeholder={placeholder}
         maxLength={maxLength}
