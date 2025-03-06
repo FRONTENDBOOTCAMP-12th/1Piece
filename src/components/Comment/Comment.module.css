@@ -1,0 +1,36 @@
+@import '../../styles/Main.css';
+
+.container {
+  width: 37.1875rem;
+  height: 10.25rem;
+  border-radius: 3.125rem;
+  padding: var(--space-7);
+  border: 0.125rem solid var(--black);
+  background: var(--gray-g);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.commentInfo {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.userInfo {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.nickname {
+  font-weight: var(--semi-bold);
+}
+
+.level {
+  color: var(--bookmark);
+  font-weight: var(--semi-bold);
+}
+
+.time {
+  color: var(--line-gray);
+}
