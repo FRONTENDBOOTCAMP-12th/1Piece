@@ -45,60 +45,62 @@ export function Pagination({
   );
 
   return (
-    <ul className={S.pagination}>
-      <li>
-        <button
-          className={S.navButton}
-          onClick={handleFirstPage}
-          disabled={currentPage === 1}
-          aria-disabled={currentPage === 1}
-        >
-          {'<<'}
-        </button>
-      </li>
-      <li>
-        <button
-          className={S.navButton}
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          aria-disabled={currentPage === 1}
-        >
-          {'<'}
-        </button>
-      </li>
-
-      {visiblePages.map((page) => (
-        <li key={page}>
+    <div className={S.paginationContainer}>
+      <ul className={S.pagination}>
+        <li>
           <button
-            className={`${S.pageButton} ${currentPage === page ? S.activePage : ''}`}
-            onClick={() => handlePageChange(page)}
+            className={S.navButton}
+            onClick={handleFirstPage}
+            disabled={currentPage === 1}
+            aria-disabled={currentPage === 1}
           >
-            {page}
+            {'<<'}
           </button>
         </li>
-      ))}
+        <li>
+          <button
+            className={S.navButton}
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            aria-disabled={currentPage === 1}
+          >
+            {'<'}
+          </button>
+        </li>
 
-      <li>
-        <button
-          className={S.navButton}
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          aria-disabled={currentPage === totalPages}
-        >
-          {'>'}
-        </button>
-      </li>
-      <li>
-        <button
-          className={S.navButton}
-          onClick={handleLastPage}
-          disabled={currentPage === totalPages}
-          aria-disabled={currentPage === totalPages}
-        >
-          {'>>'}
-        </button>
-      </li>
-    </ul>
+        {visiblePages.map((page) => (
+          <li key={page}>
+            <button
+              className={`${S.pageButton} ${currentPage === page ? S.activePage : ''}`}
+              onClick={() => handlePageChange(page)}
+            >
+              {page}
+            </button>
+          </li>
+        ))}
+
+        <li>
+          <button
+            className={S.navButton}
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            aria-disabled={currentPage === totalPages}
+          >
+            {'>'}
+          </button>
+        </li>
+        <li>
+          <button
+            className={S.navButton}
+            onClick={handleLastPage}
+            disabled={currentPage === totalPages}
+            aria-disabled={currentPage === totalPages}
+          >
+            {'>>'}
+          </button>
+        </li>
+      </ul>
+    </div>
   );
 }
 
