@@ -1,3 +1,4 @@
+/* 색상 별로 배경과 active 속성의 색을 다르게 지정 */
 .primary {
   background: var(--primary-g);
 
@@ -52,12 +53,14 @@
   }
 }
 
+/* 모든 속성에서 공통적으로 사용되는 속성 */
 .roundedButton {
   box-sizing: border-box;
   text-align: center;
   border-radius: var(--rounded-full);
 }
 
+/* 크기에 따라 padding의 값과 글자 크기,stroke의 값을 변경 */
 .regular {
   padding-block: var(--space-2);
   padding-inline: var(--space-4);
@@ -72,6 +75,7 @@
   border: 2px solid var(--black);
 }
 
+/* 버튼에 사용될 폰트 속성 설정 */
 .pretendard {
   font-family: 'Pretendard';
 }
