@@ -1,0 +1,14 @@
+.radioIcon {
+  background: var(--dark-gray-g);
+  display: inline-flex;
+  border-radius: var(--rounded-full);
+  padding: var(--space-2);
+  border: 2px solid var(--black);
+}
+.radioIconCheck {
+  background: var(--tertiary-g);
+  display: inline-flex;
+  border-radius: var(--rounded-full);
+  padding: var(--space-2);
+  border: 2px solid var(--black);
+}

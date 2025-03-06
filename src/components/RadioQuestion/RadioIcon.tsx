@@ -1,16 +1,9 @@
 import { IoCheckmark } from 'react-icons/io5';
+import S from './RadioIcon.module.css';
 
 function RadioIcon() {
   return (
-    <div
-      style={{
-        background: `var(--dark-gray-g)`,
-        display: 'inline-flex',
-        borderRadius: `var(--rounded-full)`,
-        padding: `var(--space-2)`,
-        border: `2px solid var(--black)`,
-      }}
-    >
+    <div className={S.radioIcon}>
       <IoCheckmark size={40} />
     </div>
   );
