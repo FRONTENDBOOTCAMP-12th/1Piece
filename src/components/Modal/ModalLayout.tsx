@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import S from './ModalLayout.module.css';
+import RoundedButton from '../RoundeButton/RoundedButton';
 
-type ModalLayoutProps = {
+interface ModalLayoutProps {
   title: string;
   text: string;
   onClose?: () => void;
-};
+}
 
 function ModalLayout({ title, text, onClose }: ModalLayoutProps) {
   const [isVisible, setIsVisible] = useState(true);
@@ -31,9 +32,14 @@ function ModalLayout({ title, text, onClose }: ModalLayoutProps) {
           />
           <p className={S.text}>{text}</p>
         </div>
-        <div className={S.button} onClick={handleClose}>
+        <RoundedButton
+          color="gray"
+          size="large"
+          font="neo"
+          onClick={handleClose}
+        >
           확인
-        </div>
+        </RoundedButton>
       </div>
     </div>
   );

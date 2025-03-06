@@ -1,6 +1,7 @@
-import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import { useState } from 'react';
 import S from './ModalCard.module.css';
+import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
+import RoundedButton from '../RoundeButton/RoundedButton';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -41,12 +42,22 @@ function ModalCard({
           </div>
         </div>
         <div className={S.btns}>
-          <div className={S.btnExit} onClick={handleClose}>
+          <RoundedButton
+            color="gray"
+            size="large"
+            font="neo"
+            onClick={handleClose}
+          >
             취소
-          </div>
-          <div className={S.btnIn} onClick={handleClose}>
+          </RoundedButton>
+          <RoundedButton
+            color="primary"
+            size="large"
+            font="neo"
+            onClick={handleClose}
+          >
             풀기
-          </div>
+          </RoundedButton>
         </div>
       </div>
     </div>
