@@ -15,10 +15,10 @@ export type DummyKey =
   | '도덕';
 
 // id는 과목명으로, 상태는 boolean값으로 할당
-type DummyItemType = {
+interface DummyItemType {
   id: DummyKey;
   state: boolean;
-};
+}
 
 // 임시 데이터
 const dummy: DummyItemType[] = [
@@ -42,7 +42,7 @@ function SelectTag() {
   const handleUpdateTagList = (subject: DummyKey, newState: boolean) => {
     const nextSelectedTag = selectedTag.map((item) => {
       // 입력받은 subject로 id 값 순회 비교
-      if (item['id'] === subject) {
+      if (item.id === subject) {
         return {
           ...item,
           state: newState,
@@ -59,12 +59,12 @@ function SelectTag() {
     <div className={S.tagContainer}>
       {selectedTag.map((item) => (
         <Tag
-          subject={item['id']}
-          selected={item['state']}
-          key={item['id']}
+          subject={item.id}
+          selected={item.state}
+          key={item.id}
           onUpdate={handleUpdateTagList}
         >
-          {item['id']}
+          {item.id}
         </Tag>
       ))}
     </div>
