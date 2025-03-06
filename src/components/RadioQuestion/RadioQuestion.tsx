@@ -1,8 +1,7 @@
 import Input from '@/components/Input/Input';
 import { useState } from 'react';
 import S from './RadioQuestion.module.css';
-import RadioIcon from './RadioIcon';
-import RadioIconCheck from './RadioIconCheck';
+import { IoCheckmark } from 'react-icons/io5';
 
 interface RadioQuestionProps {
   options: string[];
@@ -28,7 +27,11 @@ function RadioQuestion({ options }: RadioQuestionProps) {
               className={S.radioHidden}
             />
             <label htmlFor={id} className={S.radioIconLabel}>
-              {answer === option ? <RadioIconCheck /> : <RadioIcon />}
+              {answer === option ? (
+                <IoCheckmark size={60} className={S.radioIconCheck} />
+              ) : (
+                <IoCheckmark size={60} className={S.radioIcon} />
+              )}
             </label>
             <Input
               label={option}
