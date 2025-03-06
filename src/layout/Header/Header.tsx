@@ -4,19 +4,23 @@ import { RiInbox2Line } from 'react-icons/ri';
 import { CiSearch } from 'react-icons/ci';
 import S from './Header.module.css';
 import RoundedButton from '@/components/RoundeButton/RoundedButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface HeaderProps {
-  userProfile?: string | boolean;
+  src?: string;
 }
 
-function Header({ userProfile = false }: HeaderProps) {
-  const [isLogin] = useState(!!userProfile);
+function Header({ src }: HeaderProps) {
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleSearch = () => {
-    console.log(userProfile);
     console.log(123);
   };
+
+  useEffect(() => {
+    const nextIsLogin = Boolean(src);
+    setIsLogin(nextIsLogin);
+  }, [src]);
 
   return (
     <header>
@@ -62,7 +66,11 @@ function Header({ userProfile = false }: HeaderProps) {
           </NavLink>
           {isLogin ? (
             <NavLink to="/mypage">
-              <img src="" alt="" className={S.headerProfile} />
+              <img
+                src={src}
+                alt="마이페이지 이동"
+                className={S.headerProfile}
+              />
             </NavLink>
           ) : (
             <NavLink to="/loginPage">
