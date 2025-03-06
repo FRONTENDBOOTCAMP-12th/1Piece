@@ -1,0 +1,81 @@
+.primary {
+  background: var(--primary-g);
+
+  &:active {
+    background: var(--clicked-primary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.primary2 {
+  background: var(--primary-2-g);
+
+  &:active {
+    background: var(--clicked-primary-2-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.secondary {
+  background: var(--secondary-g);
+
+  &:active {
+    background: var(--clicked-secondary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.tertiary {
+  background: var(--tertiary-g);
+
+  &:active {
+    background: var(--clicked-tertiary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.gray {
+  background: var(--gray-g);
+
+  &:active {
+    background: var(--clicked-gray-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.darkgray {
+  background: var(--dark-gray-g);
+
+  &:active {
+    background: var(--clicked-dark-gray-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.roundedButton {
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: var(--rounded-full);
+}
+
+.regular {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font-size: var(--medium);
+  border: 1px solid var(--black);
+}
+
+.large {
+  padding-block: var(--space-5);
+  padding-inline: var(--space-7);
+  font-size: var(--large);
+  border: 2px solid var(--black);
+}
+
+.pretendard {
+  font-family: 'Pretendard';
+}
+
+.neo {
+  font-family: 'NeoDunggeunmoPro';
+}
