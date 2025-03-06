@@ -1,4 +1,5 @@
 declare module '*.css' {
-  const content: { [className: string]: string };
+  const content: Record<string, string>;
+
   export = content;
 }
