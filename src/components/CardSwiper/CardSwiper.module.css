@@ -1,0 +1,70 @@
+.CardSwiperContainer {
+  width: 1308px;
+  height: 500px;
+  background: var(--white);
+  position: relative;
+
+  margin: 0;
+  padding: var(--space-6);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: var(--space-4);
+}
+
+.header h2 {
+  font-family: var(--pretendard);
+  font-size: var(--large-2);
+  font-weight: var(--semi-bold);
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+
+.btnMoreHeader {
+  margin-left: var(--space-3);
+  width: 80px;
+  height: 40px;
+  border: 1px solid var(--black);
+  border-radius: var(--radius-medium);
+  background: var(--gray-g);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--medium);
+  font-weight: var(--semi-bold);
+  letter-spacing: -0.03em;
+  cursor: pointer;
+}
+
+.swiperContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: var(--space-4);
+  position: absolute;
+}
+
+.btnNext {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: var(--dark-gray-g);
+  border: 1.5px solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btnNext img {
+  width: 24px;
+  height: 24px;
+}
