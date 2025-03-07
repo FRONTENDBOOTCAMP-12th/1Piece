@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import S from './ProblemCardModal.module.css';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
-import RoundedButton from '../RoundeButton/RoundedButton';
+import RoundedButton from '../RoundedButton/RoundedButton';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
