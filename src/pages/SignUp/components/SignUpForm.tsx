@@ -27,7 +27,6 @@ function SignUpForm() {
   const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
   const [idCheckLoading, setIdCheckLoading] = useState(false);
 
-  // const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
   const startIsSubmitting = () => setIsSubmitting(true);
@@ -39,24 +38,24 @@ function SignUpForm() {
     setFormData({ ...formData, [name]: value });
 
     if (name === 'id') {
-      setIsIdAvailable(true);
+      setIsIdAvailable(null);
     }
   };
 
   const idCheckAvailability = async (id: string) => {
     if (!id.trim()) return false;
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('id', id)
-      .single();
-
-    if (error && error.code !== 'PGRST116') {
-      console.error('ID 중복 체크 오류:', error.message);
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('userid')
+        .eq('userid', id.trim())
+        .maybeSingle();
+      return !data;
+    } catch (error) {
+      console.error('ID 중복 체크 오류:', error);
+      return false;
     }
-
-    return !data;
   };
 
   const handleIdCheck = async () => {
@@ -118,7 +117,7 @@ function SignUpForm() {
     startIsSubmitting();
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
       });
@@ -127,10 +126,9 @@ function SignUpForm() {
         setErrors({ ...errors, email: error.message, password: error.message });
       } else {
         const { error: profileError } = await supabase.from('profiles').upsert({
-          id: data.user?.id,
+          userid: formData.id,
           email: formData.email,
           nickname: formData.nickname,
-          created_at: new Date(),
         });
 
         if (profileError) {
@@ -142,7 +140,9 @@ function SignUpForm() {
             '회원가입에 성공했습니다. 이메일을 확인해주세요'
           );
           if (isConfirmed) {
-            navigate('/login');
+            setTimeout(() => {
+              navigate('/login');
+            }, 1000);
           }
         }
       }
@@ -215,7 +215,7 @@ function SignUpForm() {
       />
       {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
-      <Button type="button" disabled={isSubmitting} label="회원가입">
+      <Button type="submit" disabled={isSubmitting} label="회원가입">
         {isSubmitting ? '회원가입 중...' : '회원가입'}
       </Button>
     </form>
