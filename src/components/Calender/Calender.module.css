@@ -1,7 +1,7 @@
 .calenderContainer {
   width: 37rem;
   height: 61.8125rem;
-  background: url(/icons/calender-background.svg);
+  background: url(/icons/calender_background.svg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,14 +94,14 @@
 }
 
 .calenderContainer :global(.react-calendar__tile:hover),
-:global(.react-calendar__tile:active),
-:global(.react-calendar__tile--active) {
-  background-color: white;
+.calenderContainer :global(.react-calendar__tile:active),
+.calenderContainer :global(.react-calendar__tile--active) {
+  background-color: var(--white);
   color: red;
 }
 
 :global(.react-calendar__tile--active:enabled:hover),
 :global(.react-calendar__tile--active:enabled:focus) {
-  background: white;
+  background: var(--white);
   color: red;
 }
