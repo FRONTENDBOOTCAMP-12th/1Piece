@@ -6,11 +6,19 @@ import S from './Calender.module.css';
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
-function Calender() {
+interface CalenderProps {
+  markedDates: Date[];
+}
+
+function Calender({ markedDates }: CalenderProps) {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
 
-  const formatDay = (_locale: string | undefined, date: Date) => {
-    return date.getDate().toString();
+  const isSameDate = (date1: Date, date2: Date) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   };
 
   return (
@@ -18,12 +26,23 @@ function Calender() {
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
-        calendarType="gregory"
-        view="month"
-        prev2Label={null}
-        next2Label={null}
+        formatDay={(_, date) => date.getDate().toString()}
+        minDetail="month"
+        maxDetail="month"
+        navigationLabel={undefined}
         showNeighboringMonth={false}
-        formatDay={formatDay}
+        className="mx-auto w-full text-sm border-b"
+        tileContent={({ date }) => {
+          const isMarked = markedDates.some((markedDate) =>
+            isSameDate(markedDate, date)
+          );
+
+          return (
+            <div className={S.tileContent}>
+              {isMarked && <div className={S.dot} />}
+            </div>
+          );
+        }}
       />
     </div>
   );
