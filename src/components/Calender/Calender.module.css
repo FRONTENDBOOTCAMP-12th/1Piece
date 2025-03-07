@@ -1,10 +1,18 @@
 .calenderContainer {
   width: 37rem;
   height: 61.8125rem;
-  background: #fddb92;
+  background: url(/icons/calender-background.svg);
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.calenderContainer img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 :global(.react-calendar) {
