@@ -11,6 +11,7 @@ function SignUpForm() {
     passwordConfirm: '',
     nickname: '',
     email: '',
+    profile: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({
@@ -19,6 +20,7 @@ function SignUpForm() {
     passwordConfirm: '',
     nickname: '',
     email: '',
+    profile: '',
   });
   const formErrors = { ...errors };
   const [success, setSuccess] = useState('');
@@ -96,6 +98,7 @@ function SignUpForm() {
       passwordConfirm: '',
       nickname: '',
       email: '',
+      profile: '',
     });
   };
 
@@ -115,7 +118,7 @@ function SignUpForm() {
     startIsSubmitting();
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
       });
@@ -123,8 +126,25 @@ function SignUpForm() {
       if (error) {
         setErrors({ ...errors, email: error.message, password: error.message });
       } else {
-        setSuccess('회원가입에 성공했습니다.');
-        navigate('/login');
+        const { error: profileError } = await supabase.from('profiles').upsert({
+          id: data.user?.id,
+          email: formData.email,
+          nickname: formData.nickname,
+          created_at: new Date(),
+        });
+
+        if (profileError) {
+          console.error('프로필 테이블 삽입 실패:', profileError.message);
+          setErrors({ ...errors, profile: '프로필 저장에 실패했습니다.' });
+        } else {
+          setSuccess('회원가입에 성공했습니다.');
+          const isConfirmed = window.confirm(
+            '회원가입에 성공했습니다. 이메일을 확인해주세요'
+          );
+          if (isConfirmed) {
+            navigate('/login');
+          }
+        }
       }
     } catch {
       setErrors({
