@@ -1,0 +1,99 @@
+.calenderContainer {
+  width: 37rem;
+  height: 61.8125rem;
+  background: #fddb92;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global(.react-calendar) {
+  width: 100%;
+  max-width: 33rem;
+  background: #fddb92;
+  border: none;
+  font-family: 'NeoDunggeunmoPro';
+}
+
+:global(.react-calendar__navigation) {
+  font-size: 3rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fddb92;
+  gap: 0.1875rem;
+  color: var(--white);
+}
+
+:global(.react-calendar__navigation__label) {
+  max-width: 18.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  font-weight: var(--semi-bold);
+  background-color: #fddb92;
+  flex-grow: 0;
+  pointer-events: none;
+}
+
+:global(.react-calendar__navigation__label > span) {
+  text-align: center;
+}
+
+:global(.react-calendar__navigation__prev-button),
+:global(.react-calendar__navigation__next-button) {
+  background-color: #fddb92;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calenderContainer :global(.react-calendar__navigation__prev-button:hover),
+.calenderContainer :global(.react-calendar__navigation__next-button:hover),
+.calenderContainer :global(.react-calendar__navigation__label:hover) {
+  background-color: #fddb92;
+}
+
+:global(.react-calendar__tile) {
+  padding: var(--space-3);
+  font-size: 0.875rem;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  background: none;
+}
+
+:global(.react-calendar__month-view__weekdays__weekday) {
+  font-weight: var(--regular);
+  font-size: 1.25rem;
+  background: var(--dark-gray-g);
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global(.react-calendar__month-view__weekdays__weekday) abbr {
+  text-decoration: none;
+}
+
+:global(.react-calendar__month-view__days) {
+  font-weight: var(--regular);
+  background: linear-gradient(#ffc9c4, #fff);
+  height: 41.25rem;
+}
+
+.calenderContainer :global(.react-calendar__tile:hover),
+:global(.react-calendar__tile:active),
+:global(.react-calendar__tile--active) {
+  background-color: white;
+  color: red;
+}
+
+:global(.react-calendar__tile--active:enabled:hover),
+:global(.react-calendar__tile--active:enabled:focus) {
+  background: white;
+  color: red;
+}
