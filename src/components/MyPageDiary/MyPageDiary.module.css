@@ -83,3 +83,10 @@
   gap: var(--space-16);
   align-items: center;
 }
+
+.myPageRouterBtn {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+}
