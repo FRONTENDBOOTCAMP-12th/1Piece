@@ -3,6 +3,8 @@ import Button from '../Button/Button';
 import S from './MyPageDiary.module.css';
 
 function MyPageDiary() {
+  const pathname = new URL(location.href).pathname;
+
   return (
     <div className={S.diaryContainer}>
       <div className={S.leftDiary}>
@@ -14,13 +16,27 @@ function MyPageDiary() {
         />
         <div className={S.myPageButtonContainer}>
           <NavLink to="/library" className={S.myPageRouterBtn}>
-            <Button label="Library" style={{ width: '80%' }} />
+            <Button
+              label="Library"
+              style={{ width: '80%' }}
+              color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
+            />
           </NavLink>
           <NavLink to="/reward" className={S.myPageRouterBtn}>
-            <Button label="Reward" style={{ width: '80%' }} />
+            <Button
+              label="Reward"
+              style={{ width: '80%' }}
+              color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
+            />
           </NavLink>
           <NavLink to="/user-setting" className={S.myPageRouterBtn}>
-            <Button label="개인정보 관리" style={{ width: '80%' }} />
+            <Button
+              label="개인정보 관리"
+              style={{ width: '80%' }}
+              color={
+                pathname.includes('user-setting') ? 'secondary' : 'dark-gray'
+              }
+            />
           </NavLink>
         </div>
       </div>
