@@ -10,20 +10,87 @@ function SignUpForm() {
     nickname: '',
     email: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({
+    id: '',
+    password: '',
+    passwordConfirm: '',
+    nickname: '',
+    email: '',
+  });
+  const formErrors = { ...errors };
+
+  // const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const passwordValidate = () => {
     if (formData.password !== formData.passwordConfirm) {
-      alert('비밀번호가 일치하지 않습니다.');
+      formErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
+      setErrors({
+        ...errors,
+        passwordConfirm: '비밀번호가 일치하지 않습니다.',
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const emailValidate = () => {
+    if (!emailRegEx.test(formData.email)) {
+      formErrors.email = '이메일 주소가 유효하지 않습니다.';
+      setErrors({ ...errors, email: '이메일 주소가 유효하지 않습니다.' });
+      return false;
+    }
+    return true;
+  };
+
+  const startIsSubmitting = () => setIsSubmitting(true);
+  const stopIsSubmitting = () => setIsSubmitting(false);
+
+  const clearErrors = () => {
+    setErrors({
+      id: '',
+      password: '',
+      passwordConfirm: '',
+      nickname: '',
+      email: '',
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    clearErrors();
+
+    if (!passwordValidate() || !emailValidate()) {
+      return;
+    }
+
+    startIsSubmitting();
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } catch {
+      setErrors({
+        ...errors,
+        id: '회원가입에 실패했습니다.',
+        password: '회원가입에 실패했습니다.',
+        passwordConfirm: '회원가입에 실패했습니다.',
+        nickname: '회원가입에 실패했습니다.',
+        email: '회원가입에 실패했습니다.',
+      });
+    } finally {
+      stopIsSubmitting();
     }
   };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>회원가입</h2>
       <Input
         label="ID"
@@ -37,35 +104,39 @@ function SignUpForm() {
         label="비밀번호"
         name="password"
         type="password"
-        value={formData.password}
         placeholder="비밀번호를 입력하세요"
+        value={formData.password}
         onChange={handleChange}
       />
       <Input
         label="비밀번호확인"
         name="passwordConfirm"
         type="password"
-        value={formData.passwordConfirm}
         placeholder="비밀번호를 한번 더 입력하세요"
+        value={formData.passwordConfirm}
         onChange={handleChange}
       />
       <Input
         label="닉네임"
         name="nickname"
         type="text"
-        value={formData.nickname}
         placeholder="닉네임을 입력해주세요"
+        value={formData.nickname}
         onChange={handleChange}
       />
       <Input
         label="이메일"
         name="email"
         type="email"
-        value={formData.email}
         placeholder="Qzelly@gmail.com"
+        value={formData.email}
         onChange={handleChange}
       />
-      <Button label="회원가입" type="button" onClick={() => handleSubmit} />
+
+      {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
+      <Button type="button" disabled={isSubmitting}>
+        {isSubmitting ? '회원가입 중...' : '회원가입'}
+      </Button>
     </form>
   );
 }
