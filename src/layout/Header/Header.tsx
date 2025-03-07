@@ -38,7 +38,7 @@ function Header({ src }: HeaderProps) {
             </RoundedButton>
           </NavLink>
           {/* 문제 목록 페이지로 이동 */}
-          <NavLink to="/ProblemList">
+          <NavLink to="/problem-list">
             <RoundedButton color="darkgray" font="pretendard" size="regular">
               목록
             </RoundedButton>
@@ -49,7 +49,7 @@ function Header({ src }: HeaderProps) {
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
           {/* 문제 생성 페이지로 이동 */}
-          <NavLink to="/createProblem">
+          <NavLink to="/question-create">
             <div className={S.headerSearchIcon}>
               <BiPlus size={24} />
             </div>
