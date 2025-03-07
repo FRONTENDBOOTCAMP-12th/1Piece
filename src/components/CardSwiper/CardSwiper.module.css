@@ -1,6 +1,8 @@
-.CardSwiperContainer {
-  width: 1308px;
-  height: 473px;
+.cardSwiperContainer {
+  width: 81.75rem;
+  max-width: 81.75rem;
+  min-width: 50rem;
+  height: 29.5625rem;
   background: var(--white);
   position: relative;
 }
@@ -22,9 +24,9 @@
 
 .btnMoreHeader {
   margin-left: var(--space-3);
-  width: 72px;
-  height: 35px;
-  border: 1px solid var(--black);
+  width: 4.5rem;
+  height: 2.1875rem;
+  border: 0.0625rem solid var(--black);
   border-radius: var(--radius-xl) 0px var(--radius-xl) var(--radius-xl);
   background: var(--gray-g);
   display: flex;
@@ -43,28 +45,41 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
-  gap: 16px;
+  width: 81.75rem;
 }
 
 .swiper {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, auto);
-  gap: var(--space-6);
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.navigationContainer {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
 .btnNext {
   flex: none;
   box-sizing: border-box;
   background: var(--gray-g);
-  border: 1.5px solid var(--black);
+  border: 0.09375rem solid var(--black);
   border-radius: var(--rounded-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
 }
 
 .btnNext:hover {
@@ -72,6 +87,6 @@
 }
 
 .btnNext img {
-  width: 15px;
-  height: 15px;
+  width: 0.9375rem;
+  height: 0.9375rem;
 }
