@@ -4,18 +4,18 @@ import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
 import ProblemCard from '../ProblemCard/ProblemCard';
 
-type ProblemCardData = {
+interface ProblemCardData {
   id: string;
   src: string;
   userName: string;
   tags: string[];
   checked: boolean;
   problemTitle: string;
-};
+}
 
-type CardSwiperProps = {
+interface CardSwiperProps {
   data: ProblemCardData[];
-};
+}
 
 const CustomNavigation = () => {
   const swiper = useSwiper();
@@ -23,7 +23,7 @@ const CustomNavigation = () => {
   return (
     <div className={S.navigationContainer}>
       <button className={S.btnNext} onClick={() => swiper.slideNext()}>
-        <img src="/icons/btn-more-circle.svg" alt="Next" />{' '}
+        <img src="/icons/btn-more-circle.svg" alt="Next" />
       </button>
     </div>
   );
@@ -48,7 +48,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
         document.head.appendChild(link);
       });
     }
-    return () => {};
+
+    return undefined;
   }, []);
 
   return (
@@ -85,7 +86,6 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
               <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
             </div>
           </SwiperSlide>
-
           <CustomNavigation />
         </Swiper>
       </div>
