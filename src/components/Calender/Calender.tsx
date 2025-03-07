@@ -31,6 +31,8 @@ function Calender({ markedDates }: CalenderProps) {
         maxDetail="month"
         navigationLabel={undefined}
         showNeighboringMonth={false}
+        prev2Label={null}
+        next2Label={null}
         className="mx-auto w-full text-sm border-b"
         tileContent={({ date }) => {
           const isMarked = markedDates.some((markedDate) =>
