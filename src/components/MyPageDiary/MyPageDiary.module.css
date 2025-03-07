@@ -3,7 +3,6 @@
   flex-flow: row;
   gap: var(--space-4);
   width: 60vw;
-  height: 80vh;
   min-height: fit-content;
   min-width: 48rem;
   margin-inline: auto;
@@ -82,6 +81,7 @@
   flex-flow: column;
   gap: var(--space-16);
   align-items: center;
+  margin-block-end: var(--space-8);
 }
 
 .myPageRouterBtn {
