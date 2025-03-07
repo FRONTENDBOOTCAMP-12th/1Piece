@@ -1,6 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import SignUpPage from '@/pages/SignUp/Page';
-import SignInPage from './pages/SignIn/Page';
 import FindIdPage from './pages/FindId/Page';
 import FindPasswordPage from './pages/FindPassword/Page';
 import ProblemListPage from './pages/ProblemList/Page';
@@ -8,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import MainPage from './pages/Main/Page';
 import QuestionCreatePage from './pages/QuestionCreate/Page';
 import QuestionFixPage from './pages/QuestionFix/Page';
+import LogInPage from './pages/LogIn/Page';
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
 
           <Route>
             <Route path="/sign-up" element={<SignUpPage />} />
-            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/login" element={<LogInPage />} />
             <Route path="/find-id" element={<FindIdPage />} />
             <Route path="/find-pw" element={<FindPasswordPage />} />
           </Route>

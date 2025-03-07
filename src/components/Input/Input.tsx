@@ -10,6 +10,7 @@ interface InputProps {
   hiddenLabel?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Input({
@@ -22,6 +23,8 @@ function Input({
   hiddenLabel,
   value,
   onChange,
+  onBlur,
+  ...restProps
 }: InputProps) {
   const isProblemSet = className === S.inputProblemSet;
   return (
@@ -37,6 +40,8 @@ function Input({
         placeholder={placeholder}
         maxLength={maxLength}
         onChange={onChange}
+        onBlur={onBlur}
+        {...restProps}
       />
     </div>
   );

@@ -1,6 +1,8 @@
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import { supabase } from '@/lib/SupabaseClient';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -19,14 +21,51 @@ function SignUpForm() {
     email: '',
   });
   const formErrors = { ...errors };
+  const [success, setSuccess] = useState('');
+  const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
+  const [idCheckLoading, setIdCheckLoading] = useState(false);
 
   // const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+  const startIsSubmitting = () => setIsSubmitting(true);
+  const stopIsSubmitting = () => setIsSubmitting(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === 'id') {
+      setIsIdAvailable(true);
+    }
+  };
+
+  const idCheckAvailability = async (id: string) => {
+    if (!id.trim()) return false;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('ID 중복 체크 오류:', error.message);
+    }
+
+    return !data;
+  };
+
+  const handleIdCheck = async () => {
+    if (!formData.id.trim()) {
+      setIsIdAvailable(false);
+      return;
+    }
+    setIdCheckLoading(true);
+    const available = await idCheckAvailability(formData.id);
+    setIsIdAvailable(available);
+    setIdCheckLoading(false);
   };
 
   const passwordValidate = () => {
@@ -50,9 +89,6 @@ function SignUpForm() {
     return true;
   };
 
-  const startIsSubmitting = () => setIsSubmitting(true);
-  const stopIsSubmitting = () => setIsSubmitting(false);
-
   const clearErrors = () => {
     setErrors({
       id: '',
@@ -67,6 +103,11 @@ function SignUpForm() {
     e.preventDefault();
     clearErrors();
 
+    if (!formData.id.trim()) {
+      setErrors({ ...errors, id: 'ID를 입력해주세요.' });
+      return;
+    }
+
     if (!passwordValidate() || !emailValidate()) {
       return;
     }
@@ -74,7 +115,17 @@ function SignUpForm() {
     startIsSubmitting();
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) {
+        setErrors({ ...errors, email: error.message, password: error.message });
+      } else {
+        setSuccess('회원가입에 성공했습니다.');
+        navigate('/login');
+      }
     } catch {
       setErrors({
         ...errors,
@@ -99,7 +150,17 @@ function SignUpForm() {
         placeholder="ID를 입력하세요"
         value={formData.id}
         onChange={handleChange}
+        onBlur={handleIdCheck}
       />
+      {idCheckLoading && <p>중복 확인 중....</p>}
+      {isIdAvailable === null && <p>아이디 중복 여부를 확인해주세요.</p>}{' '}
+      {/* null일 때만 메시지 안내 */}
+      {isIdAvailable === false && (
+        <p style={{ color: 'red' }}>이미 사용중인 ID입니다.</p>
+      )}
+      {isIdAvailable === true && (
+        <p style={{ color: 'green' }}>사용 가능한 ID입니다.</p>
+      )}
       <Input
         label="비밀번호"
         name="password"
@@ -132,9 +193,9 @@ function SignUpForm() {
         value={formData.email}
         onChange={handleChange}
       />
-
       {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
-      <Button type="button" disabled={isSubmitting}>
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+      <Button type="button" disabled={isSubmitting} label="회원가입">
         {isSubmitting ? '회원가입 중...' : '회원가입'}
       </Button>
     </form>
