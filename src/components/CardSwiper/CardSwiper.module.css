@@ -60,6 +60,26 @@
   flex-direction: row;
 }
 
+.btnMoreCard {
+  display: flex;
+  position: relative;
+  gap: var(--space-8);
+  width: 40rem;
+  height: 10.5rem;
+  background: var(--gray-g);
+  padding-block: var(--space-8);
+  padding-inline-start: var(--space-8);
+  border: 2px solid var(--black);
+  border-radius: 16px;
+  align-items: center;
+}
+
+.MoreCardMessage {
+  width: 100%;
+  display: block;
+  font-size: var(--xxl);
+}
+
 .navigationContainer {
   position: absolute;
   right: 0;

@@ -80,6 +80,12 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
               </ProblemCard>
             </SwiperSlide>
           ))}
+          <SwiperSlide className={S.slide}>
+            <div className={S.btnMoreCard}>
+              <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
+            </div>
+          </SwiperSlide>
+
           <CustomNavigation />
         </Swiper>
       </div>
