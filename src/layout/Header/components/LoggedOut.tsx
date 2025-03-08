@@ -1,4 +1,4 @@
-import RoundedButton from '@/components/RoundeButton/RoundedButton';
+import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { NavLink } from 'react-router';
 
 function LoggedOut() {

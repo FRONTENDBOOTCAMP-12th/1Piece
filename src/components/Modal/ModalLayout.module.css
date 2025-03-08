@@ -12,8 +12,8 @@
 }
 
 .modal {
-  width: 800px;
-  height: 500px;
+  width: 50rem;
+  height: 31.25rem;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
   transform: translate(-70%, -50%);
   filter: drop-shadow(0px var(--space-5) var(--space-13) var(--line-gray));
   background: var(--gray-g);
-  border: 3px solid var(--black);
+  border: 0.1875rem solid var(--black);
   border-radius: var(--radius-3xl);
 }
 
@@ -32,14 +32,14 @@
 }
 
 .header {
-  height: 80px;
+  height: 5rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   background: var(--primary-2-g);
-  border-bottom: 3px solid var(--black);
+  border-bottom: 0.1875rem solid var(--black);
   border-radius: var(--radius-3xl) var(--radius-3xl) 0 0;
 }
 
@@ -59,35 +59,18 @@
   justify-content: center;
   text-align: center;
   gap: var(--space-8);
+  margin-bottom: var(--space-12);
 }
 
 .icon {
   margin-top: var(--space-19);
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-bottom: var(--space-5);
 }
 
 .text {
   font-size: var(--xxl);
-  font-weight: (--regular);
+  font-weight: var(--regular);
   color: var(--black);
-}
-
-.button {
-  /* 공통컴포넌트로 교체할 예정 */
-  width: 120px;
-  height: 65px;
-  background: var(--white);
-  border: 2px solid var(--black);
-  box-shadow: inset -10px -10px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: var(--semi-bold);
-  font-size: var(--xl);
-}
-
-.button:hover {
-  box-shadow: var(--clicked-shadow);
 }

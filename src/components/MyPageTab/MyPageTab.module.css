@@ -1,0 +1,19 @@
+.tabList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.tab {
+  width: 7.5rem;
+  height: 3.125rem;
+  border-radius: 0rem var(--radius-medium) var(--radius-medium) 0rem;
+  background: var(--bookmark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.activeTab {
+  box-shadow: 0.5rem 0.5rem 0px 0px var(--black);
+}
