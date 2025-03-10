@@ -24,7 +24,7 @@ function Header({ src }: HeaderProps) {
   }, [src]);
 
   return (
-    <header>
+    <header className={S.header}>
       <div className={S.headerContainer}>
         <div className={S.logoContainer}>
           {/* react-router를 활용한 링크 이동 */}
