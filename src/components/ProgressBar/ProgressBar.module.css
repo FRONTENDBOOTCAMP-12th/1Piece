@@ -1,0 +1,40 @@
+@import '../../styles/Main.css';
+
+.progressContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-7);
+  padding: 0 20%;
+}
+
+.progressNumber {
+  width: 8.3125rem;
+  height: 4.3125rem;
+  border-radius: var(--radius-2xl);
+  border: 0.125rem solid var(--black);
+  background: var(--secondary-g);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  width: 56.25rem;
+  height: 1.625rem;
+  border-radius: var(--rounded-full);
+  border: 0.125rem solid var(--black);
+  background: var(--gray-g);
+  position: relative;
+  overflow: hidden;
+}
+
+.bar {
+  height: 1.625rem;
+  border-radius: var(--rounded-full);
+  border: 0.125rem solid var(--black);
+  background: var(--tertiary-g);
+  position: absolute;
+  top: -0.125rem;
+  left: -0.125rem;
+}

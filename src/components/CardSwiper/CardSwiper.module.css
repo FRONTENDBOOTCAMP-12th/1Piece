@@ -1,0 +1,112 @@
+.cardSwiperContainer {
+  width: 81.75rem;
+  max-width: 81.75rem;
+  min-width: 50rem;
+  height: 29.5625rem;
+  background: var(--white);
+  position: relative;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: var(--space-11);
+  gap: var(--space-1);
+}
+
+.header h2 {
+  font-family: var(--pretendard);
+  font-size: var(--xxxl);
+  font-weight: var(--large);
+  color: var(--black);
+}
+
+.btnMoreHeader {
+  margin-left: var(--space-3);
+  width: 4.5rem;
+  height: 2.1875rem;
+  border: 0.0625rem solid var(--black);
+  border-radius: var(--radius-xl) 0px var(--radius-xl) var(--radius-xl);
+  background: var(--gray-g);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--medium);
+  font-weight: var(--regular);
+  cursor: pointer;
+}
+
+.btnMoreHeader:hover {
+  background: var(--white);
+}
+
+.swiperContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 81.75rem;
+}
+
+.swiper {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.btnMoreCard {
+  display: flex;
+  position: relative;
+  gap: var(--space-8);
+  width: 40rem;
+  height: 10.5rem;
+  background: var(--gray-g);
+  padding-block: var(--space-8);
+  padding-inline-start: var(--space-8);
+  border: 2px solid var(--black);
+  border-radius: 16px;
+  align-items: center;
+}
+
+.MoreCardMessage {
+  width: 100%;
+  display: block;
+  font-size: var(--xxl);
+}
+
+.navigationContainer {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.btnNext {
+  flex: none;
+  box-sizing: border-box;
+  background: var(--gray-g);
+  border: 0.09375rem solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.btnNext:hover {
+  background: var(--white);
+}
+
+.btnNext img {
+  width: 0.9375rem;
+  height: 0.9375rem;
+}

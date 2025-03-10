@@ -1,0 +1,87 @@
+/* 색상 별로 배경과 active 속성의 색을 다르게 지정 */
+.primary {
+  background: var(--primary-g);
+
+  &:active {
+    background: var(--clicked-primary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.primary2 {
+  background: var(--primary-2-g);
+
+  &:active {
+    background: var(--clicked-primary-2-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.secondary {
+  background: var(--secondary-g);
+
+  &:active {
+    background: var(--clicked-secondary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.tertiary {
+  background: var(--tertiary-g);
+
+  &:active {
+    background: var(--clicked-tertiary-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.gray {
+  background: var(--gray-g);
+
+  &:active {
+    background: var(--clicked-gray-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+.darkgray {
+  background: var(--dark-gray-g);
+
+  &:active {
+    background: var(--clicked-dark-gray-g);
+    box-shadow: var(--clicked-shadow);
+  }
+}
+
+/* 모든 속성에서 공통적으로 사용되는 속성 */
+.roundedButton {
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: var(--rounded-full);
+  cursor: pointer;
+}
+
+/* 크기에 따라 padding의 값과 글자 크기,stroke의 값을 변경 */
+.regular {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font-size: var(--medium);
+  border: 1px solid var(--black);
+}
+
+.large {
+  padding-block: var(--space-5);
+  padding-inline: var(--space-7);
+  font-size: var(--large);
+  border: 2px solid var(--black);
+}
+
+/* 버튼에 사용될 폰트 속성 설정 */
+.pretendard {
+  font-family: 'Pretendard';
+  font-weight: 600;
+}
+
+.neo {
+  font-family: 'NeoDunggeunmoPro';
+}

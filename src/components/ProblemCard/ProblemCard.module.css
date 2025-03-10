@@ -1,0 +1,44 @@
+.problemCardContainer {
+  display: flex;
+  position: relative;
+  gap: var(--space-8);
+  width: 40rem;
+  background: var(--primary-g);
+  padding-block: var(--space-8);
+  padding-inline-start: var(--space-8);
+  border: 2px solid var(--black);
+  border-radius: 16px;
+}
+
+.profileImg {
+  aspect-ratio: 1/1;
+  width: 100px;
+  box-shadow: 4px 4px 0 0 var(--black);
+}
+
+.problemInfoContainer {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  width: 60%;
+
+  .problemTitle {
+    width: 100%;
+    display: block;
+    font-size: var(--large-2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.tagContainer {
+  display: flex;
+  flex-flow: row;
+  gap: var(--space-4);
+}
+
+.bookmarkIcon {
+  position: absolute;
+  right: var(--space-3);
+  top: var(--space-4);
+}

@@ -47,7 +47,6 @@ export default tseslint.config(
       ...react.configs.flat.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': 'error',
       'react/prop-types': 'off',
       'jsx-a11y/click-events-have-key-events': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
