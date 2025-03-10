@@ -35,8 +35,6 @@ function MainPage() {
         problemTitle: item.problemTitle,
       }));
 
-      console.log(dataCreated);
-
       const newDataCreated = dataCreated?.map((item, index) => ({
         id: item.id,
         src: supabase.storage
