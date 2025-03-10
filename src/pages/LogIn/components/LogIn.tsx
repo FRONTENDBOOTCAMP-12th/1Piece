@@ -71,10 +71,11 @@ function LogInForm() {
             className={S.submitButton}
           />
           <Button
-            type="submit"
+            type="button"
             label="회원가입"
             color={'tertiary'}
             className={S.submitButton}
+            onClick={() => navigate('/sign-up')}
           />
         </div>
       </form>
