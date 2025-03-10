@@ -2,9 +2,8 @@
   display: flex;
   flex-flow: row;
   gap: var(--space-4);
-  width: 60vw;
+  width: 75rem;
   min-height: fit-content;
-  min-width: 48rem;
   margin-inline: auto;
   position: relative;
   margin-top: var(--space-15);
