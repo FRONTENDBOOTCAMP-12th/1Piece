@@ -1,0 +1,67 @@
+.container {
+  width: 41rem;
+  height: 65.75rem;
+  border-radius: var(--radius-3xl);
+  border: 2px solid var(--black);
+  background: var(--primary-g);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.scoreContainer {
+  width: 22.25rem;
+  height: 15.75rem;
+  border-radius: 50%;
+  border: 2px solid var(--black);
+  background: var(--gray-g);
+  box-shadow: -1.25rem -1.875rem 1.25rem 0px rgba(0, 0, 0, 0.25) inset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scoreText {
+  font-family: var(--pretendard);
+  font-size: 5rem;
+  font-weight: var(--bold);
+  background: var(--primary-2-g);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--black);
+}
+
+.badgeSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2.75rem;
+}
+
+/* 레이아웃 확인을 위한 임시 디자인 */
+.badge {
+  width: 12.5rem;
+  height: 12.5rem;
+  border-radius: 50%;
+  background: var(--gray-g);
+  border: 2px solid var(--line-gray);
+}
+
+.badgeMessage {
+  font-family: var(--pretendard);
+  font-size: var(--xxxl);
+  font-weight: var(--bold);
+  line-height: var(--space-15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newBadge {
+  color: var(--bookmark);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--black);
+}
