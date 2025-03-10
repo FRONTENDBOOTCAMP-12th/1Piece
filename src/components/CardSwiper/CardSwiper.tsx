@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
 
-interface ProblemCardData {
+export interface ProblemCardData {
   id: string;
   src: string;
   userName: string;
