@@ -4,6 +4,11 @@ import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
 import ProblemCard from '../ProblemCard/ProblemCard';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/grid';
+
 interface ProblemCardData {
   id: string;
   src: string;
@@ -13,49 +18,35 @@ interface ProblemCardData {
   problemTitle: string;
 }
 
-interface CardSwiperProps {
+type CardSwiperProps = React.ComponentProps<'h2'> & {
   data: ProblemCardData[];
-}
+};
 
-const CustomNavigation = () => {
+const CustomNavigationNext = () => {
   const swiper = useSwiper();
 
   return (
-    <div className={S.navigationContainer}>
-      <button className={S.btnNext} onClick={() => swiper.slideNext()}>
-        <img src="/icons/btn-more-circle.svg" alt="Next" />
-      </button>
-    </div>
+    <button className={S.btnNext} onClick={() => swiper.slideNext()}>
+      <img src="/icons/btn_more_circle_r.svg" alt="Next" />
+    </button>
   );
 };
 
-const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
-  React.useEffect(() => {
-    const existingLinks = document.querySelectorAll('link[data-swiper-style]');
+const CustomNavigationPrev = () => {
+  const swiper = useSwiper();
 
-    if (existingLinks.length === 0) {
-      const cssUrls = [
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/pagination.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/grid.min.css',
-      ];
+  return (
+    <button className={S.btnPrev} onClick={() => swiper.slidePrev()}>
+      <img src="/icons/btn_more_circle_l.svg" alt="Prev" />
+    </button>
+  );
+};
 
-      cssUrls.forEach((url) => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        link.setAttribute('data-swiper-style', 'true');
-        document.head.appendChild(link);
-      });
-    }
-
-    return undefined;
-  }, []);
-
+const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
   return (
     <div className={S.cardSwiperContainer}>
       <div className={S.header}>
-        <h2>이번 주 베스트 카드</h2>
+        <h2>{children}</h2>
         <button className={S.btnMoreHeader}>
           <span>더보기</span>
         </button>
@@ -66,7 +57,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
           spaceBetween={20}
           slidesPerView={2}
           grid={{ rows: 2, fill: 'row' }}
-          pagination={{ clickable: true }}
+          pagination={{ enabled: false }}
           className={S.swiper}
         >
           {data.map((item) => (
@@ -86,7 +77,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
               <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
             </div>
           </SwiperSlide>
-          <CustomNavigation />
+          <CustomNavigationNext />
+          <CustomNavigationPrev />
         </Swiper>
       </div>
     </div>

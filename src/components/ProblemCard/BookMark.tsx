@@ -23,8 +23,6 @@ function BookMark({ checked, onUpdate }: BookMarkProps) {
       className={S.bookmarkIcon}
     >
       {isBookMark ? (
-        <IoBookmarkOutline size={32} />
-      ) : (
         <IoBookmark
           color={`var(--tertiary)`}
           size={32}
@@ -32,6 +30,8 @@ function BookMark({ checked, onUpdate }: BookMarkProps) {
           strokeWidth={32}
           style={{ boxSizing: 'border-box' }}
         />
+      ) : (
+        <IoBookmarkOutline size={32} />
       )}
     </button>
   );
