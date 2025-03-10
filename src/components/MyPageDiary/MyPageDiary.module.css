@@ -7,6 +7,8 @@
   min-width: 48rem;
   margin-inline: auto;
   position: relative;
+  margin-top: var(--space-15);
+  margin-bottom: var(--space-15);
 }
 
 .leftDiary {
@@ -23,6 +25,12 @@
   border: 1px solid var(--black);
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: var(--space-15);
 }
 
 .springContainer {
@@ -89,4 +97,10 @@
   justify-content: center;
   text-decoration: none;
   width: 100%;
+}
+
+.pageName {
+  font-size: var(--xxl);
+  text-align: center;
+  margin: var(--space-15) 0;
 }
