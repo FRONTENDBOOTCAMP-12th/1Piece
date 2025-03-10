@@ -5,8 +5,8 @@ import S from './CardSwiper.module.css';
 import ProblemCard from '../ProblemCard/ProblemCard';
 
 import 'swiper/css';
-import 'swiper/css/navigation'; // 네비게이션 기능 추가 시
-import 'swiper/css/pagination'; // 페이지네이션 기능 추가 시
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import 'swiper/css/grid';
 
 interface ProblemCardData {
@@ -22,15 +22,23 @@ interface CardSwiperProps {
   data: ProblemCardData[];
 }
 
-const CustomNavigation = () => {
+const CustomNavigationNext = () => {
   const swiper = useSwiper();
 
   return (
-    <div className={S.navigationContainer}>
-      <button className={S.btnNext} onClick={() => swiper.slideNext()}>
-        <img src="/icons/btn-more-circle.svg" alt="Next" />
-      </button>
-    </div>
+    <button className={S.btnNext} onClick={() => swiper.slideNext()}>
+      <img src="/icons/btn_more_circle_r.svg" alt="Next" />
+    </button>
+  );
+};
+
+const CustomNavigationPrev = () => {
+  const swiper = useSwiper();
+
+  return (
+    <button className={S.btnPrev} onClick={() => swiper.slidePrev()}>
+      <img src="/icons/btn_more_circle_l.svg" alt="Prev" />
+    </button>
   );
 };
 
@@ -49,7 +57,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
           spaceBetween={20}
           slidesPerView={2}
           grid={{ rows: 2, fill: 'row' }}
-          pagination={{ clickable: true }}
+          pagination={{ enabled: false }}
           className={S.swiper}
         >
           {data.map((item) => (
@@ -69,7 +77,8 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
               <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
             </div>
           </SwiperSlide>
-          <CustomNavigation />
+          <CustomNavigationNext />
+          <CustomNavigationPrev />
         </Swiper>
       </div>
     </div>
