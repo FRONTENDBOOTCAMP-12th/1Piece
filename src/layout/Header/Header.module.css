@@ -1,4 +1,4 @@
-header {
+.header {
   background: var(--primary-2-g);
   min-width: 48rem;
   border-block-end: 1px solid var(--black);
