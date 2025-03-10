@@ -10,7 +10,7 @@
   width: 45rem;
   height: 45.9375rem;
   background: var(--white);
-  padding: var(--space-10);
+  padding: 7.125rem;
   border-radius: 2rem;
   background: var(--light-gray, linear-gradient(0deg, #e2e2e2 0%, #fff 100%));
 }
@@ -58,7 +58,6 @@
   font-weight: 400;
   line-height: 150%;
   padding-bottom: 3.75rem;
-  margin-right: 5.25rem;
 
   & a {
     text-decoration-line: none;
