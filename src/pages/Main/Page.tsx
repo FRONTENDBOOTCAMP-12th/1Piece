@@ -1,5 +1,78 @@
+import CardSwiper from '@/components/CardSwiper/CardSwiper';
+
+const data = [
+  {
+    id: 'cardTitle1',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle2',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle3',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle4',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle5',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle6',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle7',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle8',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+];
+
 function MainPage() {
-  return <h1>메인페이지입니다</h1>;
+  return (
+    <div>
+      <CardSwiper data={data} />
+    </div>
+  );
 }
 
 export default MainPage;
