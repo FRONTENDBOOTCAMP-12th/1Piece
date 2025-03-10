@@ -53,6 +53,8 @@ function LogInForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <a href="/Quzelly/find-id">아이디 찾기</a> |{' '}
+      <a href="/Quzelly/find-pw">비밀번호 찾기</a>
       {error && <div>{error}</div>}
       <Button type="submit" label="로그인" />
     </form>
