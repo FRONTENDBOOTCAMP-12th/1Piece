@@ -4,11 +4,6 @@ import { Pagination, Grid } from 'swiper/modules';
 import S from './ProblemListContainer.module.css';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
 
-import 'swiper/css';
-import 'swiper/css/navigation'; // 네비게이션 기능 추가 시
-import 'swiper/css/pagination'; // 페이지네이션 기능 추가 시
-import 'swiper/css/grid';
-
 interface ProblemCardData {
   id: string;
   src: string;
@@ -19,7 +14,7 @@ interface ProblemCardData {
 }
 
 interface CardSwiperProps {
-  data: ProblemCardData[];
+  data?: ProblemCardData[];
 }
 
 const CustomNavigation = () => {
@@ -34,7 +29,46 @@ const CustomNavigation = () => {
   );
 };
 
-const ProblemListContainer: React.FC<CardSwiperProps> = ({ data }) => {
+const generateDummyData = (): ProblemCardData[] => {
+  const dummyData: ProblemCardData[] = [];
+  for (let i = 0; i < 7; i++) {
+    dummyData.push({
+      id: `dummy-${i}`,
+      src: '',
+      userName: 'No Data',
+      tags: [],
+      checked: false,
+      problemTitle: 'No Data',
+    });
+  }
+  return dummyData;
+};
+
+const CardSwiper: React.FC<CardSwiperProps> = ({
+  data = generateDummyData(),
+}) => {
+  React.useEffect(() => {
+    const existingLinks = document.querySelectorAll('link[data-swiper-style]');
+
+    if (existingLinks.length === 0) {
+      const cssUrls = [
+        'https://cdn.jsdelivr.net/npm/swiper@11/swiper.min.css',
+        'https://cdn.jsdelivr.net/npm/swiper@11/modules/pagination.min.css',
+        'https://cdn.jsdelivr.net/npm/swiper@11/modules/grid.min.css',
+      ];
+
+      cssUrls.forEach((url) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.setAttribute('data-swiper-style', 'true');
+        document.head.appendChild(link);
+      });
+    }
+
+    return undefined;
+  }, []);
+
   return (
     <div className={S.cardSwiperContainer}>
       <div className={S.header}>
@@ -76,4 +110,4 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ data }) => {
   );
 };
 
-export default ProblemListContainer;
+export default CardSwiper;
