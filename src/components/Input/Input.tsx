@@ -1,4 +1,4 @@
-import S from './input.module.css';
+import S from './Input.module.css';
 
 interface InputProps {
   label: string;
