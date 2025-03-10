@@ -1,0 +1,12 @@
+.listPageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: var(--xxxl);
+  text-align: center;
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-10);
+}
