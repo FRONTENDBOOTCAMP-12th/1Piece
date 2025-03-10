@@ -5,14 +5,12 @@ import S from './EditProfile.module.css';
 interface ProfileImageProps {
   src: string;
   alt?: string;
-  showUploadButton?: boolean;
   onChange?: (file: File) => void;
 }
 
 function ProfileImage({
   src,
   alt = 'Profile image',
-  showUploadButton = false,
   onChange,
 }: ProfileImageProps) {
   const [preview, setPreview] = useState(src);
@@ -27,22 +25,18 @@ function ProfileImage({
   };
 
   return (
-    <div className={S.ProfileImageContainer}>
-      <label className={S.ProfileImageButton}>
-        <img src={preview} alt={alt} className={S.ProfileImage} />
-        {showUploadButton && (
-          <>
-            <input
-              type="file"
-              accept="image/*"
-              className={S.input}
-              onChange={handleFileChange}
-            />
-            <span className={S.icon}>
-              <AiFillCamera size={20} />
-            </span>
-          </>
-        )}
+    <div className={S.profileImageContainer}>
+      <label className={S.profileImageButton} title="프로필 사진 수정하기">
+        <img src={preview} alt={alt} className={S.profileImage} />
+        <input
+          type="file"
+          accept="image/*"
+          className={S.input}
+          onChange={handleFileChange}
+        />
+        <span className={S.icon}>
+          <AiFillCamera size={20} />
+        </span>
       </label>
     </div>
   );
