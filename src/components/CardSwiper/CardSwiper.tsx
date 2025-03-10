@@ -4,6 +4,11 @@ import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
 import ProblemCard from '../ProblemCard/ProblemCard';
 
+import 'swiper/css';
+import 'swiper/css/navigation'; // 네비게이션 기능 추가 시
+import 'swiper/css/pagination'; // 페이지네이션 기능 추가 시
+import 'swiper/css/grid';
+
 interface ProblemCardData {
   id: string;
   src: string;
@@ -30,28 +35,6 @@ const CustomNavigation = () => {
 };
 
 const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
-  React.useEffect(() => {
-    const existingLinks = document.querySelectorAll('link[data-swiper-style]');
-
-    if (existingLinks.length === 0) {
-      const cssUrls = [
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/pagination.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/grid.min.css',
-      ];
-
-      cssUrls.forEach((url) => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        link.setAttribute('data-swiper-style', 'true');
-        document.head.appendChild(link);
-      });
-    }
-
-    return undefined;
-  }, []);
-
   return (
     <div className={S.cardSwiperContainer}>
       <div className={S.header}>
