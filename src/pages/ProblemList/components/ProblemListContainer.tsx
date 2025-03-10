@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import { Pagination, Grid } from 'swiper/modules';
+import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
 import S from './ProblemListContainer.module.css';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
+import Pagination from '@/components/Pagination/Pagination';
 
 interface ProblemCardData {
   id: string;
@@ -31,22 +32,25 @@ const CustomNavigation = () => {
 
 const generateDummyData = (): ProblemCardData[] => {
   const dummyData: ProblemCardData[] = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 100; i++) {
     dummyData.push({
       id: `dummy-${i}`,
       src: '',
       userName: 'No Data',
       tags: [],
       checked: false,
-      problemTitle: 'No Data',
+      problemTitle: `Problem ${i + 1}`,
     });
   }
   return dummyData;
 };
 
-const CardSwiper: React.FC<CardSwiperProps> = ({
+const ProblemListContainer: React.FC<CardSwiperProps> = ({
   data = generateDummyData(),
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
   React.useEffect(() => {
     const existingLinks = document.querySelectorAll('link[data-swiper-style]');
 
@@ -69,24 +73,26 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
     return undefined;
   }, []);
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPageData = data.slice(startIndex, endIndex);
+
   return (
-    <div className={S.cardSwiperContainer}>
-      <div className={S.header}>
-        <h2>이번 주 베스트 카드</h2>
-        <button className={S.btnMoreHeader}>
-          <span>더보기</span>
-        </button>
+    <div className={S.cardListContainer}>
+      <div className={S.sort}>
+        <span>총 {data.length}개</span>
+        <div>인기순 | 추천순</div>
       </div>
       <div className={S.swiperContainer}>
         <Swiper
-          modules={[Pagination, Grid]}
-          spaceBetween={20}
+          modules={[SwiperPagination, Grid]}
+          spaceBetween={100}
           slidesPerView={2}
-          grid={{ rows: 2, fill: 'row' }}
+          grid={{ rows: 6, fill: 'row' }}
           pagination={{ clickable: true }}
           className={S.swiper}
         >
-          {data.map((item) => (
+          {currentPageData.map((item) => (
             <SwiperSlide key={item.id} className={S.slide}>
               <ProblemCard
                 src={item.src}
@@ -98,16 +104,17 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               </ProblemCard>
             </SwiperSlide>
           ))}
-          <SwiperSlide className={S.slide}>
-            <div className={S.btnMoreCard}>
-              <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
-            </div>
-          </SwiperSlide>
           <CustomNavigation />
         </Swiper>
       </div>
+      <Pagination
+        totalItems={data.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
 
-export default CardSwiper;
+export default ProblemListContainer;
