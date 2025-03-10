@@ -1,8 +1,14 @@
 import { NavLink } from 'react-router';
 import Button from '../Button/Button';
 import S from './MyPageDiary.module.css';
+import React from 'react';
 
-function MyPageDiary() {
+interface MyPageDiaryProps {
+  children: React.ReactNode;
+  title?: string;
+}
+
+function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
   // 현재 pathname을 활용하여 버튼 색상 조정
   const pathname = new URL(location.href).pathname;
 
@@ -27,7 +33,7 @@ function MyPageDiary() {
               color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
             />
           </NavLink>
-          <NavLink to="/reward" className={S.myPageRouterBtn}>
+          <NavLink to="/calendar" className={S.myPageRouterBtn}>
             <Button
               label="Reward"
               style={{ width: '80%' }}
@@ -45,7 +51,10 @@ function MyPageDiary() {
           </NavLink>
         </div>
       </div>
-      <div className={S.rightDiary}>테스트</div>
+      <div className={S.rightDiary}>
+        <h1 className={S.pageName}>{title}</h1>
+        {children}
+      </div>
       {/* 오른쪽과 왼쪽을 연결하는 스프링 디자인 */}
       <div className={S.springContainer}>
         <div className={S.topSpringContainer}>

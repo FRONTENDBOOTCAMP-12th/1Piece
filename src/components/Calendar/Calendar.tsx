@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import S from './Calender.module.css';
+import S from './Calendar.module.css';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
 interface CalenderProps {
-  markedDates: Date[];
+  markedDates?: Date[];
 }
 
-function Calender({ markedDates }: CalenderProps) {
+function Calender({ markedDates = [] }: CalenderProps) {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
 
   const isSameDate = (date1: Date, date2: Date) => {
