@@ -14,7 +14,7 @@ import CommonLayout from '@/layout/Page';
 function App() {
   return (
     <ErrorBoundary fallback={<div>에러가 발생했습니다</div>}>
-      <BrowserRouter basename="/Quzelly">
+      <BrowserRouter>
         <Routes>
           <Route element={<CommonLayout />}>
             <Route index element={<MainPage />} />
