@@ -70,7 +70,7 @@ const data = [
 function MainPage() {
   return (
     <div>
-      <CardSwiper data={data} />
+      <CardSwiper data={data}>지난 주 베스트</CardSwiper>
     </div>
   );
 }

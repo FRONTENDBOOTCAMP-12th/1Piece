@@ -18,9 +18,9 @@ interface ProblemCardData {
   problemTitle: string;
 }
 
-interface CardSwiperProps {
+type CardSwiperProps = React.ComponentProps<'h2'> & {
   data: ProblemCardData[];
-}
+};
 
 const CustomNavigationNext = () => {
   const swiper = useSwiper();
@@ -42,11 +42,11 @@ const CustomNavigationPrev = () => {
   );
 };
 
-const CardSwiper: React.FC<CardSwiperProps> = ({ data }) => {
+const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
   return (
     <div className={S.cardSwiperContainer}>
       <div className={S.header}>
-        <h2>이번 주 베스트 카드</h2>
+        <h2>{children}</h2>
         <button className={S.btnMoreHeader}>
           <span>더보기</span>
         </button>
