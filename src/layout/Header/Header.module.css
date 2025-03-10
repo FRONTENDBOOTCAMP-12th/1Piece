@@ -31,28 +31,8 @@
   gap: var(--space-6);
 }
 
-.headerForm {
-  position: relative;
-}
-
-.headerSearchBar {
-  background-color: var(--white);
-  border-radius: var(--rounded-full);
-  height: var(--space-10);
-  width: 17.5rem;
-  font-size: var(--medium);
-  padding-inline-start: 1rem;
-  border: 1px solid var(--black);
-}
-
-.headerSearchBtn {
-  position: absolute;
-  cursor: pointer;
-  right: var(--space-3);
-  top: var(--space-2);
-}
-
-.headerSearchIcon {
+.headerBookMarkIcon,
+.headerCreateIcon {
   display: flex;
   box-sizing: border-box;
   justify-content: center;
@@ -64,6 +44,7 @@
   height: var(--space-10);
   width: var(--space-10);
   transition: all 0.3s;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.2);
