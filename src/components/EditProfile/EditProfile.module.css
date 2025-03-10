@@ -1,16 +1,17 @@
 :root {
   --img-size: 10rem;
   --icon-size: 1.75rem;
-  --icon-padding: 0.375rem;
 }
 
 .ProfileImageContainer {
-  position: relative;
-  display: block;
-  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .ProfileImageButton {
+  position: relative;
   width: var(--img-size);
   aspect-ratio: 1/1;
   border-radius: var(--rounded-full);
@@ -40,13 +41,14 @@
 
 .icon {
   position: absolute;
-  bottom: var(--space-2);
-  right: var(--space-2);
+  bottom: 0;
+  right: 0;
+  transform: translate(-20%, -20%);
   z-index: 999;
 
   width: var(--icon-size);
   height: var(--icon-size);
-  padding: var(--icon-padding);
+  padding: 0.375rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
