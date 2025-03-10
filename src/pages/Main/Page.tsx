@@ -1,4 +1,5 @@
 import CardSwiper from '@/components/CardSwiper/CardSwiper';
+import S from './MainPage.module.css';
 
 const data = [
   {
@@ -69,9 +70,16 @@ const data = [
 
 function MainPage() {
   return (
-    <div>
+    <>
+      <img
+        src="/dummy/dummy_banner.png"
+        alt="큐젤리란"
+        className={S.mainBanner}
+      />
       <CardSwiper data={data}>지난 주 베스트</CardSwiper>
-    </div>
+      <hr className={S.line} />
+      <CardSwiper data={data}>지난 주 최다 조회수</CardSwiper>
+    </>
   );
 }
 
