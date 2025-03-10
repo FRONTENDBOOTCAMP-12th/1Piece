@@ -1,9 +1,11 @@
 .inputBox {
   display: flex;
   flex-direction: row;
+  width: 100%;
   height: var(--space-23, 5.75rem);
   align-items: center;
   gap: var(--space-5, 1.25rem);
+  justify-content: space-between;
 }
 
 .inputBoxProblemSet {
@@ -41,7 +43,6 @@
 .inputContent {
   display: flex;
   flex-direction: column;
-  flex: 1 0 0;
   color: var(--Black, #000);
 
   text-align: right;

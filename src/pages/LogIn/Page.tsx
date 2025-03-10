@@ -1,5 +1,7 @@
+import LogInForm from '@/pages/LogIn/components/LogIn';
+
 function LogInPage() {
-  return <h1>로그인페이지입니다</h1>;
+  return <LogInForm />;
 }
 
 export default LogInPage;
