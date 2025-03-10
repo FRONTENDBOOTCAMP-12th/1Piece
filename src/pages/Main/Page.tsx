@@ -3,73 +3,6 @@ import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 
-const data = [
-  {
-    id: 'cardTitle1',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle2',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle3',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle4',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle5',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle6',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle7',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-  {
-    id: 'cardTitle8',
-    src: '/dummy/dummy_profile.jpg',
-    userName: 'dummy',
-    tags: ['국어', '영어', '수학'],
-    checked: false,
-    problemTitle: 'cardTitle',
-  },
-];
-
 function MainPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState([
@@ -85,20 +18,20 @@ function MainPage() {
 
   const fetchItems = async () => {
     try {
-      let { data, error } = await supabase.from('card').select('*');
+      const { data, error } = await supabase.from('card').select('*,users(id)');
       console.log(data);
 
       const newData = data?.map((item) => ({
         id: item.id,
         src: '/dummy/dummy_profile.jpg',
         userName: 'dummy',
-        tags: item.tags,
+        tags: Object.values(item.tags),
         checked: false,
         problemTitle: item.problemTitle,
       }));
 
       if (error) throw error;
-      if (data) setItems(newData);
+      if (data) setItems(newData as []);
     } catch (error) {
       console.log(error);
     } finally {
