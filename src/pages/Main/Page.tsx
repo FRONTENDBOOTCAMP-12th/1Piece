@@ -1,48 +1,77 @@
 import CardSwiper from '@/components/CardSwiper/CardSwiper';
-import S from './Page.module.css';
 
-const dummyData = [
+const data = [
   {
-    id: '1',
-    src: 'dummy/dummy_profile.jpg',
+    id: 'cardTitle1',
+    src: '/dummy/dummy_profile.jpg',
     userName: 'dummy',
     tags: ['국어', '영어', '수학'],
     checked: false,
-    problemTitle: 'cardTitle1',
+    problemTitle: 'cardTitle',
   },
   {
-    id: '2',
-    src: 'dummy/dummy_profile.jpg',
-    userName: 'dummy2',
+    id: 'cardTitle2',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
     tags: ['국어', '영어', '수학'],
     checked: false,
-    problemTitle: 'cardTitle2',
+    problemTitle: 'cardTitle',
   },
   {
-    id: '3',
-    src: 'dummy/dummy_profile.jpg',
-    userName: 'dummy3',
+    id: 'cardTitle3',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
     tags: ['국어', '영어', '수학'],
     checked: false,
-    problemTitle: 'cardTitle3',
+    problemTitle: 'cardTitle',
   },
   {
-    id: '4',
-    src: 'dummy/dummy_profile.jpg',
-    userName: 'dummy4',
+    id: 'cardTitle4',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
     tags: ['국어', '영어', '수학'],
     checked: false,
-    problemTitle: 'cardTitle4',
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle5',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle6',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle7',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
+  },
+  {
+    id: 'cardTitle8',
+    src: '/dummy/dummy_profile.jpg',
+    userName: 'dummy',
+    tags: ['국어', '영어', '수학'],
+    checked: false,
+    problemTitle: 'cardTitle',
   },
 ];
 
 function MainPage() {
   return (
-    <>
-      <img src="/dummy/dummy_banner.png" alt="" className={S.mainBanner} />
-      <CardSwiper data={dummyData} />
-      <CardSwiper data={dummyData} />
-    </>
+    <div>
+      <CardSwiper data={data}>지난 주 베스트</CardSwiper>
+    </div>
   );
 }
 

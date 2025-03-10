@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import S from './ModalLayout.module.css';
-import RoundedButton from '../RoundeButton/RoundedButton';
+import RoundedButton from '../RoundedButton/RoundedButton';
 
 interface ModalLayoutProps {
   title: string;

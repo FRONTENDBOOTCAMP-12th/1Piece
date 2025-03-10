@@ -1,6 +1,6 @@
 import ModalLayout from './ModalLayout';
 
-function App() {
+function ModalAlertMin() {
   return (
     <div>
       <ModalLayout
@@ -12,4 +12,4 @@ function App() {
   );
 }
 
-export default App;
+export default ModalAlertMin;

@@ -19,6 +19,7 @@ function Button({
   color = 'dark-gray',
   disabled = false,
   onClick,
+  ...restProps
 }: ButtonProps) {
   const buttonColor = `var(--${color}-g)`;
   const buttonColorClicked = `var(--clicked-${color}-g)`;
@@ -46,6 +47,7 @@ function Button({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      {...restProps}
     >
       {label}
     </button>

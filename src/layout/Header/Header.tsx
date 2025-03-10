@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
-import RoundedButton from '@/components/RoundeButton/RoundedButton';
+import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { useEffect, useState } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
@@ -24,7 +24,7 @@ function Header({ src }: HeaderProps) {
   }, [src]);
 
   return (
-    <header>
+    <header className={S.header}>
       <div className={S.headerContainer}>
         <div className={S.logoContainer}>
           {/* react-router를 활용한 링크 이동 */}

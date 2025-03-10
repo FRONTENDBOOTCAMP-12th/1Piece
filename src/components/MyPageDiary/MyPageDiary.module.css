@@ -1,0 +1,105 @@
+.diaryContainer {
+  display: flex;
+  flex-flow: row;
+  gap: var(--space-4);
+  width: 75rem;
+  min-height: fit-content;
+  margin-inline: auto;
+  position: relative;
+  margin-top: var(--space-15);
+  margin-bottom: var(--space-15);
+}
+
+.leftDiary {
+  background: var(--primary-2-g);
+  flex: 1;
+  border: 1px solid var(--black);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.rightDiary {
+  background: var(--primary-2-g);
+  flex: 2;
+  border: 1px solid var(--black);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: var(--space-15);
+}
+
+.springContainer {
+  display: flex;
+  position: absolute;
+  flex-flow: column;
+  left: 32%;
+  top: 10%;
+  gap: 25rem;
+
+  .topSpringContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 3rem;
+
+    & div {
+      height: var(--space-4);
+      width: var(--space-8);
+      background: var(--dark-gray-g);
+      border-radius: var(--rounded-full);
+    }
+  }
+
+  .bottomSpringContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 3rem;
+
+    & div {
+      height: var(--space-4);
+      width: var(--space-8);
+      background: var(--dark-gray-g);
+      border-radius: var(--rounded-full);
+    }
+  }
+}
+
+.levelText {
+  font-size: var(--large-2);
+  text-align: center;
+  margin-block: var(--space-4);
+}
+
+.diaryProfile {
+  display: block;
+  width: 10rem;
+  aspect-ratio: 1/1;
+  border-radius: var(--rounded-full);
+  border: 2px solid var(--black);
+  margin-inline: auto;
+  margin-block-end: var(--space-24);
+}
+
+.myPageButtonContainer {
+  display: flex;
+  flex-flow: column;
+  gap: var(--space-16);
+  align-items: center;
+  margin-block-end: var(--space-8);
+}
+
+.myPageRouterBtn {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+}
+
+.pageName {
+  font-size: var(--xxl);
+  text-align: center;
+  margin: var(--space-15) 0;
+}
