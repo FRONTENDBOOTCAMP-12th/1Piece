@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import { supabase } from '@/lib/SupabaseClient';
-import S from './Page.module.css';
 import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import { supabase } from '@/lib/SupabaseClient';
+import { useEffect, useState } from 'react';
+import S from './Page.module.css';
 
 interface ProblemCardData {
   id: string;
@@ -38,7 +38,7 @@ function CardCollectionPage() {
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: item.id,
+        id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.users.id}.png`).data.publicUrl,

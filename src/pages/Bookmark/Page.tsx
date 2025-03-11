@@ -38,7 +38,7 @@ function BookmarkPage() {
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: item.id,
+        id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
