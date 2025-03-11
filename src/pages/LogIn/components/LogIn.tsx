@@ -13,13 +13,13 @@ function LogInForm() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data: users, error: profileError } = await supabase
+    const { data: users, error: userError } = await supabase
       .from('users')
       .select('email')
       .eq('user_id', id)
       .single();
 
-    if (profileError || !users) {
+    if (userError || !users) {
       setError('아이디가 존재하지 않습니다.');
       return;
     }
@@ -36,7 +36,7 @@ function LogInForm() {
       return;
     }
 
-    navigate('/main');
+    navigate('/');
   };
 
   return (

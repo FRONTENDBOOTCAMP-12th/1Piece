@@ -1,5 +1,7 @@
-function FindPasswordPage() {
-  return <h1>비밀번호찾기페이지입니다</h1>;
+import FindPwForm from './components/FindPw';
+
+function FindPwPage() {
+  return <FindPwForm />;
 }
 
-export default FindPasswordPage;
+export default FindPwPage;

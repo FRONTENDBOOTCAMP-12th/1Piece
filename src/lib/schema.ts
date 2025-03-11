@@ -116,49 +116,28 @@ export type Database = {
           },
         ]
       }
-      profiles: {
-        Row: {
-          created_at: string | null
-          email: string
-          nickname: string
-          userid: string
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          nickname: string
-          userid: string
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          nickname?: string
-          userid?: string
-        }
-        Relationships: []
-      }
       questions: {
         Row: {
           answer: string
-          card_id: number | null
+          card_id: number
           correct: string
-          explanation: string | null
+          explanation: string
           id: number
           title: string
         }
         Insert: {
           answer: string
-          card_id?: number | null
+          card_id: number
           correct: string
-          explanation?: string | null
+          explanation: string
           id?: number
           title: string
         }
         Update: {
           answer?: string
-          card_id?: number | null
+          card_id?: number
           correct?: string
-          explanation?: string | null
+          explanation?: string
           id?: number
           title?: string
         }
@@ -259,6 +238,7 @@ export type Database = {
           badge: Json | null
           email: string
           id: string
+          new_pw: string | null
           nickname: string
           user_id: string
         }
@@ -267,6 +247,7 @@ export type Database = {
           badge?: Json | null
           email: string
           id?: string
+          new_pw?: string | null
           nickname: string
           user_id: string
         }
@@ -275,6 +256,7 @@ export type Database = {
           badge?: Json | null
           email?: string
           id?: string
+          new_pw?: string | null
           nickname?: string
           user_id?: string
         }
