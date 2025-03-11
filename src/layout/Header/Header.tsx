@@ -50,15 +50,15 @@ function Header({ src }: HeaderProps) {
           <HeaderSearchBar />
           {/* 문제 생성 페이지로 이동 */}
           <NavLink to="/question-create">
-            <div className={S.headerSearchIcon}>
+            <button type="button" className={S.headerCreateIcon}>
               <BiPlus size={24} />
-            </div>
+            </button>
           </NavLink>
           {/* 북마크 페이지로 이동 */}
           <NavLink to="/bookmark">
-            <div className={S.headerSearchIcon}>
+            <button type="button" className={S.headerBookMarkIcon}>
               <RiInbox2Line size={24} />
-            </div>
+            </button>
           </NavLink>
           {/* 로그인 상태에 따른 헤더 렌더링 다르게 */}
           {isLogin ? (

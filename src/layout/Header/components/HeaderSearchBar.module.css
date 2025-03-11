@@ -1,0 +1,20 @@
+.headerForm {
+  position: relative;
+}
+
+.headerSearchBar {
+  background-color: var(--white);
+  border-radius: var(--rounded-full);
+  height: var(--space-10);
+  width: 17.5rem;
+  font-size: var(--medium);
+  padding-inline-start: 1rem;
+  border: 1px solid var(--black);
+}
+
+.headerSearchBtn {
+  position: absolute;
+  cursor: pointer;
+  right: var(--space-3);
+  top: var(--space-2);
+}

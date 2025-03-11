@@ -1,5 +1,5 @@
 import { CiSearch } from 'react-icons/ci';
-import S from '../Header.module.css';
+import S from './HeaderSearchBar.module.css';
 
 function HeaderSearchBar() {
   // 이후 검색하게 될 경우 일어날 이벤트 구현해야 함

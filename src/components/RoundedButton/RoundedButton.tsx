@@ -28,7 +28,7 @@ function RoundedButton({
     <button
       type="button"
       // 색상, 사이즈, 폰트 속성을 결합
-      className={`${S[`${color}`]} ${S[`${size}`]} ${S.roundedButton} ${S[`${font}`]}`}
+      className={`${S[color]} ${S[size]} ${S.roundedButton} ${S[font]}`}
       {...restProps}
     >
       {children}
