@@ -8,6 +8,7 @@
   padding-inline-start: var(--space-8);
   border: 2px solid var(--black);
   border-radius: 16px;
+  cursor: pointer;
 }
 
 .profileImg {

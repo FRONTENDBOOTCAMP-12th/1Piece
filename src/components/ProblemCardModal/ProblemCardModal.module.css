@@ -17,13 +17,14 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  left: 60%;
+  left: 50%;
   top: 50%;
-  transform: translate(-40%, -50%);
+  transform: translate(-50%, -50%);
   filter: drop-shadow(0px var(--space-5) var(--space-13) var(--line-gray));
   background: var(--gray-g);
   border: 0.1875rem solid var(--black);
   border-radius: var(--radius-3xl);
+  z-index: 1000;
 }
 
 .modal.close {

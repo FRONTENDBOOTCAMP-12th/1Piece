@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import S from './ProblemCardModal.module.css';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
+import useModalVisibleStore from '@/lib/ProblemModalState';
+import { NavLink } from 'react-router';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -17,10 +18,15 @@ function ProblemCardModal({
   children,
   description,
 }: ProblemCardProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  // 모달의 오픈 여부를 나타내는 상태
+  const isVisible = useModalVisibleStore((state) => state.isVisible);
+  // 모달을 닫아주는 함수
+  const setNonVisible = useModalVisibleStore((state) => state.setNonVisible);
+  // 링크 이동을 위한 userInfo의 id만 사용
+  const { id } = useModalVisibleStore((state) => state.cardInfo);
 
   const handleClose = () => {
-    setIsVisible(false);
+    setNonVisible();
   };
 
   return (
@@ -50,14 +56,17 @@ function ProblemCardModal({
           >
             취소
           </RoundedButton>
-          <RoundedButton
-            color="primary"
-            size="large"
-            font="neo"
-            onClick={handleClose}
-          >
-            풀기
-          </RoundedButton>
+          {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
+          <NavLink to={`/solve-problem/?problemId=${id}`}>
+            <RoundedButton
+              color="primary"
+              size="large"
+              font="neo"
+              onClick={handleClose}
+            >
+              풀기
+            </RoundedButton>
+          </NavLink>
         </div>
       </div>
     </div>

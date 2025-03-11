@@ -4,26 +4,30 @@ import CardSwiper, {
 import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
+import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 function MainPage() {
   // 데이터를 가져오는 동안 다른 UI를 나타내기 위한 loading 상태
   const [loading, setLoading] = useState<boolean>(true);
   const [itemCheck, setItemCheck] = useState({});
   const [itemCreated, setItemCreated] = useState({});
+  // 모달 창에 나타낼 정보를 전달하기 위한 상태
+  const userInfo = useModalVisibleStore((state) => state.cardInfo);
 
   const fetchItems = async () => {
     try {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
         .from('card')
-        .select('*,users("*")')
+        .select('*,users(*)')
         .order('check', { ascending: false })
         .range(0, 6);
 
       // 생성 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCreated, error: errorCreated } = await supabase
         .from('card')
-        .select('*,users("*")')
+        .select('*,users(*)')
         .order('created', { ascending: false })
         .range(0, 6);
 
@@ -40,7 +44,7 @@ function MainPage() {
       }));
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCreated = dataCreated?.map((item, index) => ({
+      const newDataCreated = dataCreated?.map((item) => ({
         id: item.id,
         src: supabase.storage
           .from('profileImg/userProfile')
@@ -94,6 +98,14 @@ function MainPage() {
           </CardSwiper>
         </>
       )}
+      <ProblemCardModal
+        src={userInfo.src}
+        tags={userInfo.tags}
+        userName={userInfo.userName}
+        description={userInfo.description}
+      >
+        {userInfo.title}
+      </ProblemCardModal>
     </>
   );
 }

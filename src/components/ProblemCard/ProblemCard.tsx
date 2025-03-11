@@ -1,6 +1,8 @@
+import useModalVisibleStore from '@/lib/ProblemModalState';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import BookMark from './BookMark';
 import S from './ProblemCard.module.css';
+import { type CardInfo } from '@/lib/ProblemModalState';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -10,14 +12,41 @@ type ProblemCardProps = React.ComponentProps<'img'> &
   };
 
 function ProblemCard({
+  id,
   src,
   tags,
   userName,
   checked,
   children,
 }: ProblemCardProps) {
+  // 모달을 클릭할 시 나타나게 할 함수
+  const setVisible = useModalVisibleStore((state) => state.setVisible);
+  // 선택한 카드의 정보를 저장하기 위한 함수
+  const setUserInfo = useModalVisibleStore((state) => state.setUserInfo);
+
+  // props로 전달받은 값으로 구성한 새로운 userInfo
+  const userCardInfo = {
+    id,
+    src,
+    tags,
+    userName,
+    description: 'asdf',
+    title: children,
+  };
+
+  // 카드 클릭 시 정보 저장 후 모달 열기
+  const handleOpenModal = () => {
+    setUserInfo(userCardInfo as CardInfo);
+    setVisible();
+  };
+
   return (
-    <div className={S.problemCardContainer}>
+    <div
+      className={S.problemCardContainer}
+      role="button"
+      onClick={handleOpenModal}
+      tabIndex={0}
+    >
       {/* 이미지의 src와 alt텍스트는 부모 컴포넌트에서 받아온다 */}
       <img src={src} alt={userName} className={S.profileImg} />
       <div className={S.problemInfoContainer}>
