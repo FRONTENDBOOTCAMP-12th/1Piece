@@ -1,0 +1,129 @@
+.questionCreateContainer {
+  position: relative;
+  width: 90rem;
+  height: auto;
+  margin: 0 auto;
+  padding: 1.25rem;
+  background: var(--white);
+}
+
+.title {
+  font-size: var(--xxxl);
+  text-align: center;
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-10);
+}
+
+.Settings {
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.Settings > div {
+  margin-bottom: 1.25rem;
+}
+
+.Settings span {
+  display: block;
+  font-family: var(--pretendard);
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  line-height: 3rem;
+  color: var(--black);
+  margin-bottom: 0.625rem;
+}
+
+.questionContainer {
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.questionContainer > div {
+  margin-bottom: 1.25rem;
+}
+
+.questionContainer div {
+  font-family: var(--pretendard);
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  line-height: 3rem;
+  color: var(--black);
+  margin-bottom: 0.625rem;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(180deg, var(--white) 0.01%, #56bdff 100%);
+  border: 0.125rem solid var(--black);
+  border-radius: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.card .deleteButton {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  width: 3.8125rem;
+  height: 3.8125rem;
+  background: linear-gradient(180deg, var(--white) 0%, #adadad 100%);
+  border: 0.09375rem solid var(--black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card .deleteButton img {
+  width: 1.875rem;
+  height: 1.875rem;
+}
+
+.inputContainer {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.inputContainer input {
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.09375rem solid var(--black);
+  border-radius: 0.3125rem;
+  font-family: 'Plus Jakarta Sans';
+  font-weight: var(--semi-bold);
+  font-size: 1rem;
+  color: var(--black);
+}
+
+.tagSelect {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.roundedButton {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  width: 3.8125rem;
+  height: 3.8125rem;
+  background: linear-gradient(180deg, #ffffff 0%, #adadad 100%);
+  border: 0.09375rem solid var(--black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roundedButton img {
+  width: 1.875rem;
+  height: 1.875rem;
+}
