@@ -54,7 +54,12 @@ function ProblemCardModal({
             취소
           </RoundedButton>
           <NavLink to={`/solve-problem/?problemId=${id}`}>
-            <RoundedButton color="primary" size="large" font="neo">
+            <RoundedButton
+              color="primary"
+              size="large"
+              font="neo"
+              onClick={handleClose}
+            >
               풀기
             </RoundedButton>
           </NavLink>

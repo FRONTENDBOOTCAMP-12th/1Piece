@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface UserInfo {
   id: string;
@@ -22,32 +23,39 @@ interface Actions {
 
 type Store = State & Actions;
 
-const useModalVisibleStore = create<Store>((set) => ({
-  isVisible: false,
-  userInfo: {
-    id: '',
-    title: '',
-    src: '/',
-    tags: [''],
-    userName: '',
-    description: '',
-  },
+const useModalVisibleStore = create(
+  persist<Store>(
+    (set) => ({
+      isVisible: false,
+      userInfo: {
+        id: '',
+        title: '',
+        src: '/',
+        tags: [''],
+        userName: '',
+        description: '',
+      },
 
-  setUserInfo: (userInfo) =>
-    set(() => ({
-      userInfo: userInfo,
-    })),
+      setUserInfo: (userInfo) =>
+        set(() => ({
+          userInfo: userInfo,
+        })),
 
-  setVisible: () =>
-    set((state) => ({
-      isVisible: !state.isVisible,
-    })),
+      setVisible: () =>
+        set((state) => ({
+          isVisible: !state.isVisible,
+        })),
 
-  setNonVisible: () => {
-    set((state) => ({
-      isVisible: !state.isVisible,
-    }));
-  },
-}));
+      setNonVisible: () => {
+        set((state) => ({
+          isVisible: !state.isVisible,
+        }));
+      },
+    }),
+    {
+      name: 'problemInfoStore',
+    }
+  )
+);
 
 export default useModalVisibleStore;
