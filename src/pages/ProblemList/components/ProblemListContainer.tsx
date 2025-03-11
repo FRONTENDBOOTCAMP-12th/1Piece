@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
 import S from './ProblemListContainer.module.css';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import Pagination from '@/components/Pagination/Pagination';
+import { supabase } from '@/lib/SupabaseClient';
 
-interface ProblemCardData {
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/grid';
+
+export interface ProblemCardData {
   id: string;
   src: string;
   userName: string;
@@ -14,49 +20,48 @@ interface ProblemCardData {
   problemTitle: string;
 }
 
-interface CardSwiperProps {
+type CardSwiperProps = React.ComponentProps<'h2'> & {
   data?: ProblemCardData[];
-}
-
-const generateDummyData = (): ProblemCardData[] => {
-  const dummyData: ProblemCardData[] = [];
-  for (let i = 0; i < 100; i++) {
-    dummyData.push({
-      id: `dummy-${i}`,
-      src: '',
-      userName: 'No Data',
-      tags: [],
-      checked: false,
-      problemTitle: `Problem ${i + 1}`,
-    });
-  }
-  return dummyData;
 };
 
-const ProblemListContainer: React.FC<CardSwiperProps> = ({
-  data = generateDummyData(),
-}) => {
+const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<ProblemCardData[]>([]);
   const itemsPerPage = 12;
 
-  React.useEffect(() => {
-    const existingLinks = document.querySelectorAll('link[data-swiper-style]');
+  const fetchItems = async () => {
+    try {
+      // 데이터를 가져오는 로직
+      const { data: fetchedData, error } = await supabase
+        .from('card')
+        .select('*, users("*")')
+        .order('created', { ascending: false });
 
-    if (existingLinks.length === 0) {
-      const cssUrls = [
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/pagination.min.css',
-        'https://cdn.jsdelivr.net/npm/swiper@11/modules/grid.min.css',
-      ];
+      if (error) throw error;
 
-      cssUrls.forEach((url) => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        link.setAttribute('data-swiper-style', 'true');
-        document.head.appendChild(link);
-      });
+      // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
+      const newData = fetchedData.map((item) => ({
+        id: item.id,
+        src: supabase.storage
+          .from('profileImg/userProfile')
+          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
+        userName: item.users.nickname,
+        tags: Object.values(item.tags!),
+        checked: false,
+        problemTitle: item.problemTitle,
+      }));
+
+      setData(newData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchItems();
   }, []);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -69,29 +74,34 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         <span>총 {data.length}개</span>
         <div>인기순 | 추천순</div>
       </div>
-      <div className={S.swiperContainer}>
-        <Swiper
-          modules={[SwiperPagination, Grid]}
-          spaceBetween={0}
-          slidesPerView={2}
-          grid={{ rows: 6, fill: 'row' }}
-          pagination={{ clickable: true }}
-          className={S.swiper}
-        >
-          {currentPageData.map((item) => (
-            <SwiperSlide key={item.id} className={S.slide}>
-              <ProblemCard
-                src={item.src}
-                userName={item.userName}
-                tags={item.tags}
-                checked={item.checked}
-              >
-                {item.problemTitle}
-              </ProblemCard>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      {children && <div className={S.header}>{children}</div>}
+      {loading ? (
+        <p>로딩 중...</p>
+      ) : (
+        <div className={S.swiperContainer}>
+          <Swiper
+            modules={[SwiperPagination, Grid]}
+            spaceBetween={20}
+            slidesPerView={2}
+            grid={{ rows: 6, fill: 'row' }}
+            pagination={{ clickable: true }}
+            className={S.swiper}
+          >
+            {currentPageData.map((item) => (
+              <SwiperSlide key={item.id} className={S.slide}>
+                <ProblemCard
+                  src={item.src}
+                  userName={item.userName}
+                  tags={item.tags}
+                  checked={item.checked}
+                >
+                  {item.problemTitle}
+                </ProblemCard>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
       <Pagination
         totalItems={data.length}
         itemsPerPage={itemsPerPage}
