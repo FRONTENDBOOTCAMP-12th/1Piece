@@ -48,9 +48,9 @@ function SignUpForm() {
 
     try {
       const { data } = await supabase
-        .from('profiles')
-        .select('userid')
-        .eq('userid', id.trim())
+        .from('users')
+        .select('user_id')
+        .eq('user_id', id.trim())
         .maybeSingle();
       return !data;
     } catch (error) {
@@ -126,8 +126,8 @@ function SignUpForm() {
       if (error) {
         setErrors({ ...errors, email: error.message, password: error.message });
       } else {
-        const { error: profileError } = await supabase.from('profiles').upsert({
-          userid: formData.id,
+        const { error: profileError } = await supabase.from('users').upsert({
+          user_id: formData.id,
           email: formData.email,
           nickname: formData.nickname,
         });
