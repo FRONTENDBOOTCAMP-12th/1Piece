@@ -98,7 +98,7 @@
 
 :global(.react-calendar__month-view__days) {
   font-weight: var(--regular);
-  background: linear-gradient(#fff, #ffc9c4);
+  background: var(--secondary-g);
   height: 41.25rem;
 }
 
