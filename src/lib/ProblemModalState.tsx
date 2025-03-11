@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 export interface UserInfo {
+  id: string;
   title: string;
   src: string;
   tags: string[];
@@ -24,6 +25,7 @@ type Store = State & Actions;
 const useModalVisibleStore = create<Store>((set) => ({
   isVisible: false,
   userInfo: {
+    id: '',
     title: '',
     src: '/',
     tags: [''],

@@ -67,6 +67,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
                 userName={item.userName}
                 tags={item.tags}
                 checked={item.checked}
+                id={item.id}
               >
                 {item.problemTitle}
               </ProblemCard>

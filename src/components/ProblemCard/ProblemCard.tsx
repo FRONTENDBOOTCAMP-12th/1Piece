@@ -12,6 +12,7 @@ type ProblemCardProps = React.ComponentProps<'img'> &
   };
 
 function ProblemCard({
+  id,
   src,
   tags,
   userName,
@@ -22,6 +23,7 @@ function ProblemCard({
   const setUserInfo = useModalVisibleStore((state) => state.setUserInfo);
 
   const userCardInfo = {
+    id,
     src,
     tags,
     userName,
