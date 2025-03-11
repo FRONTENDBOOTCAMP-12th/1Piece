@@ -56,7 +56,7 @@ function RecentViewPage() {
   }, []);
 
   return (
-    <div className={S.CalendarPageContainer}>
+    <div className={S.MyPageContainer}>
       <MyPageDiary title="R E C E N T V I E W">
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>

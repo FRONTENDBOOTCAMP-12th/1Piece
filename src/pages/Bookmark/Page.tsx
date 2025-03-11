@@ -56,7 +56,7 @@ function BookmarkPage() {
   }, []);
 
   return (
-    <div className={S.CalendarPageContainer}>
+    <div className={S.MyPageContainer}>
       <MyPageDiary title="B O O K M A R K">
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>

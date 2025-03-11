@@ -56,7 +56,7 @@ function CardCollectionPage() {
   }, []);
 
   return (
-    <div className={S.CalendarPageContainer}>
+    <div className={S.MyPageContainer}>
       <MyPageDiary title="M Y C A R D">
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>
