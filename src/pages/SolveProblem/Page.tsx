@@ -2,7 +2,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import { useEffect } from 'react';
 
 function SolveProblem() {
-  const userInfo = useModalVisibleStore((state) => state.userInfo);
+  const userInfo = useModalVisibleStore((state) => state.cardInfo);
 
   useEffect(() => {
     window.scrollTo(0, 0);

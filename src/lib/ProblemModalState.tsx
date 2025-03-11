@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 // 카드 정보를 나타내기 위한 타입 지정
-export interface UserInfo {
+export interface CardInfo {
   id: string;
   title: string;
   src: string;
@@ -14,14 +14,14 @@ export interface UserInfo {
 // 상태 변수 타입
 interface State {
   isVisible: boolean;
-  userInfo: UserInfo;
+  cardInfo: CardInfo;
 }
 
 // 함수 타입
 interface Actions {
   setVisible: () => void;
   setNonVisible: () => void;
-  setUserInfo: (value: UserInfo) => void;
+  setUserInfo: (value: CardInfo) => void;
 }
 
 type Store = State & Actions;
@@ -31,7 +31,7 @@ const useModalVisibleStore = create(
   persist<Store>(
     (set) => ({
       isVisible: false,
-      userInfo: {
+      cardInfo: {
         id: '',
         title: '',
         src: '/',
@@ -41,9 +41,9 @@ const useModalVisibleStore = create(
       },
 
       // 카드 정보 수정
-      setUserInfo: (userInfo) =>
+      setUserInfo: (cardInfo) =>
         set(() => ({
-          userInfo: userInfo,
+          cardInfo: cardInfo,
         })),
 
       // 모달의 보이도록 상태 수정

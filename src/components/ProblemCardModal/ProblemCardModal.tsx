@@ -23,7 +23,7 @@ function ProblemCardModal({
   // 모달을 닫아주는 함수
   const setNonVisible = useModalVisibleStore((state) => state.setNonVisible);
   // 링크 이동을 위한 userInfo의 id만 사용
-  const { id } = useModalVisibleStore((state) => state.userInfo);
+  const { id } = useModalVisibleStore((state) => state.cardInfo);
 
   const handleClose = () => {
     setNonVisible();

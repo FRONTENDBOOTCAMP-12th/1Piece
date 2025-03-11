@@ -2,7 +2,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import BookMark from './BookMark';
 import S from './ProblemCard.module.css';
-import { type UserInfo } from '@/lib/ProblemModalState';
+import { type CardInfo } from '@/lib/ProblemModalState';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -36,7 +36,7 @@ function ProblemCard({
 
   // 카드 클릭 시 정보 저장 후 모달 열기
   const handleOpenModal = () => {
-    setUserInfo(userCardInfo as UserInfo);
+    setUserInfo(userCardInfo as CardInfo);
     setVisible();
   };
 
