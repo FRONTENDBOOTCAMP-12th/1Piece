@@ -16,6 +16,7 @@ export interface ProblemCardData {
   tags: string[];
   checked: boolean;
   problemTitle: string;
+  description: string;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -68,6 +69,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
                 tags={item.tags}
                 checked={item.checked}
                 id={item.id}
+                description={item.description}
               >
                 {item.problemTitle}
               </ProblemCard>

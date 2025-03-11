@@ -13,7 +13,7 @@ function MainPage() {
   const [itemCheck, setItemCheck] = useState({});
   const [itemCreated, setItemCreated] = useState({});
   // 모달 창에 나타낼 정보를 전달하기 위한 상태
-  const userInfo = useModalVisibleStore((state) => state.cardInfo);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
   const fetchItems = async () => {
     try {
@@ -41,6 +41,7 @@ function MainPage() {
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
+        description: item.desc,
       }));
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
@@ -53,6 +54,7 @@ function MainPage() {
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
+        description: item.desc,
       }));
 
       // 데이터를 정상적으로 받지 못했다면 ERROR 발생
@@ -99,12 +101,12 @@ function MainPage() {
         </>
       )}
       <ProblemCardModal
-        src={userInfo.src}
-        tags={userInfo.tags}
-        userName={userInfo.userName}
-        description={userInfo.description}
+        src={cardInfo.src}
+        tags={cardInfo.tags}
+        userName={cardInfo.userName}
+        description={cardInfo.description}
       >
-        {userInfo.title}
+        {cardInfo.title}
       </ProblemCardModal>
     </>
   );

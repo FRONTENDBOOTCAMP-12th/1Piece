@@ -21,7 +21,7 @@ interface State {
 interface Actions {
   setVisible: () => void;
   setNonVisible: () => void;
-  setUserInfo: (value: CardInfo) => void;
+  setCardInfo: (value: CardInfo) => void;
 }
 
 type Store = State & Actions;
@@ -41,7 +41,7 @@ const useModalVisibleStore = create(
       },
 
       // 카드 정보 수정
-      setUserInfo: (cardInfo) =>
+      setCardInfo: (cardInfo) =>
         set(() => ({
           cardInfo: cardInfo,
         })),
