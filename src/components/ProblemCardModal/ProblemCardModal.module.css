@@ -24,6 +24,7 @@
   background: var(--gray-g);
   border: 0.1875rem solid var(--black);
   border-radius: var(--radius-3xl);
+  z-index: 1000;
 }
 
 .modal.close {
