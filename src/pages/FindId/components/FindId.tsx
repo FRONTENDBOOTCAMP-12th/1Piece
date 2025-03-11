@@ -17,14 +17,14 @@ function FindIdForm() {
     }
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('userid')
+        .from('users')
+        .select('user_id')
         .eq('email', email)
         .single();
 
       if (error) throw error;
       if (data) {
-        alert(`입력하신 email로 가입하신 ID는 ${data.userid}입니다`);
+        alert(`입력하신 email로 가입하신 ID는 ${data.user_id}입니다`);
         navigate('/login');
       } else {
         alert('해당 email로 등록된 아이디가 없습니다.');
