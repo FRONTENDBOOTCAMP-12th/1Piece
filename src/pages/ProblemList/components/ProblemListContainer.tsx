@@ -28,19 +28,25 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<ProblemCardData[]>([]);
+  const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
+    'popular'
+  );
   const itemsPerPage = 12;
 
-  const fetchItems = async () => {
+  const fetchItems = async (sortBy: 'popular' | 'new') => {
     try {
-      // 데이터를 가져오는 로직
-      const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('*, users("*")')
-        .order('created', { ascending: false });
+      let query = supabase.from('card').select('*, users("*")');
+
+      if (sortBy === 'popular') {
+        query = query.order('check', { ascending: false });
+      } else if (sortBy === 'new') {
+        query = query.order('created', { ascending: false });
+      }
+
+      const { data: fetchedData, error } = await query;
 
       if (error) throw error;
 
-      // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
       const newData = fetchedData.map((item) => ({
         id: item.id,
         src: supabase.storage
@@ -60,8 +66,14 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
     }
   };
 
+  const handleSortChange = (standard: 'popular' | 'new') => {
+    setSortStandard(standard);
+    setCurrentPage(1);
+    fetchItems(standard);
+  };
+
   useEffect(() => {
-    fetchItems();
+    fetchItems(sortStandard);
   }, []);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -72,7 +84,23 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
     <div className={S.cardListContainer}>
       <div className={S.sort}>
         <span>총 {data.length}개</span>
-        <div>인기순 | 추천순</div>
+        <div>
+          <button
+            className={`${S.btnSort} ${
+              sortStandard === 'popular' ? S.active : ''
+            }`}
+            onClick={() => handleSortChange('popular')}
+          >
+            인기순
+          </button>{' '}
+          |{' '}
+          <button
+            className={`${S.btnSort} ${sortStandard === 'new' ? S.active : ''}`}
+            onClick={() => handleSortChange('new')}
+          >
+            추천순
+          </button>
+        </div>
       </div>
       {children && <div className={S.header}>{children}</div>}
       {loading ? (
@@ -81,7 +109,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
         <div className={S.swiperContainer}>
           <Swiper
             modules={[SwiperPagination, Grid]}
-            spaceBetween={20}
+            spaceBetween={0}
             slidesPerView={2}
             grid={{ rows: 6, fill: 'row' }}
             pagination={{ clickable: true }}
