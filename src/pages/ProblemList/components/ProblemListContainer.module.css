@@ -17,15 +17,14 @@
 }
 
 .btnSort {
-  cursor: pointer;
   font-size: var(--xl);
-  color: var(--clicked-gray-g);
+  color: var(--black);
 }
 
 .btnSort.active {
   font-weight: var(--bold);
   font-size: var(--xl);
-  color: var(--black);
+  color: var(--bookmark);
 }
 
 .swiperContainer {

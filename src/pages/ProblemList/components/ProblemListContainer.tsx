@@ -95,7 +95,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         <span>총 {data.length}개</span>
         <div>
           <button
-            className={`${S.sortButton} ${
+            className={`${S.btnSort} ${
               sortStandard === 'popular' ? S.active : ''
             }`}
             onClick={() => handleSortChange('popular')}
@@ -104,9 +104,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
           </button>{' '}
           |{' '}
           <button
-            className={`${S.sortButton} ${
-              sortStandard === 'new' ? S.active : ''
-            }`}
+            className={`${S.btnSort} ${sortStandard === 'new' ? S.active : ''}`}
             onClick={() => handleSortChange('new')}
           >
             추천순
