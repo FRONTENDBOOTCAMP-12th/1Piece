@@ -5,16 +5,15 @@
   gap: var(--space-7);
   padding-top: var(--space-5);
   padding-bottom: var(--space-8);
-  width: 35rem;
+  width: 38rem;
 }
 
 .sort {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   font-size: var(--large-2);
-  padding-right: var(--space-7);
 }
 .swiperContainer {
   display: flex;
