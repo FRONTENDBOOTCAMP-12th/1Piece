@@ -19,14 +19,14 @@ function MainPage() {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
         .from('card')
-        .select('*,users("*")')
+        .select('*,users(*)')
         .order('check', { ascending: false })
         .range(0, 6);
 
       // 생성 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCreated, error: errorCreated } = await supabase
         .from('card')
-        .select('*,users("*")')
+        .select('*,users(*)')
         .order('created', { ascending: false })
         .range(0, 6);
 
@@ -43,7 +43,7 @@ function MainPage() {
       }));
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCreated = dataCreated?.map((item, index) => ({
+      const newDataCreated = dataCreated?.map((item) => ({
         id: item.id,
         src: supabase.storage
           .from('profileImg/userProfile')
