@@ -4,12 +4,15 @@ import CardSwiper, {
 import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
+import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 function MainPage() {
   // 데이터를 가져오는 동안 다른 UI를 나타내기 위한 loading 상태
   const [loading, setLoading] = useState<boolean>(true);
   const [itemCheck, setItemCheck] = useState({});
   const [itemCreated, setItemCreated] = useState({});
+  const userInfo = useModalVisibleStore((state) => state.userInfo);
 
   const fetchItems = async () => {
     try {
@@ -94,6 +97,14 @@ function MainPage() {
           </CardSwiper>
         </>
       )}
+      <ProblemCardModal
+        src={userInfo.src}
+        tags={userInfo.tags}
+        userName={userInfo.userName}
+        description={userInfo.description}
+      >
+        {userInfo.title}
+      </ProblemCardModal>
     </>
   );
 }
