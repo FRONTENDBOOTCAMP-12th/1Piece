@@ -32,6 +32,7 @@
   flex-direction: row;
   align-items: center;
   width: 83rem;
+  z-index: 0;
 }
 
 .slide {
