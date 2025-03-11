@@ -6,6 +6,7 @@
   padding-top: var(--space-5);
   padding-bottom: var(--space-8);
   width: 38rem;
+  z-index: 0;
 }
 
 .sort {
