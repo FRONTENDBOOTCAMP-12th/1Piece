@@ -72,7 +72,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
       <div className={S.swiperContainer}>
         <Swiper
           modules={[SwiperPagination, Grid]}
-          spaceBetween={100}
+          spaceBetween={0}
           slidesPerView={2}
           grid={{ rows: 6, fill: 'row' }}
           pagination={{ clickable: true }}

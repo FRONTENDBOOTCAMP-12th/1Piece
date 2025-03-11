@@ -4,25 +4,22 @@
   align-items: center;
   gap: var(--space-15);
   padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
 }
 
 .sort {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 96%;
+  font-size: var(--xl);
 }
 
 .swiperContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 90rem;
-}
-
-.swiper {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  width: 83rem;
 }
 
 .slide {
@@ -30,4 +27,5 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  margin-bottom: var(--space-6);
 }
