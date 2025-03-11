@@ -4,6 +4,8 @@ import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import { supabase } from '@/lib/SupabaseClient';
 import S from './Page.module.css';
+import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface ProblemCardData {
   id: string;
@@ -11,6 +13,7 @@ interface ProblemCardData {
   userName: string;
   tags: string[];
   checked: boolean;
+  description: string;
   problemTitle: string;
 }
 
@@ -23,12 +26,13 @@ function CardCollectionPage() {
 
   const [data, setData] = useState<ProblemCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
   const fetchItems = async () => {
     try {
       const { data: fetchedData, error } = await supabase
         .from('card')
-        .select('*, users("*")')
+        .select('*, users(*)')
         .order('created', { ascending: false });
 
       if (error) throw error;
@@ -42,6 +46,7 @@ function CardCollectionPage() {
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
+        description: item.desc,
       }));
 
       setData(newData);
@@ -62,6 +67,14 @@ function CardCollectionPage() {
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />
+      <ProblemCardModal
+        src={cardInfo.src}
+        tags={cardInfo.tags}
+        userName={cardInfo.userName}
+        description={cardInfo.description}
+      >
+        {cardInfo.title}
+      </ProblemCardModal>
     </div>
   );
 }
