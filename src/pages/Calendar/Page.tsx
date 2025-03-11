@@ -10,7 +10,7 @@ function CalendarPage() {
   };
 
   return (
-    <div className={S.CalendarPageContainer}>
+    <div className={S.MyPageContainer}>
       <MyPageDiary title="C A L E N D A R">
         <Calendar />
       </MyPageDiary>
