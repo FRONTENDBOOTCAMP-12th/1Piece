@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import S from './ProblemCardModal.module.css';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -17,10 +17,11 @@ function ProblemCardModal({
   children,
   description,
 }: ProblemCardProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const isVisible = useModalVisibleStore((state) => state.isVisible);
+  const setNonVisible = useModalVisibleStore((state) => state.setNonVisible);
 
   const handleClose = () => {
-    setIsVisible(false);
+    setNonVisible();
   };
 
   return (
