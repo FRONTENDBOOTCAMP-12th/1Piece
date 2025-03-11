@@ -2,6 +2,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
 import BookMark from './BookMark';
 import S from './ProblemCard.module.css';
+import { type UserInfo } from '@/lib/ProblemModalState';
 
 type ProblemCardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -29,7 +30,7 @@ function ProblemCard({
   };
 
   const handleOpenModal = () => {
-    setUserInfo(userCardInfo);
+    setUserInfo(userCardInfo as UserInfo);
     setVisible();
   };
 
