@@ -5,6 +5,7 @@
   background: var(--white);
   position: relative;
   margin-inline: auto;
+  z-index: 0;
 }
 
 .header {

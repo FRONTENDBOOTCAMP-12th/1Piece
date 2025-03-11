@@ -13,6 +13,7 @@ import BookmarkPage from '@/pages/Bookmark/Page';
 import RecentViewPage from '@/pages/RecentView/Page';
 import CardCollectionPage from '@/pages/CardCollection/Page';
 import CommonLayout from '@/layout/Page';
+import SolveProblem from './pages/SolveProblem/Page';
 
 function App() {
   return (
@@ -29,9 +30,12 @@ function App() {
             <Route path="/find-id" element={<FindIdPage />} />
             <Route path="/find-pw" element={<FindPasswordPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
+
             <Route path="/bookmark" element={<BookmarkPage />} />
             <Route path="/recent-view" element={<RecentViewPage />} />
             <Route path="/card-collection" element={<CardCollectionPage />} />
+            <Route path="/solve-problem" element={<SolveProblem />} />
+
 
             <Route>
               <Route path="/my-page" element={<div>마이페이지입니다</div>} />
