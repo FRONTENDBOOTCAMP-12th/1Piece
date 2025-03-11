@@ -1,20 +1,22 @@
 import { create } from 'zustand';
 
+interface UserInfo {
+  title: string;
+  src: string;
+  tags: string[];
+  userName: string;
+  description: string;
+}
+
 interface State {
   isVisible: boolean;
-  userInfo: {
-    title: string;
-    src: string;
-    tags: string[];
-    userName: string;
-    description: string;
-  };
+  userInfo: UserInfo;
 }
 
 interface Actions {
   setVisible: () => void;
   setNonVisible: () => void;
-  setUserInfo: () => void;
+  setUserInfo: (value: UserInfo) => void;
 }
 
 type Store = State & Actions;
