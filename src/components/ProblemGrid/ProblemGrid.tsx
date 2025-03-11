@@ -60,6 +60,7 @@ const ProblemGrid: React.FC<CardSwiperProps> = ({
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
                 <ProblemCard
+                  id={item.id}
                   src={item.src}
                   userName={item.userName}
                   tags={item.tags}
