@@ -1,0 +1,12 @@
+.mainBanner {
+  display: block;
+  height: 30vh;
+  width: 100vw;
+  margin-block-end: var(--space-8);
+}
+
+.line {
+  margin-block-end: var(--space-4);
+  width: 82rem;
+  border-top: 2px solid #adadad;
+}
