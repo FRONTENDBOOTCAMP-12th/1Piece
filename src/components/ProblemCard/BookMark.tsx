@@ -11,6 +11,7 @@ function BookMark({ checked, onUpdate }: BookMarkProps) {
   const [isBookMark, setIsBookMark] = useState(checked);
 
   const handleClickBookMark = (e: React.MouseEvent) => {
+    // 버블링 방지
     e.stopPropagation();
     const nextIsBookMark = !isBookMark;
     setIsBookMark(nextIsBookMark);

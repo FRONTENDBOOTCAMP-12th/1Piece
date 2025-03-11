@@ -12,6 +12,7 @@ function MainPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [itemCheck, setItemCheck] = useState({});
   const [itemCreated, setItemCreated] = useState({});
+  // 모달 창에 나타낼 정보를 전달하기 위한 상태
   const userInfo = useModalVisibleStore((state) => state.userInfo);
 
   const fetchItems = async () => {

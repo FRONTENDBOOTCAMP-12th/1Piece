@@ -19,9 +19,12 @@ function ProblemCard({
   checked,
   children,
 }: ProblemCardProps) {
+  // 모달을 클릭할 시 나타나게 할 함수
   const setVisible = useModalVisibleStore((state) => state.setVisible);
+  // 선택한 카드의 정보를 저장하기 위한 함수
   const setUserInfo = useModalVisibleStore((state) => state.setUserInfo);
 
+  // props로 전달받은 값으로 구성한 새로운 userInfo
   const userCardInfo = {
     id,
     src,
@@ -31,6 +34,7 @@ function ProblemCard({
     title: children,
   };
 
+  // 카드 클릭 시 정보 저장 후 모달 열기
   const handleOpenModal = () => {
     setUserInfo(userCardInfo as UserInfo);
     setVisible();

@@ -18,8 +18,11 @@ function ProblemCardModal({
   children,
   description,
 }: ProblemCardProps) {
+  // 모달의 오픈 여부를 나타내는 상태
   const isVisible = useModalVisibleStore((state) => state.isVisible);
+  // 모달을 닫아주는 함수
   const setNonVisible = useModalVisibleStore((state) => state.setNonVisible);
+  // 링크 이동을 위한 userInfo의 id만 사용
   const { id } = useModalVisibleStore((state) => state.userInfo);
 
   const handleClose = () => {
@@ -53,6 +56,7 @@ function ProblemCardModal({
           >
             취소
           </RoundedButton>
+          {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
           <NavLink to={`/solve-problem/?problemId=${id}`}>
             <RoundedButton
               color="primary"
