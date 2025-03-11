@@ -33,9 +33,11 @@ const dummy: DummyItemType[] = [
   { id: '도덕', state: false },
 ];
 
-function SelectTag() {
-  // 상태를 더미데이터를 이용해 생성
-  // 이후 zustand로 관리 가능
+interface SelectTagProps {
+  onTagSelect: (tags: DummyKey[]) => void;
+}
+
+function SelectTag({ onTagSelect }: SelectTagProps) {
   const [selectedTag, setSelectedTag] = useState(dummy);
 
   // 비교할 과목명, 그리고 새롭게 할당할 값을 입력 받음
@@ -53,6 +55,11 @@ function SelectTag() {
     });
 
     setSelectedTag(nextSelectedTag);
+
+    const selectedTags = nextSelectedTag
+      .filter((item) => item.state)
+      .map((item) => item.id);
+    onTagSelect(selectedTags);
   };
 
   return (

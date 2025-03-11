@@ -21,10 +21,13 @@ export interface ProblemCardData {
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
-  data?: ProblemCardData[];
+  selectedTags?: string[];
 };
 
-const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
+const ProblemListContainer: React.FC<CardSwiperProps> = ({
+  selectedTags = [],
+  children,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<ProblemCardData[]>([]);
@@ -58,7 +61,13 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
         problemTitle: item.problemTitle,
       }));
 
-      setData(newData);
+      const filteredData = selectedTags.length
+        ? newData.filter((item) =>
+            item.tags.some((tag) => selectedTags.includes(tag))
+          )
+        : newData;
+
+      setData(filteredData);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -74,7 +83,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
 
   useEffect(() => {
     fetchItems(sortStandard);
-  }, []);
+  }, [selectedTags, sortStandard]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -86,7 +95,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
         <span>총 {data.length}개</span>
         <div>
           <button
-            className={`${S.btnSort} ${
+            className={`${S.sortButton} ${
               sortStandard === 'popular' ? S.active : ''
             }`}
             onClick={() => handleSortChange('popular')}
@@ -95,7 +104,9 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({ children }) => {
           </button>{' '}
           |{' '}
           <button
-            className={`${S.btnSort} ${sortStandard === 'new' ? S.active : ''}`}
+            className={`${S.sortButton} ${
+              sortStandard === 'new' ? S.active : ''
+            }`}
             onClick={() => handleSortChange('new')}
           >
             추천순
