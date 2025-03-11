@@ -10,6 +10,8 @@ import LogInPage from '@/pages/LogIn/Page';
 import MainPage from '@/pages/Main/Page';
 import CalendarPage from '@/pages/Calendar/Page';
 import BookmarkPage from '@/pages/Bookmark/Page';
+import RecentViewPage from '@/pages/RecentView/Page';
+import CardCollectionPage from '@/pages/CardCollection/Page';
 import CommonLayout from '@/layout/Page';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Route path="/find-pw" element={<FindPasswordPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/bookmark" element={<BookmarkPage />} />
+            <Route path="/recent-view" element={<RecentViewPage />} />
+            <Route path="/card-collection" element={<CardCollectionPage />} />
 
             <Route>
               <Route path="/my-page" element={<div>마이페이지입니다</div>} />
