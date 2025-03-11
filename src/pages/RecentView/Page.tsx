@@ -15,10 +15,11 @@ interface ProblemCardData {
 }
 
 function RecentViewPage() {
-  const tabs = ['북마크', '최근본', '작성글'];
-  const handleTabChange = (tab: string) => {
-    console.log(`Selected tab: ${tab}`);
-  };
+  const tabs = [
+    { name: '북마크', path: '/bookmark' },
+    { name: '최근본', path: '/recent-view' },
+    { name: '작성글', path: '/card-collection' },
+  ];
 
   const [data, setData] = useState<ProblemCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +61,7 @@ function RecentViewPage() {
       <MyPageDiary title="R E C E N T V I E W">
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>
-      <MyPageTab tabs={tabs} onTabChange={handleTabChange} />
+      <MyPageTab tabs={tabs} />
     </div>
   );
 }
