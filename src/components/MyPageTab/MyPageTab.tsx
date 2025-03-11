@@ -1,31 +1,23 @@
-import { useState } from 'react';
+import { NavLink } from 'react-router';
 import S from './MyPageTab.module.css';
 
 interface MyPageTabProps {
-  tabs: string[];
-  onTabChange: (tab: string) => void;
+  tabs: { name: string; path: string }[];
 }
 
-function MyPageTab({ tabs, onTabChange }: MyPageTabProps) {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    onTabChange(tab);
-  };
-
+function MyPageTab({ tabs }: MyPageTabProps) {
   return (
     <nav className={S.tabList}>
       {tabs.map((tab) => (
-        <button
-          key={tab}
-          className={`${S.tab} ${activeTab === tab ? S.activeTab : ''}`}
-          onClick={() => handleTabClick(tab)}
-          role="tab"
-          aria-selected={activeTab === tab}
+        <NavLink
+          key={tab.path}
+          to={tab.path}
+          className={({ isActive }) =>
+            `${S.tab} ${isActive ? S.activeTab : ''}`
+          }
         >
-          {tab}
-        </button>
+          {tab.name}
+        </NavLink>
       ))}
     </nav>
   );
