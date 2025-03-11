@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
 import S from './ProblemListContainer.module.css';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
@@ -17,18 +17,6 @@ interface ProblemCardData {
 interface CardSwiperProps {
   data?: ProblemCardData[];
 }
-
-const CustomNavigation = () => {
-  const swiper = useSwiper();
-
-  return (
-    <div className={S.navigationContainer}>
-      <button className={S.btnNext} onClick={() => swiper.slideNext()}>
-        <img src="/icons/btn-more-circle.svg" alt="Next" />
-      </button>
-    </div>
-  );
-};
 
 const generateDummyData = (): ProblemCardData[] => {
   const dummyData: ProblemCardData[] = [];
@@ -69,8 +57,6 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         document.head.appendChild(link);
       });
     }
-
-    return undefined;
   }, []);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -104,7 +90,6 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
               </ProblemCard>
             </SwiperSlide>
           ))}
-          <CustomNavigation />
         </Swiper>
       </div>
       <Pagination

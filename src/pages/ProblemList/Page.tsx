@@ -1,6 +1,5 @@
 import SelectTag from '@/components/SelectTag/SelectTag';
 import ProblemListContainer from './components/ProblemListContainer';
-import Pagination from '@/components/Pagination/Pagination';
 
 import S from './Page.module.css';
 
@@ -10,7 +9,6 @@ function ProblemListPage() {
       <h1 className={S.title}>목록</h1>
       <SelectTag />
       <ProblemListContainer />
-      <Pagination />
     </div>
   );
 }
