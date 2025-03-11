@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import Pagination from '@/components/Pagination/Pagination';
-import { supabase } from '@/lib/SupabaseClient';
 import S from './ProblemGrid.module.css';
 
 import 'swiper/css';
@@ -21,55 +20,17 @@ export interface ProblemCardData {
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
-  selectedTags?: string[];
+  data: ProblemCardData[]; // 외부에서 데이터를 받아옴
+  loading: boolean; // 로딩 상태를 외부에서 받아옴
 };
 
 const ProblemGrid: React.FC<CardSwiperProps> = ({
-  selectedTags = [],
   children,
+  data = [], // 기본값으로 빈 배열 설정
+  loading = false, // 기본값으로 false 설정
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<ProblemCardData[]>([]);
   const itemsPerPage = 5;
-
-  const fetchItems = async () => {
-    try {
-      const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('*, users("*")')
-        .order('created', { ascending: false });
-
-      if (error) throw error;
-
-      const newData = fetchedData.map((item) => ({
-        id: item.id,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-      }));
-
-      const filteredData = selectedTags.length
-        ? newData.filter((item) =>
-            item.tags.some((tag) => selectedTags.includes(tag))
-          )
-        : newData;
-
-      setData(filteredData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, [selectedTags]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -83,6 +44,8 @@ const ProblemGrid: React.FC<CardSwiperProps> = ({
       {children && <div className={S.header}>{children}</div>}
       {loading ? (
         <p>로딩 중...</p>
+      ) : data.length === 0 ? ( // 데이터가 없을 때 메시지 표시
+        <p>표시할 데이터가 없습니다.</p>
       ) : (
         <div className={S.swiperContainer}>
           <Swiper
@@ -108,12 +71,14 @@ const ProblemGrid: React.FC<CardSwiperProps> = ({
           </Swiper>
         </div>
       )}
-      <Pagination
-        totalItems={data.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+      {data.length > 0 && ( // 데이터가 있을 때만 Pagination 표시
+        <Pagination
+          totalItems={data.length}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 };
