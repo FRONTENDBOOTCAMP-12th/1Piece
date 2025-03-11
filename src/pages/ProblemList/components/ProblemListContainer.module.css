@@ -1,0 +1,43 @@
+.cardListContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7);
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+}
+
+.sort {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--xl);
+  padding-right: var(--space-7);
+}
+
+.btnSort {
+  font-size: var(--xl);
+  color: var(--black);
+}
+
+.btnSort.active {
+  font-weight: var(--bold);
+  font-size: var(--xl);
+  color: var(--bookmark);
+}
+
+.swiperContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 83rem;
+}
+
+.slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-bottom: var(--space-6);
+}
