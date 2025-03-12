@@ -50,7 +50,7 @@ function QuestionCreatePage() {
 
       <div className={S.questionContainer}>
         <div className={S.deleteButton}>
-          <img src="/path/to/trash-icon.png" alt="Delete" />
+          <img src="/public/icons/trash-button.svg" alt="Delete" />
         </div>
         <div className={S.questionInfo}>
           <div className={S.questionAnswer}>
