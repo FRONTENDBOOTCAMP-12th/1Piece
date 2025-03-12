@@ -1,7 +1,6 @@
 import S from './FindPw.module.css';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import { supabase } from '@/lib/SupabaseClient';
 import React from 'react';
 
 interface NewPwProps {
@@ -21,28 +20,22 @@ function NewPw({ email, newPw, setNewPw, setStep }: NewPwProps) {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .update({ new_pw: newPw })
-        .eq('email', email);
+      const response = await fetch('http://localhost:4000/reset-pw', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, newPw }),
+      });
 
-      if (error) {
-        alert('서버에서 오류가 발생했습니다.');
-        console.log('Error:', error);
+      const result = await response.json();
+      if (!response.ok) {
+        alert(result.error || '비밀번호 변경 실패');
         return;
       }
 
-      if (!data) {
-        alert('비밀번호 업데이트가 실패했습니다. 다시 시도해 주세요.');
-        console.log('Error:', error);
-        console.log('Response Data:', data);
-        return;
-      }
-
-      alert('새 비밀번호가 저장되었습니다.');
+      alert('새 비밀번호가 저장되었습니다. 로그인 페이지로 이동하세요.');
+      setStep(1);
     } catch {
-      alert('오류가 발생했습니다. 다시 시도해 주세요');
-      setStep(2);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
     }
   };
 

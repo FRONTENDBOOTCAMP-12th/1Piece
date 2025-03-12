@@ -1,7 +1,6 @@
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import S from './FindPw.module.css';
-import { supabase } from '@/lib/SupabaseClient';
 
 interface CheckEmailProps {
   id: string;
@@ -21,15 +20,17 @@ function CheckEmail({ id, setId, email, setEmail, setStep }: CheckEmailProps) {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('email')
-        .eq('user_id', id)
-        .single();
-      console.log(data);
+      const response = await fetch('http://localhost:4000/reset-pw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, id }),
+      });
 
-      if (error || !data || data.email !== email) {
-        alert('일치하는 계정을 찾을 수 없습니다.');
+      console.log(response);
+
+      const result = await response.json();
+      if (!response.ok) {
+        alert(result.error || '일치하는 계정을 찾을 수 없습니다.');
         return;
       }
 

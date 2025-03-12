@@ -1,15 +1,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { supabaseAdmin } from './supabase.js';
-
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
+
 const port = 4000;
+app.use(
+  cors({
+    origin: 'quzelly.vercel.app',
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
 app.post('/reset-pw', async (req, res) => {
+  console.log(req.body);
   const { email, newPw } = req.body;
 
   if (!email || !newPw) {
@@ -37,7 +45,7 @@ app.post('/reset-pw', async (req, res) => {
       console.error('Authentication 에러:', authError);
       return res.status(400).json({ error: '사용자 인증을 찾을 수 없습니다.' });
     }
-    console.log('인증된 사용자:', authUser); // 확인용
+    console.log('인증된 사용자:', authUser);
 
     const { error: passwordError } =
       await supabaseAdmin.auth.admin.updateUserById(user.auth_uid, {
