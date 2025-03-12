@@ -32,7 +32,7 @@
 }
 
 .input {
-  width: 27rem;
+  width: 100%;
   height: var(--space-16, 4rem);
   flex-shrink: 0;
   background: var(--white, #fff);
