@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Input from '@/components/Input/Input';
+import TextArea from '@/components/TextArea/TextArea'; // QuestionSet 컴포넌트 import
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import S from './Page.module.css';
@@ -30,24 +30,18 @@ function QuestionCreatePage() {
           <label className={S.label} htmlFor="title">
             제목
           </label>
-          <Input
+          <TextArea
             label="문제 세트 제목"
-            name="title"
-            type="text"
             placeholder="문제 세트 제목을 입력하세요"
-            hiddenLabel={true}
           />
         </div>
         <div className={S.description}>
           <label className={S.label} htmlFor="description">
             상세 설명
           </label>
-          <Input
+          <TextArea
             label="문제 세트 상세 설명"
-            name="description"
-            type="text"
             placeholder="문제 세트 상세 설명을 입력하세요"
-            hiddenLabel={true}
           />
         </div>
         <div className={S.tagSelect}>
@@ -75,13 +69,7 @@ function QuestionCreatePage() {
                 >
                   문제
                 </label>
-                <Input
-                  label="문제"
-                  name={`question-${question.id}`}
-                  type="text"
-                  placeholder="문제를 입력하세요"
-                  hiddenLabel={true}
-                />
+                <TextArea label="문제" placeholder="문제를 입력하세요" />
               </div>
               <div className={S.answer}>
                 <label
@@ -100,13 +88,7 @@ function QuestionCreatePage() {
               >
                 해설
               </label>
-              <Input
-                label="문제 해설"
-                name={`explanation-${question.id}`}
-                type="text"
-                placeholder="해설을 입력하세요"
-                hiddenLabel={true}
-              />
+              <TextArea label="문제 해설" placeholder="해설을 입력하세요" />
             </div>
           </div>
         </div>
