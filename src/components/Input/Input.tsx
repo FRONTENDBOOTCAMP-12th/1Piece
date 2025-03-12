@@ -9,6 +9,7 @@ interface InputProps {
   className?: string;
   hiddenLabel?: boolean;
   value?: string;
+  disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -22,6 +23,7 @@ function Input({
   className,
   hiddenLabel,
   value,
+  disabled = false,
   onChange,
   onBlur,
   ...restProps
@@ -39,6 +41,7 @@ function Input({
         value={value}
         placeholder={placeholder}
         maxLength={maxLength}
+        disabled={disabled}
         onChange={onChange}
         onBlur={onBlur}
         {...restProps}
