@@ -3,10 +3,18 @@ import Option from '@/components/Option/Option';
 import S from './Problem.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { FaArrowRight } from 'react-icons/fa6';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function Problem() {
   const [isVisibleDesc, setIsVisibleDesc] = useState(false);
+  const descRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: descRef.current!.offsetTop - descRef.current!.offsetHeight,
+      behavior: 'smooth',
+    });
+  }, [isVisibleDesc]);
 
   const handleNextProblem = () => {
     console.log(1);
@@ -48,6 +56,7 @@ function Problem() {
       </div>
       <div
         className={`${S.problemDescription} ${isVisibleDesc ? S.showDesc : S.hideDesc}`}
+        ref={descRef}
       >
         해설 영역에 들어갈 텍스트
       </div>
