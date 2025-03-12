@@ -1,0 +1,11 @@
+.pageContainer {
+  padding: var(--space-11);
+  display: flex;
+  justify-content: space-around;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
