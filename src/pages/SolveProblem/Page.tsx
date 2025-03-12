@@ -1,5 +1,7 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { useEffect } from 'react';
+import S from './ProblemSolve.module.css';
+import Problem from './components/Problem';
 
 function SolveProblem() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
@@ -9,10 +11,10 @@ function SolveProblem() {
   }, []);
 
   return (
-    <>
-      <div>문제풀이 페이지입니다.</div>
-      <img src={cardInfo.src} alt={cardInfo.userName} />
-    </>
+    <div className={S.problemContainer}>
+      <h3 className={S.solveProblemTitle}>{cardInfo.title}</h3>
+      <Problem />
+    </div>
   );
 }
 
