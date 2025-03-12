@@ -3,6 +3,7 @@
 .container {
   width: 37.1875rem;
   height: 10.25rem;
+  flex-shrink: 0;
   border-radius: 3.125rem;
   padding: var(--space-7);
   border: 0.125rem solid var(--black);
