@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TextArea from '@/components/TextArea/TextArea'; // QuestionSet 컴포넌트 import
+import TextArea from '@/components/TextArea/TextArea'; // TextArea 컴포넌트 import
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import S from './Page.module.css';
@@ -30,17 +30,14 @@ function QuestionCreatePage() {
           <label className={S.label} htmlFor="title">
             제목
           </label>
-          <TextArea
-            label="문제 세트 제목"
-            placeholder="문제 세트 제목을 입력하세요"
-          />
+          <TextArea name="title" placeholder="문제 세트 제목을 입력하세요" />
         </div>
         <div className={S.description}>
           <label className={S.label} htmlFor="description">
             상세 설명
           </label>
           <TextArea
-            label="문제 세트 상세 설명"
+            name="description"
             placeholder="문제 세트 상세 설명을 입력하세요"
           />
         </div>
@@ -69,7 +66,10 @@ function QuestionCreatePage() {
                 >
                   문제
                 </label>
-                <TextArea label="문제" placeholder="문제를 입력하세요" />
+                <TextArea
+                  name={`question-${question.id}`}
+                  placeholder="문제를 입력하세요"
+                />
               </div>
               <div className={S.answer}>
                 <label
@@ -88,7 +88,10 @@ function QuestionCreatePage() {
               >
                 해설
               </label>
-              <TextArea label="문제 해설" placeholder="해설을 입력하세요" />
+              <TextArea
+                name={`explanation-${question.id}`}
+                placeholder="해설을 입력하세요"
+              />
             </div>
           </div>
         </div>
