@@ -69,6 +69,7 @@ function QuestionCreatePage() {
                 <TextArea
                   name={`question-${question.id}`}
                   placeholder="문제를 입력하세요"
+                  height="20rem"
                 />
               </div>
               <div className={S.answer}>
@@ -78,7 +79,6 @@ function QuestionCreatePage() {
                 >
                   선지
                 </label>
-                {/* Answer options would go here */}
               </div>
             </div>
             <div className={S.answerDescription}>
@@ -91,6 +91,7 @@ function QuestionCreatePage() {
               <TextArea
                 name={`explanation-${question.id}`}
                 placeholder="해설을 입력하세요"
+                height="10rem"
               />
             </div>
           </div>
