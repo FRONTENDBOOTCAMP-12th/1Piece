@@ -210,7 +210,7 @@ function EditProfileContainer() {
 
   return (
     <div>
-      <MyPageDiary title="M Y P A G E">
+      <MyPageDiary title="P r o f i l e">
         <EditProfile
           profile={profile}
           currentPassword={currentPassword}
