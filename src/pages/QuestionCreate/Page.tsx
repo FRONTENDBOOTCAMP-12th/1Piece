@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import Input from '@/components/Input/Input';
 import SelectTag from '@/components/SelectTag/SelectTag';
-import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import Button from '@/components/Button/Button';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [questions, setQuestions] = useState([{ id: 1 }]);
 
   const handleTagSelect = (tags: string[]) => {
     setSelectedTags(tags);
+  };
+
+  const addQuestion = () => {
+    const newId =
+      questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
+    setQuestions([...questions, { id: newId }]);
+  };
+
+  const deleteQuestion = (id: number) => {
+    setQuestions(questions.filter((question) => question.id !== id));
   };
 
   return (
@@ -48,46 +58,65 @@ function QuestionCreatePage() {
         </div>
       </div>
 
-      <div className={S.questionContainer}>
-        <button className={S.btnDelete}>
-          <img src="/public/icons/trash-button.svg" alt="Delete" />
-        </button>
-        <div className={S.questionInfo}>
-          <div className={S.questionAnswer}>
-            <div className={S.question}>
-              <label className={S.questionLabel} htmlFor="question">
-                문제
+      {questions.map((question) => (
+        <div key={question.id} className={S.questionContainer}>
+          <button
+            className={S.btnDelete}
+            onClick={() => deleteQuestion(question.id)}
+          >
+            <img src="/public/icons/trash-button.svg" alt="Delete" />
+          </button>
+          <div className={S.questionInfo}>
+            <div className={S.questionAnswer}>
+              <div className={S.question}>
+                <label
+                  className={S.questionLabel}
+                  htmlFor={`question-${question.id}`}
+                >
+                  문제
+                </label>
+                <Input
+                  label="문제"
+                  name={`question-${question.id}`}
+                  type="text"
+                  placeholder="문제를 입력하세요"
+                  hiddenLabel={true}
+                />
+              </div>
+              <div className={S.answer}>
+                <label
+                  className={S.questionLabel}
+                  htmlFor={`answer-${question.id}`}
+                >
+                  선지
+                </label>
+                {/* Answer options would go here */}
+              </div>
+            </div>
+            <div className={S.answerDescription}>
+              <label
+                className={S.questionLabel}
+                htmlFor={`explanation-${question.id}`}
+              >
+                해설
               </label>
               <Input
-                label="문제"
-                name="question"
+                label="문제 해설"
+                name={`explanation-${question.id}`}
                 type="text"
-                placeholder="문제를 입력하세요"
+                placeholder="해설을 입력하세요"
                 hiddenLabel={true}
               />
             </div>
-            <div className={S.answer}>
-              <label className={S.questionLabel} htmlFor="answer">
-                선지
-              </label>
-            </div>
-          </div>
-
-          <div className={S.answerDescription}>
-            <label className={S.questionLabel} htmlFor="explanation">
-              해설
-            </label>
-            <Input
-              label="문제 해설"
-              name="explanation"
-              type="text"
-              placeholder="해설을 입력하세요"
-              hiddenLabel={true}
-            />
           </div>
         </div>
-      </div>
-      <Button label="+" className={S.btnAdd} />
+      ))}
+
+      <button
+        className={S.btnAdd}
+        onClick={addQuestion}
+        aria-label="문제 추가"
+      />
 
       <div className={S.btnContainer}>
         <Button label="취소" />

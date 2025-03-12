@@ -91,6 +91,30 @@
   width: 100%;
 }
 
+.btnAdd {
+  position: relative;
+  width: 10rem;
+  height: 5.6rem;
+  margin: 0 auto;
+  background: var(--clicked-gray-g);
+  border: 2px solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnAdd::before {
+  content: '';
+  display: block;
+  width: 3.125rem;
+  height: 3.125rem;
+  position: relative;
+  background-image: url('/public/icons/trash-button.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .btnContainer {
   width: 100%;
   display: flex;
