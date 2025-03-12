@@ -15,7 +15,7 @@ function QuestionCreatePage() {
   return (
     <div className={S.questionCreateContainer}>
       <h1 className={S.title}>문제 생성</h1>
-      <div className={S.Settings}>
+      <div className={S.settings}>
         <div className={S.questionTitle}>
           <label className={S.label} htmlFor="title">
             제목
@@ -49,13 +49,15 @@ function QuestionCreatePage() {
       </div>
 
       <div className={S.questionContainer}>
-        <div className={S.deleteButton}>
+        <button className={S.btnDelete}>
           <img src="/public/icons/trash-button.svg" alt="Delete" />
-        </div>
+        </button>
         <div className={S.questionInfo}>
           <div className={S.questionAnswer}>
             <div className={S.question}>
-              <label htmlFor="question">문제</label>
+              <label className={S.questionLabel} htmlFor="question">
+                문제
+              </label>
               <Input
                 label="문제"
                 name="question"
@@ -65,12 +67,16 @@ function QuestionCreatePage() {
               />
             </div>
             <div className={S.answer}>
-              <span>선지</span>
+              <label className={S.questionLabel} htmlFor="answer">
+                선지
+              </label>
             </div>
           </div>
 
           <div className={S.answerDescription}>
-            <label htmlFor="explanation">해설</label>
+            <label className={S.questionLabel} htmlFor="explanation">
+              해설
+            </label>
             <Input
               label="문제 해설"
               name="explanation"
@@ -81,7 +87,7 @@ function QuestionCreatePage() {
           </div>
         </div>
       </div>
-      <RoundedButton>+</RoundedButton>
+      <Button label="+" className={S.btnAdd} />
 
       <div className={S.btnContainer}>
         <Button label="취소" />

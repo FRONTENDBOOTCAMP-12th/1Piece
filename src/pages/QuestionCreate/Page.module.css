@@ -14,15 +14,19 @@
   margin-bottom: var(--space-10);
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
 .label {
   font-size: var(--large-2);
   font-weight: var(--semi-bold);
-  line-height: var(--xxxl);
   color: var(--black);
+  line-height: var(--xxxl);
 }
 
 .questionContainer {
-  position: relative;
   width: 100%;
   margin: var(--space-15) 0 var(--space-8) 0;
   height: 50rem;
@@ -34,15 +38,41 @@
   flex-direction: column;
   gap: var(--space-5);
 }
-
-.deleteButton {
+.btnDelete {
+  align-self: flex-end;
+  box-sizing: border-box;
+  background: var(--gray-g);
+  border: 0.09375rem solid var(--black);
+  border-radius: var(--rounded-full);
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
 
-  img {
-    width: 61px;
-    height: 61px;
-  }
+.btnDelete:hover {
+  background: var(--white);
+}
+
+.btnDelete img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.questionLabel {
+  width: 105px;
+  height: 51px;
+  box-sizing: border-box;
+  background: var(--secondary-g);
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .questionAnswer {
