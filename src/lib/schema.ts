@@ -235,6 +235,7 @@ export interface Database {
       users: {
         Row: {
           alarm: string | null;
+          auth_uid: string | null;
           badge: Json | null;
           email: string;
           id: string;
@@ -244,6 +245,7 @@ export interface Database {
         };
         Insert: {
           alarm?: string | null;
+          auth_uid?: string | null;
           badge?: Json | null;
           email: string;
           id?: string;
@@ -253,6 +255,7 @@ export interface Database {
         };
         Update: {
           alarm?: string | null;
+          auth_uid?: string | null;
           badge?: Json | null;
           email?: string;
           id?: string;
