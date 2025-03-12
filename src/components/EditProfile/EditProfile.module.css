@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-6);
+  padding-inline: var(--space-6);
   width: 100%;
 }
 
@@ -37,11 +37,6 @@
   cursor: pointer;
 }
 
-.profileImageButton:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
 .profileImage {
   width: var(--img-size);
   height: var(--img-size);
@@ -49,21 +44,12 @@
   border-radius: var(--rounded-full);
 }
 
-/* 입력 필드 */
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: 100%;
+.profileImageButton:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
-.inputBox {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.input {
+.inputImage {
   display: none;
 }
 
@@ -73,6 +59,23 @@
   color: var(--black);
   cursor: not-allowed;
 }
+
+/* 입력 필드 */
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 70%;
+}
+
+/* input {
+  width: 100%;
+} */
+
+/* .inputForm label {
+  background-color: darkblue;
+  width: 100px;
+} */
 
 /* 비활성화된 입력 필드 스타일 */
 input:disabled,
