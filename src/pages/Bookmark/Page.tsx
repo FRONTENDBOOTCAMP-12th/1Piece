@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import { supabase } from '@/lib/SupabaseClient';
 import S from './Page.module.css';
+import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface ProblemCardData {
   id: string;
@@ -12,6 +14,7 @@ interface ProblemCardData {
   tags: string[];
   checked: boolean;
   problemTitle: string;
+  description: string;
 }
 
 function BookmarkPage() {
@@ -23,18 +26,19 @@ function BookmarkPage() {
 
   const [data, setData] = useState<ProblemCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
   const fetchItems = async () => {
     try {
       const { data: fetchedData, error } = await supabase
         .from('card')
-        .select('*, users("*")')
+        .select('*, users(*)')
         .order('created', { ascending: false });
 
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: item.id,
+        id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
@@ -42,6 +46,7 @@ function BookmarkPage() {
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
+        description: item.desc,
       }));
 
       setData(newData);
@@ -62,6 +67,14 @@ function BookmarkPage() {
         <ProblemGrid data={data} loading={loading} />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />
+      <ProblemCardModal
+        src={cardInfo.src}
+        tags={cardInfo.tags}
+        userName={cardInfo.userName}
+        description={cardInfo.description}
+      >
+        {cardInfo.title}
+      </ProblemCardModal>
     </div>
   );
 }

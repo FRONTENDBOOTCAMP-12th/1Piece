@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
-import S from './ProblemListContainer.module.css';
-import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import Pagination from '@/components/Pagination/Pagination';
+import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import { supabase } from '@/lib/SupabaseClient';
-
+import React, { useEffect, useState } from 'react';
+import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import S from './ProblemListContainer.module.css';
+import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 import 'swiper/css';
+import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/grid';
 
 export interface ProblemCardData {
   id: string;
@@ -17,6 +18,7 @@ export interface ProblemCardData {
   userName: string;
   tags: string[];
   checked: boolean;
+  description: string;
   problemTitle: string;
 }
 
@@ -34,11 +36,13 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
+  // 모달 창에 나타낼 정보를 전달하기 위한 상태
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
 
   const fetchItems = async (sortBy: 'popular' | 'new') => {
     try {
-      let query = supabase.from('card').select('*, users("*")');
+      let query = supabase.from('card').select('*, users(*)');
 
       if (sortBy === 'popular') {
         query = query.order('check', { ascending: false });
@@ -51,7 +55,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: item.id,
+        id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
@@ -59,11 +63,12 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
+        description: item.desc,
       }));
 
       const filteredData = selectedTags.length
         ? newData.filter((item) =>
-            item.tags.some((tag) => selectedTags.includes(tag))
+            item.tags.some((tag) => selectedTags.includes(`${tag}`))
           )
         : newData;
 
@@ -127,10 +132,12 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
                 <ProblemCard
+                  id={item.id}
                   src={item.src}
                   userName={item.userName}
                   tags={item.tags}
                   checked={item.checked}
+                  description={item.description}
                 >
                   {item.problemTitle}
                 </ProblemCard>
@@ -145,6 +152,14 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
+      <ProblemCardModal
+        src={cardInfo.src}
+        tags={cardInfo.tags}
+        userName={cardInfo.userName}
+        description={cardInfo.description}
+      >
+        {cardInfo.title}
+      </ProblemCardModal>
     </div>
   );
 };
