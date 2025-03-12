@@ -15,6 +15,7 @@ import RecentViewPage from '@/pages/RecentView/Page';
 import CardCollectionPage from '@/pages/CardCollection/Page';
 import CommonLayout from '@/layout/Page';
 import SolveProblem from './pages/SolveProblem/Page';
+import ProblemSolved from '@/pages/ProblemSolved/Page';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="/recent-view" element={<RecentViewPage />} />
             <Route path="/card-collection" element={<CardCollectionPage />} />
             <Route path="/solve-problem" element={<SolveProblem />} />
+            <Route path="/problem-solved" element={<ProblemSolved />} />
 
             <Route>
               <Route path="/my-page" element={<div>마이페이지입니다</div>} />
