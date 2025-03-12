@@ -4,6 +4,27 @@ import Button from '../Button/Button';
 import EmailAlarm from './EmailAlarm';
 import ProfileImage from './ProfileImage';
 
+interface ProfileState {
+  user_id: string;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+interface EditProfileProps {
+  profile: ProfileState;
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: () => void;
+  onCheckPassword: (password: string) => void;
+  isPasswordVerified: boolean;
+  passwordError: string;
+  passwordSuccess: string;
+  nicknameError: string;
+}
+
 function EditProfile({
   profile,
   currentPassword,
@@ -15,13 +36,20 @@ function EditProfile({
   isPasswordVerified,
   passwordError,
   passwordSuccess,
-}) {
+  nicknameError,
+}: EditProfileProps) {
   return (
     <div className={S.editProfileContainer}>
       <ProfileImage src={profile.profileImage} />
 
       <div className={S.inputWrapper}>
-        <Input label="ID" name="user_id" value={profile.user_id} disabled />
+        <Input
+          label="ID"
+          name="user_id"
+          className={S.inputId}
+          value={profile.user_id}
+          disabled
+        />
         <Input
           label="닉네임"
           name="nickname"
@@ -29,6 +57,8 @@ function EditProfile({
           value={profile.nickname}
           onChange={onInputChange}
         />
+        {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}{' '}
+        {/* 닉네임 에러 메시지 추가 */}
         <Input
           label="이메일"
           name="email"
@@ -43,7 +73,7 @@ function EditProfile({
           placeholder="현재 비밀번호 입력"
           value={currentPassword}
           onChange={onInputChange}
-          onBlur={onCheckPassword}
+          onBlur={(e) => onCheckPassword(e.target.value)}
         />
         <Input
           label="새 비밀번호"
@@ -65,16 +95,22 @@ function EditProfile({
           disabled={!isPasswordVerified}
           className={!isPasswordVerified ? S.disabledInput : ''}
         />
-
         {passwordError && <p className={S.errorMessage}>{passwordError}</p>}
         {passwordSuccess && (
           <p className={S.successMessage}>{passwordSuccess}</p>
         )}
       </div>
 
+      {/* 이메일 알람 설정 */}
       <EmailAlarm initialTime="12:00" isChecked={false} />
+
       <div className={S.buttonGroup}>
-        <Button label="수정" color="tertiary" onClick={onSubmit} />
+        <Button
+          label="탈퇴"
+          color="gray"
+          onClick={() => console.log('회원 탈퇴')}
+        />
+        <Button label="수정" color="tertiary" onClick={() => onSubmit()} />
       </div>
     </div>
   );
