@@ -9,8 +9,14 @@ import FindIdPage from '@/pages/FindId/Page';
 import LogInPage from '@/pages/LogIn/Page';
 import MainPage from '@/pages/Main/Page';
 import CalendarPage from '@/pages/Calendar/Page';
+import BadgePage from '@/pages/Badge/Page';
+import BookmarkPage from '@/pages/Bookmark/Page';
+import RecentViewPage from '@/pages/RecentView/Page';
+import CardCollectionPage from '@/pages/CardCollection/Page';
 import CommonLayout from '@/layout/Page';
 import EditProfilePage from '@/pages/EditProfile/Page';
+import SolveProblem from './pages/SolveProblem/Page';
+import ProblemSolved from '@/pages/ProblemSolved/Page';
 
 function App() {
   return (
@@ -28,10 +34,14 @@ function App() {
             <Route path="/find-pw" element={<FindPasswordPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/edit-profile" element={<EditProfilePage />} />
-
+            <Route path="/badge" element={<BadgePage />} />
+            <Route path="/bookmark" element={<BookmarkPage />} />
+            <Route path="/recent-view" element={<RecentViewPage />} />
+            <Route path="/card-collection" element={<CardCollectionPage />} />
+            <Route path="/solve-problem" element={<SolveProblem />} />
+            <Route path="/problem-solved" element={<ProblemSolved />} />
             <Route>
               <Route path="/my-page" element={<div>마이페이지입니다</div>} />
-              <Route path="/bookmark" element={<div>북마크페이지입니다</div>} />
             </Route>
           </Route>
         </Routes>

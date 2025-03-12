@@ -26,16 +26,16 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
         />
         {/* 라우터를 활용한 버튼 */}
         <div className={S.myPageButtonContainer}>
-          <NavLink to="/library" className={S.myPageRouterBtn}>
+          <NavLink to="/bookmark" className={S.myPageRouterBtn}>
             <Button
-              label="Library"
+              label="Bookmark"
               style={{ width: '80%' }}
               color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
             />
           </NavLink>
           <NavLink to="/calendar" className={S.myPageRouterBtn}>
             <Button
-              label="Reward"
+              label="Calendar"
               style={{ width: '80%' }}
               color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
             />

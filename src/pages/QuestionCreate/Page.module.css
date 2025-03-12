@@ -1,0 +1,124 @@
+.questionCreateContainer {
+  width: 84rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--space-10);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: var(--xxxl);
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: var(--large-2);
+  font-weight: var(--semi-bold);
+  color: var(--black);
+  line-height: var(--xxxl);
+}
+
+.questionContainer {
+  width: 100%;
+  margin: var(--space-15) 0 var(--space-8) 0;
+  height: 50rem;
+  background: var(--primary-2-g);
+  border: 0.125rem solid var(--black);
+  border-radius: var(--radius-large);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.btnDelete {
+  align-self: flex-end;
+  box-sizing: border-box;
+  background: var(--gray-g);
+  border: 0.09375rem solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.btnDelete:hover {
+  background: var(--white);
+}
+
+.btnDelete img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.questionLabel {
+  width: 105px;
+  height: 51px;
+  box-sizing: border-box;
+  background: var(--secondary-g);
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.questionAnswer {
+  display: flex;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.question,
+.answer {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.answerDescription {
+  width: 100%;
+}
+
+.btnAdd {
+  position: relative;
+  width: 10rem;
+  height: 5.6rem;
+  margin: 0 auto;
+  background: var(--clicked-gray-g);
+  border: 2px solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnAdd::before {
+  content: '';
+  display: block;
+  width: 3.125rem;
+  height: 3.125rem;
+  position: relative;
+  background-image: url('/public/icons/trash-button.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.btnContainer {
+  width: 100%;
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-10);
+  justify-content: flex-end;
+}

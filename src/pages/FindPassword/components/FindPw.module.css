@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-g);
+}
+
+.title {
+  text-align: center;
+  font-size: var(--large-2);
+  font-weight: bold;
+  margin-bottom: var(--space-5);
+}
+.findPwForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 52rem;
+  height: 75%;
+  padding: 7.125rem;
+  border-radius: 2rem;
+  background: var(--light-gray, linear-gradient(0deg, #e2e2e2 0%, #fff 100%));
+}
+.submitButton {
+  width: 20rem;
+  height: 5rem;
+  font-size: var(--large);
+  font-weight: 400;
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  align-self: center;
+  text-align: center;
+}
