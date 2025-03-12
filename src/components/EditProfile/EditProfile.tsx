@@ -42,10 +42,11 @@ function EditProfile({
     <div className={S.editProfileContainer}>
       <ProfileImage src={profile.profileImage} />
 
-      <div className={S.inputWrapper}>
+      <form className={S.inputForm}>
         <Input
           label="ID"
           name="user_id"
+          type="id"
           className={S.inputId}
           value={profile.user_id}
           disabled
@@ -57,8 +58,10 @@ function EditProfile({
           value={profile.nickname}
           onChange={onInputChange}
         />
-        {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}{' '}
         {/* 닉네임 에러 메시지 추가 */}
+        {nicknameError && (
+          <p className={S.errorMessage}>{nicknameError}</p>
+        )}{' '}
         <Input
           label="이메일"
           name="email"
@@ -99,7 +102,7 @@ function EditProfile({
         {passwordSuccess && (
           <p className={S.successMessage}>{passwordSuccess}</p>
         )}
-      </div>
+      </form>
 
       {/* 이메일 알람 설정 */}
       <EmailAlarm initialTime="12:00" isChecked={false} />

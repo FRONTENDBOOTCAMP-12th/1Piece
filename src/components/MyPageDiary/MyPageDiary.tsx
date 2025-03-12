@@ -40,12 +40,12 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
               color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
             />
           </NavLink>
-          <NavLink to="/user-setting" className={S.myPageRouterBtn}>
+          <NavLink to="/edit-profile" className={S.myPageRouterBtn}>
             <Button
               label="개인정보 관리"
               style={{ width: '80%' }}
               color={
-                pathname.includes('user-setting') ? 'secondary' : 'dark-gray'
+                pathname.includes('edit-profile') ? 'secondary' : 'dark-gray'
               }
             />
           </NavLink>
