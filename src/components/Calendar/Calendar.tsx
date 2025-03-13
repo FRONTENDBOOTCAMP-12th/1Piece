@@ -29,6 +29,7 @@ function Calender({ markedDates = [] }: CalenderProps) {
         formatDay={(_, date) => date.getDate().toString()}
         minDetail="month"
         maxDetail="month"
+        calendarType="gregory"
         navigationLabel={undefined}
         showNeighboringMonth={false}
         prev2Label={null}

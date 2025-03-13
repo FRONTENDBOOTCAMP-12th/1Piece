@@ -54,6 +54,10 @@
   align-items: center;
 }
 
+.btnMoreCard:hover {
+  background: var(--white);
+}
+
 .MoreCardMessage {
   width: 100%;
   display: block;

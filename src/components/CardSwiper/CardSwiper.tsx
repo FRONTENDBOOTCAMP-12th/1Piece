@@ -75,7 +75,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
               </ProblemCard>
             </SwiperSlide>
           ))}
-          <SwiperSlide className={S.slide}>
+          <SwiperSlide>
             <div className={S.btnMoreCard}>
               <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
             </div>
