@@ -11,9 +11,6 @@ function RadioQuestion({ options }: RadioQuestionProps) {
   const [answer, setAnswer] = useState<string>('');
   return (
     <div>
-      <label className={S.radioLabel} htmlFor="radio-0">
-        선지
-      </label>
       {options.map((option, index) => {
         const id = `radio-${index}`;
         return (

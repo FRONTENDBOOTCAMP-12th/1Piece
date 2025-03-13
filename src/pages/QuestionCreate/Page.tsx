@@ -3,6 +3,7 @@ import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
+import RadioQuestion from '@/components/RadioQuestion/RadioQuestion';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
@@ -70,21 +71,24 @@ function QuestionCreatePage() {
                 <TextArea
                   name={`question-${question.id}`}
                   placeholder="문제를 입력하세요"
-                  height="17rem"
+                  height="21.5rem"
                 />
               </div>
               <div className={S.answer}>
                 <label
-                  className={S.questionLabel}
+                  className={S.anwerLabel}
                   htmlFor={`answer-${question.id}`}
                 >
                   선지
                 </label>
+                <RadioQuestion
+                  options={['보기 1', '보기 2', '보기 3', '보기 4']}
+                />
               </div>
             </div>
             <div className={S.answerDescription}>
               <label
-                className={S.questionLabel}
+                className={S.descriptionLabel}
                 htmlFor={`explanation-${question.id}`}
               >
                 해설
@@ -92,7 +96,7 @@ function QuestionCreatePage() {
               <TextArea
                 name={`explanation-${question.id}`}
                 placeholder="해설을 입력하세요"
-                height="10rem"
+                height="9.5rem"
               />
             </div>
           </div>
