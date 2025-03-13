@@ -34,7 +34,7 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
             onClick={() => navigate('/bookmark')}
           >
             <Button
-              label="Bookmark"
+              label="라이브러리"
               style={{ width: '80%' }}
               color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
             />
@@ -44,7 +44,7 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
             onClick={() => navigate('/calendar')}
           >
             <Button
-              label="Calendar"
+              label="출석과 보상"
               style={{ width: '80%' }}
               color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
             />
