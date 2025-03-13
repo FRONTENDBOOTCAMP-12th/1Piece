@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
@@ -6,12 +6,7 @@ import CardCreate from './CardCreate/CardCreate';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [questions, setQuestions] = useState([{ id: 1 }]);
-
-  const handleTagSelect = (tags: string[]) => {
-    setSelectedTags(tags);
-  };
 
   const addQuestion = () => {
     if (questions.length < 10) {
@@ -50,7 +45,7 @@ function QuestionCreatePage() {
           <label className={S.label} htmlFor="tagSelect">
             태그 선택
           </label>
-          <SelectTag onTagSelect={handleTagSelect} />
+          <SelectTag maxTags={3} />
         </div>
       </div>
 
