@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
-import RadioQuestion from '@/components/RadioQuestion/RadioQuestion';
+import CardCreate from './CardCreate/CardCreate';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
@@ -15,13 +14,17 @@ function QuestionCreatePage() {
   };
 
   const addQuestion = () => {
-    const newId =
-      questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-    setQuestions([...questions, { id: newId }]);
+    if (questions.length < 10) {
+      const newId =
+        questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
+      setQuestions([...questions, { id: newId }]);
+    }
   };
 
   const deleteQuestion = (id: number) => {
-    setQuestions(questions.filter((question) => question.id !== id));
+    if (questions.length > 1) {
+      setQuestions(questions.filter((question) => question.id !== id));
+    }
   };
 
   return (
@@ -51,56 +54,13 @@ function QuestionCreatePage() {
         </div>
       </div>
 
-      {questions.map((question) => (
-        <div key={question.id} className={S.questionContainer}>
-          <button
-            className={S.btnDelete}
-            onClick={() => deleteQuestion(question.id)}
-          >
-            <BiTrash size={24} />
-          </button>
-          <div className={S.questionInfo}>
-            <div className={S.questionAnswer}>
-              <div className={S.question}>
-                <label
-                  className={S.questionLabel}
-                  htmlFor={`question-${question.id}`}
-                >
-                  문제
-                </label>
-                <TextArea
-                  name={`question-${question.id}`}
-                  placeholder="문제를 입력하세요"
-                  height="19.8rem"
-                />
-              </div>
-              <div className={S.answer}>
-                <label
-                  className={S.anwerLabel}
-                  htmlFor={`answer-${question.id}`}
-                >
-                  선지
-                </label>
-                <RadioQuestion
-                  options={['보기 1', '보기 2', '보기 3', '보기 4']}
-                />
-              </div>
-            </div>
-            <div className={S.answerDescription}>
-              <label
-                className={S.descriptionLabel}
-                htmlFor={`explanation-${question.id}`}
-              >
-                해설
-              </label>
-              <TextArea
-                name={`explanation-${question.id}`}
-                placeholder="해설을 입력하세요"
-                height="9.5rem"
-              />
-            </div>
-          </div>
-        </div>
+      {questions.map((question, index) => (
+        <CardCreate
+          key={question.id}
+          id={question.id}
+          index={index + 1}
+          onDelete={deleteQuestion}
+        />
       ))}
 
       <Button
@@ -108,6 +68,8 @@ function QuestionCreatePage() {
         label="+"
         color={'dark-gray'}
         className={S.btnAdd}
+        onClick={addQuestion}
+        disabled={questions.length >= 10}
       />
 
       <div className={S.btnContainer}>
