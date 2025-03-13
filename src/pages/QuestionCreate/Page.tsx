@@ -3,10 +3,12 @@ import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import CardCreate from './CardCreate/CardCreate';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
   const [questions, setQuestions] = useState([{ id: 1 }]);
+  const navigate = useNavigate();
 
   const addQuestion = () => {
     if (questions.length < 10) {
@@ -20,6 +22,14 @@ function QuestionCreatePage() {
     if (questions.length > 1) {
       setQuestions(questions.filter((question) => question.id !== id));
     }
+  };
+
+  const handleSubmit = () => {
+    navigate('/problem-list');
+  };
+
+  const handleCancel = () => {
+    navigate(-1);
   };
 
   return (
@@ -69,16 +79,18 @@ function QuestionCreatePage() {
 
       <div className={S.btnContainer}>
         <Button
-          type="submit"
+          type="button"
           label="취소"
           color={'dark-gray'}
           className={S.btns}
+          onClick={handleCancel}
         />
         <Button
-          type="submit"
+          type="button"
           label="등록"
           color={'tertiary'}
           className={S.btns}
+          onClick={handleSubmit}
         />
       </div>
     </div>
