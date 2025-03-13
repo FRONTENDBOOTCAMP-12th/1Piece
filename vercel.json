@@ -7,7 +7,7 @@
     },
     {
       "source": "/api/(.*)",
-      "destination": "https://your-backend.vercel.app/api/$1"
+      "destination": "https://quzelly-backend.vercel.app/api/$1"
     }
   ],
   "builds": [
