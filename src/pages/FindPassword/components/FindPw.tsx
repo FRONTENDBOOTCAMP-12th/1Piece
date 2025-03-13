@@ -19,7 +19,12 @@ function FindPwForm() {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/reset-pw', {
+      const BACKEND_URL =
+        import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+
+      console.log('Fetching from:', BACKEND_URL);
+
+      const response = await fetch(`${BACKEND_URL}/reset-pw`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPw }),
@@ -37,6 +42,7 @@ function FindPwForm() {
 
       setMessage(result.message || '비밀번호가 성공적으로 업데이트되었습니다.');
     } catch (err) {
+      console.log('VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
       console.error('서버 오류:', err);
       setError('서버 오류가 발생했습니다. 다시 시도해 주세요.');
     }
