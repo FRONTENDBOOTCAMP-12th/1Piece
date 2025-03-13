@@ -1,7 +1,7 @@
 import Pagination from '@/components/Pagination/Pagination';
 import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import { supabase } from '@/lib/SupabaseClient';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import S from './ProblemListContainer.module.css';
@@ -36,49 +36,51 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
-  // 모달 창에 나타낼 정보를 전달하기 위한 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
 
-  const fetchItems = async (sortBy: 'popular' | 'new') => {
-    try {
-      let query = supabase.from('card').select('*, users(*)');
+  const fetchItems = useCallback(
+    async (sortBy: 'popular' | 'new') => {
+      try {
+        let query = supabase.from('card').select('*, users(*)');
 
-      if (sortBy === 'popular') {
-        query = query.order('check', { ascending: false });
-      } else if (sortBy === 'new') {
-        query = query.order('created', { ascending: false });
+        if (sortBy === 'popular') {
+          query = query.order('check', { ascending: false });
+        } else if (sortBy === 'new') {
+          query = query.order('created', { ascending: false });
+        }
+
+        const { data: fetchedData, error } = await query;
+
+        if (error) throw error;
+
+        const newData = fetchedData.map((item) => ({
+          id: `${item.id}`,
+          src: supabase.storage
+            .from('profileImg/userProfile')
+            .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
+          userName: item.users.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+        }));
+
+        const filteredData = selectedTags.length
+          ? newData.filter((item) =>
+              item.tags.some((tag) => selectedTags.includes(`${tag}`))
+            )
+          : newData;
+
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
-
-      const { data: fetchedData, error } = await query;
-
-      if (error) throw error;
-
-      const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-      }));
-
-      const filteredData = selectedTags.length
-        ? newData.filter((item) =>
-            item.tags.some((tag) => selectedTags.includes(`${tag}`))
-          )
-        : newData;
-
-      setData(filteredData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [selectedTags]
+  );
 
   const handleSortChange = (standard: 'popular' | 'new') => {
     setSortStandard(standard);
@@ -88,7 +90,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
 
   useEffect(() => {
     fetchItems(sortStandard);
-  }, [selectedTags, sortStandard]);
+  }, [sortStandard, fetchItems]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -112,7 +114,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
             className={`${S.btnSort} ${sortStandard === 'new' ? S.active : ''}`}
             onClick={() => handleSortChange('new')}
           >
-            추천순
+            최신순
           </button>
         </div>
       </div>
