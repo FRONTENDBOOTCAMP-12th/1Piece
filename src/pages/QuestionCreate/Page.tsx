@@ -71,7 +71,7 @@ function QuestionCreatePage() {
                 <TextArea
                   name={`question-${question.id}`}
                   placeholder="문제를 입력하세요"
-                  height="21.5rem"
+                  height="19.8rem"
                 />
               </div>
               <div className={S.answer}>
