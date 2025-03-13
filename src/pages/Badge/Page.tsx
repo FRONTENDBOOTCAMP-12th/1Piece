@@ -1,9 +1,8 @@
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import Calendar from '@/components/Calendar/Calendar';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import S from './Page.module.css';
 
-function CalendarPage() {
+function BadgePage() {
   const tabs = [
     { name: '달력', path: '/calendar' },
     { name: '뱃지', path: '/badge' },
@@ -11,12 +10,10 @@ function CalendarPage() {
 
   return (
     <div className={S.MyPageContainer}>
-      <MyPageDiary title="C A L E N D A R">
-        <Calendar />
-      </MyPageDiary>
+      <MyPageDiary title="B A D G E">뱃지 공간</MyPageDiary>
       <MyPageTab tabs={tabs} />
     </div>
   );
 }
 
-export default CalendarPage;
+export default BadgePage;

@@ -31,7 +31,7 @@ function ProfileImage({
         <input
           type="file"
           accept="image/*"
-          className={S.input}
+          className={S.inputImage}
           onChange={handleFileChange}
         />
         <span className={S.icon}>

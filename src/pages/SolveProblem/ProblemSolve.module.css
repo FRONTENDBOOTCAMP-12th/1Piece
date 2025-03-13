@@ -1,0 +1,11 @@
+.problemContainer {
+  width: 60vw;
+  min-width: 64rem;
+  margin-inline: auto;
+}
+
+.solveProblemTitle {
+  font-size: var(--xl);
+  text-align: center;
+  margin-block-start: 7.5rem;
+}

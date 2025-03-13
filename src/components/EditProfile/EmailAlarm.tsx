@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useState, useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import S from './EditProfile.module.css';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 interface EmailAlarmProps {
   initialTime?: string;
   isChecked?: boolean;
-  onSave: (time: string, checked: boolean) => void;
+  onSave?: (time: string, checked: boolean) => void;
 }
 
 function EmailAlarm({
@@ -19,13 +19,15 @@ function EmailAlarm({
   const [time, setTime] = useState(dayjs(`2025-01-01T${initialTime}`));
   const [checked, setChecked] = useState(isChecked);
 
-  /*  상태 변경될 때만 onSave 실행 */
+  /* 상태 변경될 때만 onSave 실행 (onSave가 존재할 경우에만 실행) */
   useEffect(() => {
-    onSave(time.format('HH:mm'), checked);
-  }, [time, checked]);
+    if (onSave) {
+      onSave(time.format('HH:mm'), checked);
+    }
+  }, [time, checked, onSave]);
 
   const handleTimeChange = (newTime: dayjs.Dayjs | null) => {
-    if (newTime) setTime(newTime); // 부모 상태를 직접 수정하지 않음
+    if (newTime) setTime(newTime);
   };
 
   const handleToggle = () => setChecked((prev) => !prev);

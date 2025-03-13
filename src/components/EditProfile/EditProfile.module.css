@@ -5,21 +5,21 @@
   --timepicker-height: 3.5rem;
 }
 
+/* 컨테이너 */
 .editProfileContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: var(--space-4);
-  padding: var(--space-6);
+  padding-inline: var(--space-6);
   width: 100%;
 }
 
+/* 프로필 이미지 */
 .profileImageContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
 }
 
@@ -27,21 +27,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   position: relative;
   width: var(--img-size);
   aspect-ratio: 1/1;
   border: none;
   border-radius: var(--rounded-full);
-
   background: transparent;
   transition: outline 0.2s ease-in-out;
   cursor: pointer;
-
-  &:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-  }
 }
 
 .profileImage {
@@ -51,15 +44,58 @@
   border-radius: var(--rounded-full);
 }
 
-.input {
+.profileImageButton:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.inputImage {
   display: none;
 }
 
+.inputId {
+  font-family: inherit;
+  font-size: var(--default);
+  color: var(--black);
+  cursor: not-allowed;
+}
+
+/* 입력 필드 */
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 70%;
+}
+
+/* input {
+  width: 100%;
+} */
+
+/* .inputForm label {
+  background-color: darkblue;
+  width: 100px;
+} */
+
+/* 비활성화된 입력 필드 스타일 */
+input:disabled,
+.disabledInput {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+input:disabled:focus,
+.disabledInput:focus {
+  outline: none;
+}
+
+/* 아이콘 */
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-
   position: absolute;
   bottom: 5px;
   right: 5px;
@@ -68,37 +104,21 @@
   height: var(--icon-size);
   padding: 0.375rem;
   border-radius: 50%;
-
   background: rgba(0, 0, 0, 0.7);
   color: white;
   cursor: pointer;
   transition: opacity 0.3s;
-
-  &:hover {
-    opacity: 0.8;
-  }
 }
 
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-
-  gap: var(--space-4);
-  width: 100%;
+.icon:hover {
+  opacity: 0.8;
 }
 
-.inputBox {
-  display: flex;
-  flex-direction: column;
-
-  gap: var(--space-2);
-}
-
+/* 이메일 알람 */
 .emailAlarmContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
   gap: var(--space-2);
   width: 100%;
 }
@@ -111,19 +131,20 @@
 .emailAlarmWrapper {
   display: flex;
   align-items: center;
-
   gap: var(--space-4);
 }
 
 .emailAlarmTimePicker {
   width: var(--timepicker-width);
   height: var(--timepicker-height);
+  /* background-color: var(--white); */
+  /* border-radius: var(--rounded-full); */
 }
 
+/* 스위치 */
 .switch {
   position: relative;
   display: inline-block;
-
   width: 3.125rem;
   height: 1.75rem;
   cursor: pointer;
@@ -142,7 +163,6 @@
   inset: 0;
   border-radius: var(--rounded-full);
   border: 1px solid #c4c4c4;
-
   transition: 0.4s;
   background: linear-gradient(to bottom, #adadad, #ffffff);
 }
@@ -155,7 +175,6 @@
   left: 1px;
   bottom: 1px;
   border-radius: 50%;
-
   background: linear-gradient(#e2e2e2, #ffffff);
   transition: 0.4s;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
@@ -174,10 +193,10 @@
   outline-offset: 2px;
 }
 
+/* 버튼 그룹 */
 .buttonGroup {
   display: flex;
   justify-content: center;
-
   gap: var(--space-4);
   margin-top: var(--space-6);
 }
