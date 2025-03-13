@@ -50,22 +50,16 @@
   box-sizing: border-box;
   background: var(--gray-g);
   border: 0.09375rem solid var(--black);
-  border-radius: var(--rounded-full);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  cursor: pointer;
 }
 
 .btnDelete:hover {
   background: var(--white);
-}
-
-.btnDelete img {
-  width: 1.5rem;
-  height: 1.5rem;
 }
 
 .questionLabel {
@@ -114,14 +108,8 @@
 }
 
 .btnAdd::before {
-  content: '';
-  display: block;
   width: 3.125rem;
   height: 3.125rem;
-  position: relative;
-  background-image: url('/public/icons/trash-button.svg');
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .btnContainer {

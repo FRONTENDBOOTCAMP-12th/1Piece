@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import TextArea from '@/components/TextArea/TextArea'; // TextArea 컴포넌트 import
+import { BiPlus } from 'react-icons/bi';
+import { BiTrash } from 'react-icons/bi';
+import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import S from './Page.module.css';
@@ -55,7 +57,7 @@ function QuestionCreatePage() {
             className={S.btnDelete}
             onClick={() => deleteQuestion(question.id)}
           >
-            <img src="/public/icons/trash-button.svg" alt="Delete" />
+            <BiTrash size={24} />
           </button>
           <div className={S.questionInfo}>
             <div className={S.questionAnswer}>
@@ -69,7 +71,7 @@ function QuestionCreatePage() {
                 <TextArea
                   name={`question-${question.id}`}
                   placeholder="문제를 입력하세요"
-                  height="20rem"
+                  height="17rem"
                 />
               </div>
               <div className={S.answer}>
@@ -98,11 +100,9 @@ function QuestionCreatePage() {
         </div>
       ))}
 
-      <button
-        className={S.btnAdd}
-        onClick={addQuestion}
-        aria-label="문제 추가"
-      />
+      <button className={S.btnAdd} onClick={addQuestion} aria-label="문제 추가">
+        <BiPlus size={36} />
+      </button>
 
       <div className={S.btnContainer}>
         <Button label="취소" />
