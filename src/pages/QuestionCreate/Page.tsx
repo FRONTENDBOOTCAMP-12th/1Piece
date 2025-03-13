@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BiPlus } from 'react-icons/bi';
 import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
@@ -100,13 +99,26 @@ function QuestionCreatePage() {
         </div>
       ))}
 
-      <button className={S.btnAdd} onClick={addQuestion} aria-label="문제 추가">
-        <BiPlus size={36} />
-      </button>
+      <Button
+        type="submit"
+        label="+"
+        color={'dark-gray'}
+        className={S.btnAdd}
+      />
 
       <div className={S.btnContainer}>
-        <Button label="취소" />
-        <Button label="등록" />
+        <Button
+          type="submit"
+          label="취소"
+          color={'dark-gray'}
+          className={S.btns}
+        />
+        <Button
+          type="submit"
+          label="등록"
+          color={'tertiary'}
+          className={S.btns}
+        />
       </div>
     </div>
   );

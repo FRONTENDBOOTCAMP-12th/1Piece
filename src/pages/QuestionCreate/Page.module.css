@@ -98,18 +98,15 @@
   position: relative;
   width: 10rem;
   height: 5.6rem;
-  margin: 0 auto;
   background: var(--clicked-gray-g);
   border: 2px solid var(--black);
   border-radius: var(--rounded-full);
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.btnAdd::before {
-  width: 3.125rem;
-  height: 3.125rem;
+  font-size: 4rem;
+  font-family: var(--pretendard);
+  padding-bottom: 0.8rem;
 }
 
 .btnContainer {
@@ -118,4 +115,16 @@
   gap: var(--space-5);
   margin-top: var(--space-10);
   justify-content: flex-end;
+}
+
+.btns {
+  width: 10rem;
+  height: 5rem;
+  font-size: var(--large);
+  font-weight: 400;
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  align-self: center;
+  text-align: center;
 }

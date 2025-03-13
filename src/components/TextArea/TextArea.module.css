@@ -16,4 +16,5 @@
 .textArea::placeholder {
   text-align: start;
   font-weight: var(--regular);
+  font-family: var(--pretendard);
 }
