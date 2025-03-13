@@ -1,6 +1,6 @@
 .questionContainer {
   width: 100%;
-  margin: var(--space-15) 0 var(--space-8) 0;
+  margin: var(--space-1) 0 var(--space-8) 0;
   height: 49rem;
   background: var(--primary-2-g);
   border: 0.125rem solid var(--black);
