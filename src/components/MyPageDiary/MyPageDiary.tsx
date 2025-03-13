@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import Button from '../Button/Button';
 import S from './MyPageDiary.module.css';
 import React from 'react';
@@ -9,8 +9,11 @@ interface MyPageDiaryProps {
 }
 
 function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // 현재 pathname을 활용하여 버튼 색상 조정
-  const pathname = new URL(location.href).pathname;
+  const pathname = location.pathname;
 
   return (
     // 디자인을 위한 container
@@ -26,21 +29,30 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
         />
         {/* 라우터를 활용한 버튼 */}
         <div className={S.myPageButtonContainer}>
-          <NavLink to="/bookmark" className={S.myPageRouterBtn}>
+          <button
+            className={S.myPageRouterBtn}
+            onClick={() => navigate('/bookmark')}
+          >
             <Button
               label="Bookmark"
               style={{ width: '80%' }}
               color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
             />
-          </NavLink>
-          <NavLink to="/calendar" className={S.myPageRouterBtn}>
+          </button>
+          <button
+            className={S.myPageRouterBtn}
+            onClick={() => navigate('/calendar')}
+          >
             <Button
               label="Calendar"
               style={{ width: '80%' }}
               color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
             />
-          </NavLink>
-          <NavLink to="/edit-profile" className={S.myPageRouterBtn}>
+          </button>
+          <button
+            className={S.myPageRouterBtn}
+            onClick={() => navigate('/edit-profile')}
+          >
             <Button
               label="개인정보 관리"
               style={{ width: '80%' }}
@@ -48,7 +60,7 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
                 pathname.includes('edit-profile') ? 'secondary' : 'dark-gray'
               }
             />
-          </NavLink>
+          </button>
         </div>
       </div>
       <div className={S.rightDiary}>

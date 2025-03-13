@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { useNavigate, useLocation } from 'react-router'; // useLocation 추가
 import S from './MyPageTab.module.css';
 
 interface MyPageTabProps {
@@ -6,19 +6,27 @@ interface MyPageTabProps {
 }
 
 function MyPageTab({ tabs }: MyPageTabProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTabClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <nav className={S.tabList}>
-      {tabs.map((tab) => (
-        <NavLink
-          key={tab.path}
-          to={tab.path}
-          className={({ isActive }) =>
-            `${S.tab} ${isActive ? S.activeTab : ''}`
-          }
-        >
-          {tab.name}
-        </NavLink>
-      ))}
+      {tabs.map((tab) => {
+        const isActive = location.pathname === tab.path;
+        return (
+          <button
+            key={tab.path}
+            className={`${S.tab} ${isActive ? S.activeTab : ''}`}
+            onClick={() => handleTabClick(tab.path)}
+          >
+            {tab.name}
+          </button>
+        );
+      })}
     </nav>
   );
 }
