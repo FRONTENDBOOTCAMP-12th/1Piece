@@ -1,17 +1,20 @@
 {
   "version": 2,
-  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
+  "rewrites": [
+    {
+      "source": "/[^.]+",
+      "destination": "/"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://quzelly-backend.vercel.app/api/$1"
+    }
+  ],
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://your-backend.vercel.app/api/$1"
     }
   ]
 }
