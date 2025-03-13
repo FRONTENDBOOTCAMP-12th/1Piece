@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
-import Input from '@/components/Input/Input';
+import { useState } from 'react';
+import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
+import CardCreate from './CardCreate/CardCreate';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 
 function QuestionCreatePage() {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [questions, setQuestions] = useState([{ id: 1 }]);
-
-  const handleTagSelect = (tags: string[]) => {
-    setSelectedTags(tags);
-  };
+  const navigate = useNavigate();
 
   const addQuestion = () => {
-    const newId =
-      questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-    setQuestions([...questions, { id: newId }]);
+    if (questions.length < 10) {
+      const newId =
+        questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
+      setQuestions([...questions, { id: newId }]);
+    }
   };
 
   const deleteQuestion = (id: number) => {
-    setQuestions(questions.filter((question) => question.id !== id));
+    if (questions.length > 1) {
+      setQuestions(questions.filter((question) => question.id !== id));
+    }
+  };
+
+  const handleSubmit = () => {
+    navigate('/problem-list');
+  };
+
+  const handleCancel = () => {
+    navigate(-1);
   };
 
   return (
@@ -30,97 +40,58 @@ function QuestionCreatePage() {
           <label className={S.label} htmlFor="title">
             제목
           </label>
-          <Input
-            label="문제 세트 제목"
-            name="title"
-            type="text"
-            placeholder="문제 세트 제목을 입력하세요"
-            hiddenLabel={true}
-          />
+          <TextArea name="title" placeholder="문제 세트 제목을 입력하세요" />
         </div>
         <div className={S.description}>
           <label className={S.label} htmlFor="description">
             상세 설명
           </label>
-          <Input
-            label="문제 세트 상세 설명"
+          <TextArea
             name="description"
-            type="text"
             placeholder="문제 세트 상세 설명을 입력하세요"
-            hiddenLabel={true}
           />
         </div>
         <div className={S.tagSelect}>
           <label className={S.label} htmlFor="tagSelect">
             태그 선택
           </label>
-          <SelectTag onTagSelect={handleTagSelect} />
+          <SelectTag maxTags={3} />
         </div>
       </div>
 
-      {questions.map((question) => (
-        <div key={question.id} className={S.questionContainer}>
-          <button
-            className={S.btnDelete}
-            onClick={() => deleteQuestion(question.id)}
-          >
-            <img src="/public/icons/trash-button.svg" alt="Delete" />
-          </button>
-          <div className={S.questionInfo}>
-            <div className={S.questionAnswer}>
-              <div className={S.question}>
-                <label
-                  className={S.questionLabel}
-                  htmlFor={`question-${question.id}`}
-                >
-                  문제
-                </label>
-                <Input
-                  label="문제"
-                  name={`question-${question.id}`}
-                  type="text"
-                  placeholder="문제를 입력하세요"
-                  hiddenLabel={true}
-                />
-              </div>
-              <div className={S.answer}>
-                <label
-                  className={S.questionLabel}
-                  htmlFor={`answer-${question.id}`}
-                >
-                  선지
-                </label>
-                {/* Answer options would go here */}
-              </div>
-            </div>
-            <div className={S.answerDescription}>
-              <label
-                className={S.questionLabel}
-                htmlFor={`explanation-${question.id}`}
-              >
-                해설
-              </label>
-              <Input
-                label="문제 해설"
-                name={`explanation-${question.id}`}
-                type="text"
-                placeholder="해설을 입력하세요"
-                hiddenLabel={true}
-              />
-            </div>
-          </div>
-        </div>
+      {questions.map((question, index) => (
+        <CardCreate
+          key={question.id}
+          id={question.id}
+          index={index + 1}
+          onDelete={deleteQuestion}
+        />
       ))}
 
-      <button
+      <Button
+        type="submit"
+        label="+"
+        color={'dark-gray'}
         className={S.btnAdd}
         onClick={addQuestion}
-        aria-label="문제 추가"
+        disabled={questions.length >= 10}
       />
 
       <div className={S.btnContainer}>
-        <Button label="취소" />
-        <Button label="등록" />
+        <Button
+          type="button"
+          label="취소"
+          color={'dark-gray'}
+          className={S.btns}
+          onClick={handleCancel}
+        />
+        <Button
+          type="button"
+          label="등록"
+          color={'tertiary'}
+          className={S.btns}
+          onClick={handleSubmit}
+        />
       </div>
     </div>
   );
