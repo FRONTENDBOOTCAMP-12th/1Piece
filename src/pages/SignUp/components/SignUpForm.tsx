@@ -118,33 +118,49 @@ function SignUpForm() {
     startIsSubmitting();
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) {
-        setErrors({ ...errors, email: error.message, password: error.message });
-      } else {
-        const { error: profileError } = await supabase.from('users').upsert({
-          user_id: formData.id,
+      const { data: signUpData, error: signUpError } =
+        await supabase.auth.signUp({
           email: formData.email,
-          nickname: formData.nickname,
+          password: formData.password,
         });
 
-        if (profileError) {
-          console.error('프로필 테이블 삽입 실패:', profileError.message);
-          setErrors({ ...errors, profile: '프로필 저장에 실패했습니다.' });
-        } else {
-          setSuccess('회원가입에 성공했습니다.');
-          const isConfirmed = window.confirm(
-            '회원가입에 성공했습니다. 이메일을 확인해주세요'
-          );
-          if (isConfirmed) {
-            setTimeout(() => {
-              navigate('/login');
-            }, 1000);
-          }
+      if (signUpError) {
+        setErrors({
+          ...errors,
+          email: signUpError.message,
+          password: signUpError.message,
+        });
+      }
+
+      const user = signUpData?.user;
+
+      if (!user) {
+        setErrors({
+          ...errors,
+          email: '회원가입에 실패했습니다. 다시 시도해주세요.',
+        });
+        return;
+      }
+
+      const { error: profileError } = await supabase.from('users').upsert({
+        user_id: formData.id,
+        email: formData.email,
+        nickname: formData.nickname,
+        auth_uid: user.id,
+      });
+
+      if (profileError) {
+        console.error('프로필 테이블 삽입 실패:', profileError.message);
+        setErrors({ ...errors, profile: '프로필 저장에 실패했습니다.' });
+      } else {
+        setSuccess('회원가입에 성공했습니다.');
+        const isConfirmed = window.confirm(
+          '회원가입에 성공했습니다. 이메일을 확인해주세요'
+        );
+        if (isConfirmed) {
+          setTimeout(() => {
+            navigate('/login');
+          }, 1000);
         }
       }
     } catch {
