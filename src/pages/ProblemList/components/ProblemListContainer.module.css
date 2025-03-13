@@ -42,3 +42,23 @@
   flex-direction: row;
   margin-bottom: var(--space-6);
 }
+
+.btnQuestionCreate {
+  display: flex;
+  width: 40rem;
+  height: 10.5rem;
+  background: var(--gray-g);
+  text-align: center;
+  border: 2px solid var(--black);
+  border-radius: 16px;
+  align-items: center;
+}
+.questionCreateMessage {
+  width: 100%;
+  display: block;
+  font-size: var(--xl);
+}
+
+.btnQuestionCreate:hover {
+  background: var(--white);
+}

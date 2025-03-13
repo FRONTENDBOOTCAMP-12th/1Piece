@@ -145,6 +145,11 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
                 </ProblemCard>
               </SwiperSlide>
             ))}
+            <SwiperSlide>
+              <div className={S.btnQuestionCreate}>
+                <p className={S.questionCreateMessage}>클릭해서 카드 만들기</p>
+              </div>
+            </SwiperSlide>
           </Swiper>
         </div>
       )}
