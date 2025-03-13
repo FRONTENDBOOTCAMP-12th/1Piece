@@ -31,13 +31,13 @@ function FindPwForm() {
         credentials: 'include',
       });
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData: { error: string } = await response.json();
         console.error('응답 에러:', errorData);
         setError(errorData.error || '비밀번호 재설정 실패');
         return;
       }
 
-      const result = await response.json();
+      const result: { message: string } = await response.json();
       console.log('서버 응답:', result);
 
       setMessage(result.message || '비밀번호가 성공적으로 업데이트되었습니다.');
