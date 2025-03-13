@@ -1,12 +1,16 @@
-import Pagination from '@/components/Pagination/Pagination';
-import ProblemCard from '@/components/ProblemCard/ProblemCard';
-import { supabase } from '@/lib/SupabaseClient';
 import React, { useEffect, useState, useCallback } from 'react';
+import { supabase } from '@/lib/SupabaseClient';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import S from './ProblemListContainer.module.css';
+import { useNavigate } from 'react-router';
+
 import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import Pagination from '@/components/Pagination/Pagination';
+import ProblemCard from '@/components/ProblemCard/ProblemCard';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+
+import S from './ProblemListContainer.module.css';
+
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
@@ -38,6 +42,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
   );
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
+  const navigate = useNavigate();
 
   const fetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
@@ -86,6 +91,10 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
     setSortStandard(standard);
     setCurrentPage(1);
     fetchItems(standard);
+  };
+
+  const handleCreateCardClick = () => {
+    navigate('/question-create');
   };
 
   useEffect(() => {
@@ -146,9 +155,13 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
               </SwiperSlide>
             ))}
             <SwiperSlide>
-              <div className={S.btnQuestionCreate}>
+              <button
+                className={S.btnQuestionCreate}
+                onClick={handleCreateCardClick}
+                aria-label="카드 만들기"
+              >
                 <p className={S.questionCreateMessage}>클릭해서 카드 만들기</p>
-              </div>
+              </button>
             </SwiperSlide>
           </Swiper>
         </div>
