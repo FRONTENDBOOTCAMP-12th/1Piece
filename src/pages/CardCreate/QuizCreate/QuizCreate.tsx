@@ -1,6 +1,6 @@
 import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
-import RadioQuestion from '@/components/QuizRadio/QuizRadio';
+import QuizRadio from '@/components/QuizRadio/QuizRadio';
 import S from './QuizCreate.module.css';
 
 interface QuizCreateProps {
@@ -34,7 +34,7 @@ function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
             <label className={S.anwerLabel} htmlFor={`answer-${id}`}>
               선지
             </label>
-            <RadioQuestion options={['정답', '오답', '오답', '오답']} />
+            <QuizRadio options={['정답', '오답', '오답', '오답']} />
           </div>
         </div>
         <div className={S.answerDescription}>
