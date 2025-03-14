@@ -89,7 +89,7 @@ function EditProfileContainer() {
         setPasswordError('');
         setIsPasswordVerified(true);
       }
-    } catch (err) {
+    } catch {
       setPasswordError('비밀번호 확인 중 오류가 발생했습니다.');
     }
   };

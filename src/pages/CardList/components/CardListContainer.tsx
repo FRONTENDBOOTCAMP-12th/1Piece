@@ -4,19 +4,19 @@ import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router';
 
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import CardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
-import ProblemCard from '@/components/ProblemCard/ProblemCard';
+import Card from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
-import S from './ProblemListContainer.module.css';
+import S from './CardListContainer.module.css';
 
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-export interface ProblemCardData {
+export interface CardData {
   id: string;
   src: string;
   userName: string;
@@ -30,13 +30,13 @@ type CardSwiperProps = React.ComponentProps<'h2'> & {
   selectedTags?: string[];
 };
 
-const ProblemListContainer: React.FC<CardSwiperProps> = ({
+const CardListContainer: React.FC<CardSwiperProps> = ({
   selectedTags = [],
   children,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<ProblemCardData[]>([]);
+  const [data, setData] = useState<CardData[]>([]);
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
@@ -94,7 +94,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
   };
 
   const handleCreateCardClick = () => {
-    navigate('/question-create');
+    navigate('/card-create');
   };
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
           >
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
-                <ProblemCard
+                <Card
                   id={item.id}
                   src={item.src}
                   userName={item.userName}
@@ -151,7 +151,7 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
                   description={item.description}
                 >
                   {item.problemTitle}
-                </ProblemCard>
+                </Card>
               </SwiperSlide>
             ))}
             <SwiperSlide>
@@ -172,16 +172,16 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-      <ProblemCardModal
+      <CardModal
         src={cardInfo.src}
         tags={cardInfo.tags}
         userName={cardInfo.userName}
         description={cardInfo.description}
       >
         {cardInfo.title}
-      </ProblemCardModal>
+      </CardModal>
     </div>
   );
 };
 
-export default ProblemListContainer;
+export default CardListContainer;

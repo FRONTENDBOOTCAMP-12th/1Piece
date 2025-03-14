@@ -60,7 +60,7 @@ function LogInForm() {
         <div className={S.findLink}>
           <a href="/find-id">아이디 찾기</a>
           &nbsp;|&nbsp;
-          <a href="/find-pw">비밀번호 찾기</a>
+          <a href="/find-password">비밀번호 찾기</a>
         </div>
         {error && <div>{error}</div>}
         <div className={S.buttonContainer}>

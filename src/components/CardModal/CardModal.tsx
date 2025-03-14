@@ -1,23 +1,23 @@
-import S from './ProblemCardModal.module.css';
-import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
+import S from './CardModal.module.css';
+import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { NavLink } from 'react-router';
 
-type ProblemCardProps = React.ComponentProps<'img'> &
+type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
     userName: string;
     tags: string[];
     description: string;
   };
 
-function ProblemCardModal({
+function CardModal({
   src,
   tags,
   userName,
   children,
   description,
-}: ProblemCardProps) {
+}: CardModalProps) {
   // 모달의 오픈 여부를 나타내는 상태
   const isVisible = useModalVisibleStore((state) => state.isVisible);
   // 모달을 닫아주는 함수
@@ -41,7 +41,7 @@ function ProblemCardModal({
             <p className={S.problemTitle}>{children}</p>
             <div className={S.tagContainer}>
               {tags.map((item) => (
-                <ProblemCardTag key={item}>{item}</ProblemCardTag>
+                <CardTag key={item}>{item}</CardTag>
               ))}
             </div>{' '}
             <p className={S.description}>{description}</p>
@@ -57,7 +57,7 @@ function ProblemCardModal({
             취소
           </RoundedButton>
           {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
-          <NavLink to={`/solve-problem/?problemId=${id}`}>
+          <NavLink to={`/quiz-play/?problemId=${id}`}>
             <RoundedButton
               color="primary"
               size="large"
@@ -73,4 +73,4 @@ function ProblemCardModal({
   );
 }
 
-export default ProblemCardModal;
+export default CardModal;

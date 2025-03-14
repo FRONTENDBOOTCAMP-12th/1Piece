@@ -1,13 +1,13 @@
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
-import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
+import CardModal from '@/components/CardModal/CardModal';
+import CardGrid from '@/components/CardGrid/CardGrid';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
 
-interface ProblemCardData {
+interface CardData {
   id: string;
   src: string;
   userName: string;
@@ -21,10 +21,10 @@ function RecentViewPage() {
   const tabs = [
     { name: '북마크', path: '/bookmark' },
     { name: '최근본', path: '/recent-view' },
-    { name: '작성글', path: '/card-collection' },
+    { name: '작성글', path: '/card-written' },
   ];
 
-  const [data, setData] = useState<ProblemCardData[]>([]);
+  const [data, setData] = useState<CardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
@@ -64,17 +64,17 @@ function RecentViewPage() {
   return (
     <div className={S.MyPageContainer}>
       <MyPageDiary title="R E C E N T V I E W">
-        <ProblemGrid data={data} loading={loading} />
+        <CardGrid data={data} loading={loading} />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />
-      <ProblemCardModal
+      <CardModal
         src={cardInfo.src}
         tags={cardInfo.tags}
         userName={cardInfo.userName}
         description={cardInfo.description}
       >
         {cardInfo.title}
-      </ProblemCardModal>
+      </CardModal>
     </div>
   );
 }

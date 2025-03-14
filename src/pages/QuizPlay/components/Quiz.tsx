@@ -1,11 +1,11 @@
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import Option from '@/components/Option/Option';
-import S from './Problem.module.css';
+import S from './Quiz.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { FaArrowRight } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
 
-function Problem() {
+function Quiz() {
   const [isVisibleDesc, setIsVisibleDesc] = useState(false);
   const descRef = useRef<HTMLDivElement>(null);
 
@@ -64,4 +64,4 @@ function Problem() {
   );
 }
 
-export default Problem;
+export default Quiz;
