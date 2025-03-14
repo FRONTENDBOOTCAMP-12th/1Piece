@@ -3,7 +3,7 @@ import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
 
-function ProblemSolvedPage() {
+function QuizCompletePage() {
   return (
     <div className={S.pageContainer}>
       <QuizResult />
@@ -15,4 +15,4 @@ function ProblemSolvedPage() {
   );
 }
 
-export default ProblemSolvedPage;
+export default QuizCompletePage;
