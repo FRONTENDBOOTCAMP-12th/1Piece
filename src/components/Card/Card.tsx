@@ -1,5 +1,5 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
-import ProblemCardTag from '../CardTag/CardTag';
+import CardTag from '../CardTag/CardTag';
 import BookMark from './BookMark';
 import S from './Card.module.css';
 import { type CardInfo } from '@/lib/ProblemModalState';
@@ -56,7 +56,7 @@ function Card({
         {/* 더미 텍스트 이후 카드 태그 컴포넌트가 대체 될 예정 */}
         <div className={S.tagContainer}>
           {tags.map((item) => (
-            <ProblemCardTag key={item}>{item}</ProblemCardTag>
+            <CardTag key={item}>{item}</CardTag>
           ))}
         </div>
       </div>

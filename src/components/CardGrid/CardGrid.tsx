@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
-import ProblemCard from '@/components/Card/Card';
+import Card from '@/components/Card/Card';
 import Pagination from '@/components/Pagination/Pagination';
 import S from './CardGrid.module.css';
 
@@ -59,7 +59,7 @@ const CardGrid: React.FC<CardSwiperProps> = ({
           >
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
-                <ProblemCard
+                <Card
                   id={item.id}
                   src={item.src}
                   userName={item.userName}
@@ -68,7 +68,7 @@ const CardGrid: React.FC<CardSwiperProps> = ({
                   description={item.description}
                 >
                   {item.problemTitle}
-                </ProblemCard>
+                </Card>
               </SwiperSlide>
             ))}
           </Swiper>

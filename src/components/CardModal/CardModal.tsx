@@ -1,5 +1,5 @@
 import S from './CardModal.module.css';
-import ProblemCardTag from '../CardTag/CardTag';
+import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { NavLink } from 'react-router';
@@ -41,7 +41,7 @@ function CardModal({
             <p className={S.problemTitle}>{children}</p>
             <div className={S.tagContainer}>
               {tags.map((item) => (
-                <ProblemCardTag key={item}>{item}</ProblemCardTag>
+                <CardTag key={item}>{item}</CardTag>
               ))}
             </div>{' '}
             <p className={S.description}>{description}</p>
