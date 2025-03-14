@@ -82,14 +82,14 @@ function CardCreatePage() {
           type="button"
           label="취소"
           color={'dark-gray'}
-          className={S.btns}
+          className={S.btnCancel}
           onClick={handleCancel}
         />
         <Button
           type="button"
           label="등록"
           color={'tertiary'}
-          className={S.btns}
+          className={S.btnSubmit}
           onClick={handleSubmit}
         />
       </div>
