@@ -1,12 +1,12 @@
-import S from './RadioQuestion.module.css';
+import S from './QuizRadio.module.css';
 import { IoCheckmark } from 'react-icons/io5';
 import TextArea from '@/components/TextArea/TextArea';
 
-interface RadioQuestionProps {
+interface QuizRadioProps {
   options: string[];
 }
 
-function RadioQuestion({ options }: RadioQuestionProps) {
+function QuizRadio({ options }: QuizRadioProps) {
   return (
     <div>
       {options.map((_, index) => {
@@ -36,4 +36,4 @@ function RadioQuestion({ options }: RadioQuestionProps) {
   );
 }
 
-export default RadioQuestion;
+export default QuizRadio;

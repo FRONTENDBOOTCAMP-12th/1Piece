@@ -1,15 +1,15 @@
 import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
 import RadioQuestion from '@/components/QuizRadio/QuizRadio';
-import S from './CardCreate.module.css';
+import S from './QuizCreate.module.css';
 
-interface CardCreateProps {
+interface QuizCreateProps {
   id: number;
   index: number;
   onDelete: (id: number) => void;
 }
 
-function CardCreate({ id, index, onDelete }: CardCreateProps) {
+function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
   return (
     <div className={S.questionContainer}>
       <div className={S.cardHeader}>
@@ -52,4 +52,4 @@ function CardCreate({ id, index, onDelete }: CardCreateProps) {
   );
 }
 
-export default CardCreate;
+export default QuizCreate;

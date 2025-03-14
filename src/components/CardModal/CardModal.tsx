@@ -1,17 +1,23 @@
-import S from './ProblemCardModal.module.css';
+import S from './CardModal.module.css';
 import ProblemCardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { NavLink } from 'react-router';
 
-type CardProps = React.ComponentProps<'img'> &
+type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
     userName: string;
     tags: string[];
     description: string;
   };
 
-function CardModal({ src, tags, userName, children, description }: CardProps) {
+function CardModal({
+  src,
+  tags,
+  userName,
+  children,
+  description,
+}: CardModalProps) {
   // 모달의 오픈 여부를 나타내는 상태
   const isVisible = useModalVisibleStore((state) => state.isVisible);
   // 모달을 닫아주는 함수

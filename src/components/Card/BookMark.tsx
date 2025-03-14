@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import S from './ProblemCard.module.css';
+import S from './Card.module.css';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
 type BookMarkProps = React.ComponentProps<'button'> & {

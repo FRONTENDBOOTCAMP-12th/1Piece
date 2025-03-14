@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import SelectTag from '@/components/SelectTag/SelectTag';
-import ProblemListContainer from './components/ProblemListContainer';
+import ProblemListContainer from './components/CardListContainer';
 import S from './Page.module.css';
 
-function ProblemListPage() {
+function CardListPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const handleTagSelect = (tags: string[]) => {
@@ -19,4 +19,4 @@ function ProblemListPage() {
   );
 }
 
-export default ProblemListPage;
+export default CardListPage;

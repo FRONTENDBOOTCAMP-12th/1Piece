@@ -9,14 +9,14 @@ import Pagination from '@/components/Pagination/Pagination';
 import ProblemCard from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
-import S from './ProblemListContainer.module.css';
+import S from './CardListContainer.module.css';
 
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-export interface ProblemCardData {
+export interface CardData {
   id: string;
   src: string;
   userName: string;
@@ -30,13 +30,13 @@ type CardSwiperProps = React.ComponentProps<'h2'> & {
   selectedTags?: string[];
 };
 
-const ProblemListContainer: React.FC<CardSwiperProps> = ({
+const CardListContainer: React.FC<CardSwiperProps> = ({
   selectedTags = [],
   children,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<ProblemCardData[]>([]);
+  const [data, setData] = useState<CardData[]>([]);
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
@@ -184,4 +184,4 @@ const ProblemListContainer: React.FC<CardSwiperProps> = ({
   );
 };
 
-export default ProblemListContainer;
+export default CardListContainer;

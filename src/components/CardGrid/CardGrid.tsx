@@ -3,14 +3,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
 import ProblemCard from '@/components/Card/Card';
 import Pagination from '@/components/Pagination/Pagination';
-import S from './ProblemGrid.module.css';
+import S from './CardGrid.module.css';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
 
-export interface ProblemCardData {
+export interface CardData {
   id: string;
   src: string;
   userName: string;
@@ -21,11 +21,11 @@ export interface ProblemCardData {
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
-  data: ProblemCardData[]; // 외부에서 데이터를 받아옴
+  data: CardData[]; // 외부에서 데이터를 받아옴
   loading: boolean; // 로딩 상태를 외부에서 받아옴
 };
 
-const ProblemGrid: React.FC<CardSwiperProps> = ({
+const CardGrid: React.FC<CardSwiperProps> = ({
   children,
   data = [], // 기본값으로 빈 배열 설정
   loading = false, // 기본값으로 false 설정
@@ -86,4 +86,4 @@ const ProblemGrid: React.FC<CardSwiperProps> = ({
   );
 };
 
-export default ProblemGrid;
+export default CardGrid;
