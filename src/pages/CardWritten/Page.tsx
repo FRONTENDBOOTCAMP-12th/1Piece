@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import CardGrid from '@/components/CardGrid/CardGrid';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import { supabase } from '@/lib/SupabaseClient';
-import S from './Page.module.css';
 import CardModal from '@/components/CardModal/CardModal';
+import CardGrid from '@/components/CardGrid/CardGrid';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import { supabase } from '@/lib/SupabaseClient';
+import { useEffect, useState } from 'react';
+import S from './Page.module.css';
 
 interface CardData {
   id: string;
@@ -13,15 +13,15 @@ interface CardData {
   userName: string;
   tags: string[];
   checked: boolean;
-  problemTitle: string;
   description: string;
+  problemTitle: string;
 }
 
-function BookmarkPage() {
+function CardWrittenPage() {
   const tabs = [
     { name: '북마크', path: '/bookmark' },
     { name: '최근본', path: '/recent-view' },
-    { name: '작성글', path: '/card-written' },
+    { name: '작성글', path: '/card-collection' },
   ];
 
   const [data, setData] = useState<CardData[]>([]);
@@ -63,7 +63,7 @@ function BookmarkPage() {
 
   return (
     <div className={S.MyPageContainer}>
-      <MyPageDiary title="B O O K M A R K">
+      <MyPageDiary title="M Y C A R D">
         <CardGrid data={data} loading={loading} />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />
@@ -79,4 +79,4 @@ function BookmarkPage() {
   );
 }
 
-export default BookmarkPage;
+export default CardWrittenPage;
