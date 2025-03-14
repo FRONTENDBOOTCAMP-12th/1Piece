@@ -37,9 +37,9 @@
 
 .showProblemDetailBtn {
   display: flex;
-  justify-content: space-between;
   width: 50%;
-  transform: translateX(100%);
+  justify-content: space-between;
+  transform: translateX(90%);
   margin-block-start: var(--space-10);
 }
 

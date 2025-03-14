@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react';
 import S from './Page.module.css';
 import Quiz from './components/Quiz';
 import { supabase } from '@/lib/SupabaseClient';
+import useQuizSolvedStore from '@/lib/QuizSolvedState';
 
 function QuizPlayPage() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const [quizInfo, setQuizInfo] = useState([]);
+  const visibleIndex = useQuizSolvedStore((state) => state.visibleIndex);
+  const setTotalQuiz = useQuizSolvedStore((state) => state.setTotalQuiz);
 
   const fetchItems = async () => {
     try {
@@ -16,6 +19,7 @@ function QuizPlayPage() {
         .eq('card_id', Number(cardInfo.id));
 
       setQuizInfo(data);
+      setTotalQuiz(cardInfo.count);
 
       if (!data) throw error;
     } catch (error) {
@@ -25,7 +29,6 @@ function QuizPlayPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     fetchItems();
   }, []);
 
@@ -41,7 +44,7 @@ function QuizPlayPage() {
           correct={item.correct}
           answer={item.answer}
           key={item.id}
-          next={quizInfo[index + 1]}
+          visible={visibleIndex === index}
         />
       ))}
     </div>
