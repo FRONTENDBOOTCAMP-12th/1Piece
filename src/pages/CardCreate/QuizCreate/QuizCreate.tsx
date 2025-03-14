@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import { IoCheckmark } from 'react-icons/io5';
 import TextArea from '@/components/TextArea/TextArea';
@@ -7,10 +8,33 @@ interface QuizCreateProps {
   id: number;
   index: number;
   onDelete: (id: number) => void;
+  onUpdate: (
+    id: number,
+    data: { question: string; options: string[]; explanation: string }
+  ) => void;
 }
 
-function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
-  const options = ['정답', '오답', '오답', '오답'];
+function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
+  const [question, setQuestion] = useState('');
+  const [options, setOptions] = useState(['', '', '', '']);
+  const [explanation, setExplanation] = useState('');
+
+  const handleQuestionChange = (value: string) => {
+    setQuestion(value);
+    onUpdate(id, { question: value, options, explanation });
+  };
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+    onUpdate(id, { question, options: newOptions, explanation });
+  };
+
+  const handleExplanationChange = (value: string) => {
+    setExplanation(value);
+    onUpdate(id, { question, options, explanation: value });
+  };
 
   return (
     <div className={S.questionContainer}>
@@ -30,6 +54,8 @@ function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
               name={`question-${id}`}
               placeholder="문제를 입력하세요"
               height="19.8rem"
+              value={question}
+              onChange={handleQuestionChange}
             />
           </div>
           <div className={S.answer}>
@@ -37,7 +63,7 @@ function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
               선지
             </label>
             <div>
-              {options.map((_, idx) => {
+              {options.map((option, idx) => {
                 const isFirstOption = idx === 0;
                 const placeholderText = isFirstOption
                   ? '정답을 입력해주세요'
@@ -56,6 +82,8 @@ function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
                       placeholder={placeholderText}
                       maxLength={30}
                       className={S.textArea}
+                      value={option}
+                      onChange={(value) => handleOptionChange(idx, value)}
                     />
                   </div>
                 );
@@ -71,6 +99,8 @@ function QuizCreate({ id, index, onDelete }: QuizCreateProps) {
             name={`explanation-${id}`}
             placeholder="해설을 입력하세요"
             height="9.5rem"
+            value={explanation}
+            onChange={handleExplanationChange}
           />
         </div>
       </div>

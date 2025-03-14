@@ -10,7 +10,9 @@ import QuizCreate from './QuizCreate/QuizCreate';
 import S from './Page.module.css';
 
 function CardCreatePage() {
-  const [questions, setQuestions] = useState([{ id: 1 }]);
+  const [questions, setQuestions] = useState([
+    { id: 1, question: '', options: ['', '', '', ''], explanation: '' },
+  ]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
@@ -19,7 +21,10 @@ function CardCreatePage() {
     if (questions.length < 10) {
       const newId =
         questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-      setQuestions([...questions, { id: newId }]);
+      setQuestions([
+        ...questions,
+        { id: newId, question: '', options: ['', '', '', ''], explanation: '' },
+      ]);
     }
   };
 
@@ -29,6 +34,13 @@ function CardCreatePage() {
     }
   };
 
+  const updateQuestion = (
+    id: number,
+    data: { question: string; options: string[]; explanation: string }
+  ) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, ...data } : q)));
+  };
+
   const handleSubmit = () => {
     if (questions.length === 1) {
       toast.error('문제를 2개 이상 만들어 주세요.');
@@ -36,6 +48,18 @@ function CardCreatePage() {
     }
 
     if (title.trim() === '' || description.trim() === '') {
+      toast.error('모든 입력창을 채워주세요.');
+      return;
+    }
+
+    const isAllFilled = questions.every(
+      (q) =>
+        q.question.trim() !== '' &&
+        q.options.every((option) => option.trim() !== '') &&
+        q.explanation.trim() !== ''
+    );
+
+    if (!isAllFilled) {
       toast.error('모든 입력창을 채워주세요.');
       return;
     }
@@ -86,6 +110,7 @@ function CardCreatePage() {
           id={question.id}
           index={index + 1}
           onDelete={deleteQuestion}
+          onUpdate={updateQuestion}
         />
       ))}
       <Button
