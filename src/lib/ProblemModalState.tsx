@@ -9,6 +9,7 @@ export interface CardInfo {
   tags: string[];
   userName: string;
   description: string;
+  count: number;
 }
 
 // 상태 변수 타입
@@ -38,6 +39,7 @@ const useModalVisibleStore = create(
         tags: [''],
         userName: '',
         description: '',
+        count: 0,
       },
 
       // 카드 정보 수정
