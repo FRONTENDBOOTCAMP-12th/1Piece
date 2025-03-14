@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import S from './Option.module.css';
 
-interface OptionProps {
+type OptionProps = React.ComponentProps<'button'> & {
   content?: string;
   isCorrect?: boolean | null;
-}
+};
 
 function Option({ content = '답안', isCorrect }: OptionProps) {
   const [isClicked, setIsClicked] = useState(false);

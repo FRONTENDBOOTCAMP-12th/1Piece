@@ -25,6 +25,8 @@ function Quiz({
   next,
 }: QuizProps) {
   const [isVisibleDesc, setIsVisibleDesc] = useState(false);
+  const [hit, setHit] = useState(false);
+
   const descRef = useRef<HTMLDivElement>(null);
 
   const options = answer.split(',');
@@ -38,6 +40,10 @@ function Quiz({
       behavior: 'smooth',
     });
   }, [isVisibleDesc]);
+
+  const handleHitQuiz = () => {
+    console.log(1);
+  };
 
   const handleNextProblem = () => {
     console.log(1);
@@ -72,11 +78,11 @@ function Quiz({
           isCorrect={deleteBlank(options[3]) === deleteBlank(correct)}
         />
       </div>
-      <div className={S.solveCorrect}>
+      <div className={`${S.solveCorrect} ${S.correct}`}>
         <img src="/images/jellyfish.png" alt="해파리정답요정" />
         <p>정답입니다~!</p>
       </div>
-      <div className={S.solveInCorrect}>
+      <div className={`${S.solveInCorrect} `}>
         <img src="/images/jellyfish.png" alt="해파리오답요정" />
         <p>오답입니다ㅜㅜ..</p>
       </div>
