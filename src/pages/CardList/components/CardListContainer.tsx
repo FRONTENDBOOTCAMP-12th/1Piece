@@ -4,9 +4,9 @@ import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router';
 
-import ProblemCardModal from '@/components/CardModal/CardModal';
+import CardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
-import ProblemCard from '@/components/Card/Card';
+import Card from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 import S from './CardListContainer.module.css';
@@ -94,7 +94,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   };
 
   const handleCreateCardClick = () => {
-    navigate('/question-create');
+    navigate('/card-create');
   };
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           >
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
-                <ProblemCard
+                <Card
                   id={item.id}
                   src={item.src}
                   userName={item.userName}
@@ -151,7 +151,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   description={item.description}
                 >
                   {item.problemTitle}
-                </ProblemCard>
+                </Card>
               </SwiperSlide>
             ))}
             <SwiperSlide>
@@ -172,14 +172,14 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-      <ProblemCardModal
+      <CardModal
         src={cardInfo.src}
         tags={cardInfo.tags}
         userName={cardInfo.userName}
         description={cardInfo.description}
       >
         {cardInfo.title}
-      </ProblemCardModal>
+      </CardModal>
     </div>
   );
 };
