@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import toast, { Toaster } from 'react-hot-toast';
+
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import QuizCreate from './QuizCreate/QuizCreate';
-import { useNavigate } from 'react-router';
+
 import S from './Page.module.css';
 
 function CardCreatePage() {
@@ -25,6 +28,10 @@ function CardCreatePage() {
   };
 
   const handleSubmit = () => {
+    if (questions.length === 1) {
+      toast.error('문제를 2개 이상 만들어 주세요.');
+      return;
+    }
     navigate('/card-list');
   };
 
@@ -58,7 +65,6 @@ function CardCreatePage() {
           <SelectTag maxTags={3} />
         </div>
       </div>
-
       {questions.map((question, index) => (
         <QuizCreate
           key={question.id}
@@ -67,7 +73,6 @@ function CardCreatePage() {
           onDelete={deleteQuestion}
         />
       ))}
-
       <Button
         type="submit"
         label="+"
@@ -76,7 +81,6 @@ function CardCreatePage() {
         onClick={addQuestion}
         disabled={questions.length >= 10}
       />
-
       <div className={S.btnContainer}>
         <Button
           type="button"
@@ -93,6 +97,7 @@ function CardCreatePage() {
           onClick={handleSubmit}
         />
       </div>
+      <Toaster position="bottom-right" />
     </div>
   );
 }
