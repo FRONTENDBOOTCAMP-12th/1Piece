@@ -5,9 +5,32 @@ import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { FaArrowRight } from 'react-icons/fa6';
 import { useEffect, useRef, useState } from 'react';
 
-function Quiz() {
+interface QuizProps {
+  totalQuizCount: number;
+  currentQuizCount: number;
+  title: string;
+  answer: string;
+  correct: string;
+  explanation: string;
+  next: number;
+}
+
+function Quiz({
+  totalQuizCount,
+  currentQuizCount,
+  title,
+  answer,
+  correct,
+  explanation,
+  next,
+}: QuizProps) {
   const [isVisibleDesc, setIsVisibleDesc] = useState(false);
   const descRef = useRef<HTMLDivElement>(null);
+
+  const options = answer.split(',');
+  const deleteBlank = (str: string): string => {
+    return str.replace(/\s/g, '');
+  };
 
   useEffect(() => {
     window.scrollTo({
@@ -26,19 +49,35 @@ function Quiz() {
 
   return (
     <>
-      <ProgressBar currentQuestion={2} totalQuestions={10} />
+      <p className={S.quizTitle}>{title}</p>
+      <ProgressBar
+        currentQuestion={currentQuizCount}
+        totalQuestions={totalQuizCount}
+      />
       <div className={S.optionContainer}>
-        <Option content="1" isCorrect={true} />
-        <Option content="2" isCorrect={false} />
-        <Option content="3" isCorrect={false} />
-        <Option content="4" isCorrect={false} />
+        <Option
+          content={options[0]}
+          isCorrect={deleteBlank(options[0]) === deleteBlank(correct)}
+        />
+        <Option
+          content={options[1]}
+          isCorrect={deleteBlank(options[1]) === deleteBlank(correct)}
+        />
+        <Option
+          content={options[2]}
+          isCorrect={deleteBlank(options[2]) === deleteBlank(correct)}
+        />
+        <Option
+          content={options[3]}
+          isCorrect={deleteBlank(options[3]) === deleteBlank(correct)}
+        />
       </div>
       <div className={S.solveCorrect}>
-        <img src="/images/jellyfish.png" alt="해파리요정" />
+        <img src="/images/jellyfish.png" alt="해파리정답요정" />
         <p>정답입니다~!</p>
       </div>
       <div className={S.solveInCorrect}>
-        <img src="/images/jellyfish.png" alt="해파리요정" />
+        <img src="/images/jellyfish.png" alt="해파리오답요정" />
         <p>오답입니다ㅜㅜ..</p>
       </div>
       <div className={S.showProblemDetailBtn}>
@@ -58,7 +97,7 @@ function Quiz() {
         className={`${S.problemDescription} ${isVisibleDesc ? S.showDesc : S.hideDesc}`}
         ref={descRef}
       >
-        해설 영역에 들어갈 텍스트
+        {explanation}
       </div>
     </>
   );
