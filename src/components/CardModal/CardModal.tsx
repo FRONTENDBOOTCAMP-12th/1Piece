@@ -57,7 +57,7 @@ function CardModal({
             취소
           </RoundedButton>
           {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
-          <NavLink to={`/solve-problem/?problemId=${id}`}>
+          <NavLink to={`/quiz-play/?problemId=${id}`}>
             <RoundedButton
               color="primary"
               size="large"
