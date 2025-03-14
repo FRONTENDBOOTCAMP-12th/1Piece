@@ -12,7 +12,7 @@ interface QuizProps {
   answer: string;
   correct: string;
   explanation: string;
-  next: number;
+  next: object;
 }
 
 function Quiz({
@@ -22,11 +22,11 @@ function Quiz({
   answer,
   correct,
   explanation,
-  next,
 }: QuizProps) {
   const [isVisibleDesc, setIsVisibleDesc] = useState(false);
-  const [hit, setHit] = useState(false);
-
+  const [isVisibleCorrect, setIsVisibleCorrect] = useState(false);
+  const [correctState, setCorrectState] = useState(true);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const descRef = useRef<HTMLDivElement>(null);
 
   const options = answer.split(',');
@@ -41,8 +41,16 @@ function Quiz({
     });
   }, [isVisibleDesc]);
 
-  const handleHitQuiz = () => {
-    console.log(1);
+  const handleHitQuiz = (isCorrect: boolean) => {
+    const buttonCollection = buttonRef.current?.children;
+
+    for (const i of buttonCollection!) {
+      (i as HTMLButtonElement).disabled = true;
+      (i as HTMLButtonElement).ariaDisabled = 'true';
+    }
+
+    setIsVisibleCorrect(true);
+    setCorrectState(isCorrect);
   };
 
   const handleNextProblem = () => {
@@ -60,32 +68,41 @@ function Quiz({
         currentQuestion={currentQuizCount}
         totalQuestions={totalQuizCount}
       />
-      <div className={S.optionContainer}>
+      <div className={S.optionContainer} ref={buttonRef}>
         <Option
           content={options[0]}
           isCorrect={deleteBlank(options[0]) === deleteBlank(correct)}
+          onHit={handleHitQuiz}
         />
         <Option
           content={options[1]}
           isCorrect={deleteBlank(options[1]) === deleteBlank(correct)}
+          onHit={handleHitQuiz}
         />
         <Option
           content={options[2]}
           isCorrect={deleteBlank(options[2]) === deleteBlank(correct)}
+          onHit={handleHitQuiz}
         />
         <Option
           content={options[3]}
           isCorrect={deleteBlank(options[3]) === deleteBlank(correct)}
+          onHit={handleHitQuiz}
         />
       </div>
-      <div className={`${S.solveCorrect} ${S.correct}`}>
-        <img src="/images/jellyfish.png" alt="해파리정답요정" />
-        <p>정답입니다~!</p>
-      </div>
-      <div className={`${S.solveInCorrect} `}>
-        <img src="/images/jellyfish.png" alt="해파리오답요정" />
-        <p>오답입니다ㅜㅜ..</p>
-      </div>
+      {isVisibleCorrect ? (
+        correctState ? (
+          <div className={`${S.solveCorrect} ${S.correct}`}>
+            <img src="/images/jellyfish.png" alt="해파리정답요정" />
+            <p>정답입니다~!</p>
+          </div>
+        ) : (
+          <div className={`${S.solveInCorrect} `}>
+            <img src="/images/jellyfish.png" alt="해파리오답요정" />
+            <p>오답입니다ㅜㅜ..</p>
+          </div>
+        )
+      ) : null}
       <div className={S.showProblemDetailBtn}>
         <RoundedButton
           size="large"

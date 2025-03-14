@@ -3,13 +3,15 @@ import S from './Option.module.css';
 
 type OptionProps = React.ComponentProps<'button'> & {
   content?: string;
-  isCorrect?: boolean | null;
+  isCorrect: boolean | null;
+  onHit?: (isCorrect: boolean) => void;
 };
 
-function Option({ content = '답안', isCorrect }: OptionProps) {
+function Option({ content = '답안', isCorrect, onHit }: OptionProps) {
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (correct: boolean) => {
+    onHit?.(correct);
     setIsClicked(true);
   };
 
@@ -21,7 +23,7 @@ function Option({ content = '답안', isCorrect }: OptionProps) {
         ${isClicked && isCorrect ? S.correct : ''} 
         ${isClicked && !isCorrect ? S.wrong : ''}
       `}
-      onClick={handleClick}
+      onClick={() => handleClick(isCorrect!)}
     >
       {content}
     </button>

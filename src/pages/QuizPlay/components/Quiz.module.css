@@ -40,10 +40,7 @@
   justify-content: space-between;
   width: 50%;
   transform: translateX(100%);
-
-  .nextProblemBtn {
-    border: 1px solid black;
-  }
+  margin-block-start: var(--space-10);
 }
 
 .problemDescription {

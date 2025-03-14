@@ -41,7 +41,7 @@ function QuizPlayPage() {
           correct={item.correct}
           answer={item.answer}
           key={item.id}
-          next={1}
+          next={quizInfo[index + 1]}
         />
       ))}
     </div>
