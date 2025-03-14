@@ -2,7 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
-import ProblemCard from '../Card/Card';
+import Card from '@/components/Card/Card';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -63,7 +63,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
         >
           {data.map((item) => (
             <SwiperSlide key={item.id} className={S.slide}>
-              <ProblemCard
+              <Card
                 src={item.src}
                 userName={item.userName}
                 tags={item.tags}
@@ -72,7 +72,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
                 description={item.description}
               >
                 {item.problemTitle}
-              </ProblemCard>
+              </Card>
             </SwiperSlide>
           ))}
           <SwiperSlide>
