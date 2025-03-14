@@ -1,9 +1,9 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { useEffect } from 'react';
-import S from './ProblemSolve.module.css';
-import Problem from './components/Quiz';
+import S from './Page.module.css';
+import Quiz from './components/Quiz';
 
-function SolveProblem() {
+function QuizPlayPage() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
   useEffect(() => {
@@ -13,9 +13,9 @@ function SolveProblem() {
   return (
     <div className={S.problemContainer}>
       <h3 className={S.solveProblemTitle}>{cardInfo.title}</h3>
-      <Problem />
+      <Quiz />
     </div>
   );
 }
 
-export default SolveProblem;
+export default QuizPlayPage;
