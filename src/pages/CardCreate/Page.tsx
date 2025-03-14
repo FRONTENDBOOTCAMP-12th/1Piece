@@ -2,7 +2,7 @@ import { useState } from 'react';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
-import CardCreate from './CardCreate/CardCreate';
+import CardCreate from './QuizCreate/QuizCreate';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 

@@ -1,10 +1,10 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
-import ProblemCardTag from '../ProblemCardTag/ProblemCardTag';
+import ProblemCardTag from '../CardTag/CardTag';
 import BookMark from './BookMark';
-import S from './ProblemCard.module.css';
+import S from './Card.module.css';
 import { type CardInfo } from '@/lib/ProblemModalState';
 
-type ProblemCardProps = React.ComponentProps<'img'> &
+type CardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
     userName: string;
     tags: string[];
@@ -12,7 +12,7 @@ type ProblemCardProps = React.ComponentProps<'img'> &
     description?: string;
   };
 
-function ProblemCard({
+function Card({
   id,
   src,
   tags,
@@ -20,7 +20,7 @@ function ProblemCard({
   checked,
   description,
   children,
-}: ProblemCardProps) {
+}: CardProps) {
   // 모달을 클릭할 시 나타나게 할 함수
   const setVisible = useModalVisibleStore((state) => state.setVisible);
   // 선택한 카드의 정보를 저장하기 위한 함수
@@ -65,4 +65,4 @@ function ProblemCard({
   );
 }
 
-export default ProblemCard;
+export default Card;

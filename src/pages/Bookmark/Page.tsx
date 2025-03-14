@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
+import ProblemGrid from '@/components/CardGrid/CardGrid';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import { supabase } from '@/lib/SupabaseClient';
 import S from './Page.module.css';
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import ProblemCardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface ProblemCardData {

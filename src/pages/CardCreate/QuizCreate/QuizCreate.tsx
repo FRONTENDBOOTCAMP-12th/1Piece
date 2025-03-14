@@ -1,6 +1,6 @@
 import { BiTrash } from 'react-icons/bi';
 import TextArea from '@/components/TextArea/TextArea';
-import RadioQuestion from '@/components/RadioQuestion/RadioQuestion';
+import RadioQuestion from '@/components/QuizRadio/QuizRadio';
 import S from './CardCreate.module.css';
 
 interface CardCreateProps {

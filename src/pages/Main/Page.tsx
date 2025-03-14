@@ -2,7 +2,7 @@ import CardSwiper from '@/components/CardSwiper/CardSwiper';
 import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import ProblemCardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface ProblemCardData {

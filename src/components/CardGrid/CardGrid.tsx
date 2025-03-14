@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
-import ProblemCard from '@/components/ProblemCard/ProblemCard';
+import ProblemCard from '@/components/Card/Card';
 import Pagination from '@/components/Pagination/Pagination';
 import S from './ProblemGrid.module.css';
 

@@ -1,7 +1,7 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { useEffect } from 'react';
 import S from './ProblemSolve.module.css';
-import Problem from './components/Problem';
+import Problem from './components/Quiz';
 
 function SolveProblem() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);

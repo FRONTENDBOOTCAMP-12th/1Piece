@@ -4,9 +4,9 @@ import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router';
 
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
+import ProblemCardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
-import ProblemCard from '@/components/ProblemCard/ProblemCard';
+import ProblemCard from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 import S from './ProblemListContainer.module.css';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
-import ProblemCard from '../ProblemCard/ProblemCard';
+import ProblemCard from '../Card/Card';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

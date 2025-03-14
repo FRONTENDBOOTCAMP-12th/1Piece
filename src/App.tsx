@@ -1,8 +1,8 @@
-import QuestionCreatePage from '@/pages/QuestionCreate/Page';
+import QuestionCreatePage from '@/pages/CardCreate/Page';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import FindPasswordPage from '@/pages/FindPassword/Page';
-import ProblemListPage from '@/pages/ProblemList/Page';
-import QuestionFixPage from '@/pages/QuestionFix/Page';
+import ProblemListPage from '@/pages/CardList/Page';
+import QuestionFixPage from '@/pages/CardEdit/Page';
 import { ErrorBoundary } from 'react-error-boundary';
 import SignUpPage from '@/pages/SignUp/Page';
 import FindIdPage from '@/pages/FindId/Page';
@@ -12,10 +12,10 @@ import CalendarPage from '@/pages/Calendar/Page';
 import BadgePage from '@/pages/Badge/Page';
 import BookmarkPage from '@/pages/Bookmark/Page';
 import RecentViewPage from '@/pages/RecentView/Page';
-import CardCollectionPage from '@/pages/CardCollection/Page';
-import CommonLayout from '@/layout/Page';
+import CardCollectionPage from '@/pages/CardWritten/Page';
+import CommonLayout from '@/layout/Common';
 import EditProfilePage from '@/pages/EditProfile/Page';
-import SolveProblem from './pages/SolveProblem/Page';
+import SolveProblem from './pages/QuizPlay/Page';
 import ProblemSolved from '@/pages/ProblemSolved/Page';
 
 function App() {

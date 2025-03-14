@@ -1,7 +1,7 @@
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import ProblemCardModal from '@/components/ProblemCardModal/ProblemCardModal';
-import ProblemGrid from '@/components/ProblemGrid/ProblemGrid';
+import ProblemCardModal from '@/components/CardModal/CardModal';
+import ProblemGrid from '@/components/CardGrid/CardGrid';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
