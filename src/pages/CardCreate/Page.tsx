@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag from '@/components/SelectTag/SelectTag';
@@ -11,6 +11,8 @@ import S from './Page.module.css';
 
 function CardCreatePage() {
   const [questions, setQuestions] = useState([{ id: 1 }]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
   const addQuestion = () => {
@@ -32,6 +34,12 @@ function CardCreatePage() {
       toast.error('문제를 2개 이상 만들어 주세요.');
       return;
     }
+
+    if (title.trim() === '' || description.trim() === '') {
+      toast.error('모든 입력창을 채워주세요.');
+      return;
+    }
+
     navigate('/card-list');
   };
 
@@ -47,7 +55,12 @@ function CardCreatePage() {
           <label className={S.label} htmlFor="title">
             제목
           </label>
-          <TextArea name="title" placeholder="문제 세트 제목을 입력하세요" />
+          <TextArea
+            name="title"
+            placeholder="문제 세트 제목을 입력하세요"
+            value={title}
+            onChange={(value) => setTitle(value)}
+          />
         </div>
         <div className={S.description}>
           <label className={S.label} htmlFor="description">
@@ -56,6 +69,8 @@ function CardCreatePage() {
           <TextArea
             name="description"
             placeholder="문제 세트 상세 설명을 입력하세요"
+            value={description}
+            onChange={(value) => setDescription(value)}
           />
         </div>
         <div className={S.tagSelect}>
@@ -97,7 +112,7 @@ function CardCreatePage() {
           onClick={handleSubmit}
         />
       </div>
-      <Toaster position="bottom-right" />
+      <Toaster />
     </div>
   );
 }
