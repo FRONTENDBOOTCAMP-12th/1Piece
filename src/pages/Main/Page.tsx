@@ -2,7 +2,7 @@ import CardSwiper from '@/components/CardSwiper/CardSwiper';
 import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
-import ProblemCardModal from '@/components/CardModal/CardModal';
+import CardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface ProblemCardData {
@@ -104,14 +104,14 @@ function MainPage() {
           <CardSwiper data={itemCheck}>지난 주 최다 조회수</CardSwiper>
         </>
       )}
-      <ProblemCardModal
+      <CardModal
         src={cardInfo.src}
         tags={cardInfo.tags}
         userName={cardInfo.userName}
         description={cardInfo.description}
       >
         {cardInfo.title}
-      </ProblemCardModal>
+      </CardModal>
     </>
   );
 }

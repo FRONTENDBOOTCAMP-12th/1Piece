@@ -21,7 +21,7 @@ function RecentViewPage() {
   const tabs = [
     { name: '북마크', path: '/bookmark' },
     { name: '최근본', path: '/recent-view' },
-    { name: '작성글', path: '/card-collection' },
+    { name: '작성글', path: '/card-written' },
   ];
 
   const [data, setData] = useState<CardData[]>([]);
