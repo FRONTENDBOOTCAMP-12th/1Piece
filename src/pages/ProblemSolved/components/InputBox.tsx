@@ -2,8 +2,8 @@ import { FaHeart } from 'react-icons/fa6';
 import { useState } from 'react';
 import { FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import S from './InputBox.module.css';
-import BookMark from '../ProblemCard/BookMark';
-import RoundedButton from '../RoundedButton/RoundedButton';
+import BookMark from '../../../components/ProblemCard/BookMark';
+import RoundedButton from '../../../components/RoundedButton/RoundedButton';
 
 interface InputBoxProps {
   isLiked: boolean;

@@ -1,5 +1,5 @@
 import QuizResult from '@/components/QuizResult/QuizResult';
-import InputBox from '@/components/InputBox/InputBox';
+import InputBox from '@/pages/ProblemSolved/components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
 
