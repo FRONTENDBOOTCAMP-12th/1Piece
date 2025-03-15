@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 
 import TextArea from '@/components/TextArea/TextArea';
-import SelectTag from '@/components/SelectTag/SelectTag';
+import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import QuizCreate from './QuizCreate/QuizCreate';
 
@@ -15,6 +15,7 @@ function CardCreatePage() {
   ]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedTags, setSelectedTags] = useState<DummyKey[]>([]);
   const navigate = useNavigate();
 
   const addQuestion = () => {
@@ -41,6 +42,10 @@ function CardCreatePage() {
     setQuestions(questions.map((q) => (q.id === id ? { ...q, ...data } : q)));
   };
 
+  const handleTagSelect = (tags: DummyKey[]) => {
+    setSelectedTags(tags);
+  };
+
   const handleSubmit = () => {
     if (questions.length === 1) {
       toast.error('문제를 2개 이상 만들어 주세요.');
@@ -61,6 +66,11 @@ function CardCreatePage() {
 
     if (!isAllFilled) {
       toast.error('모든 입력창을 채워주세요.');
+      return;
+    }
+
+    if (selectedTags.length === 0) {
+      toast.error('태그를 선택해주세요.');
       return;
     }
 
@@ -101,7 +111,7 @@ function CardCreatePage() {
           <label className={S.label} htmlFor="tagSelect">
             태그 선택
           </label>
-          <SelectTag maxTags={3} />
+          <SelectTag onTagSelect={handleTagSelect} maxTags={3} />
         </div>
       </div>
       {questions.map((question, index) => (
