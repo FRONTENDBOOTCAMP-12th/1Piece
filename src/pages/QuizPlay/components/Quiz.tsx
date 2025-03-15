@@ -6,6 +6,7 @@ import { FaArrowRight } from 'react-icons/fa6';
 import { useRef, useState } from 'react';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import { useNavigate } from 'react-router';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 
 interface QuizProps {
   totalQuizCount: number;
@@ -31,6 +32,7 @@ function Quiz({
   const [correctState, setCorrectState] = useState(true);
   const buttonRef = useRef<HTMLDivElement>(null);
   const descRef = useRef<HTMLDivElement>(null);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const setVisibleIndex = useQuizSolvedStore((state) => state.setVisibleIndex);
   const visibleIndex = useQuizSolvedStore((state) => state.visibleIndex);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
@@ -67,7 +69,7 @@ function Quiz({
     }
 
     if (visibleIndex + 1 === totalQuiz) {
-      navigate('/quiz-complete');
+      navigate(`/quiz-complete/?problemId=${cardInfo.id}`);
       setReset();
       return;
     }
