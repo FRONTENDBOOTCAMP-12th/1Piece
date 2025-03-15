@@ -62,6 +62,10 @@ function Quiz({
   };
 
   const handleNextProblem = () => {
+    if (!isSelectOption) {
+      return;
+    }
+
     if (visibleIndex + 1 === totalQuiz) {
       navigate('/quiz-complete');
       setReset();
@@ -73,6 +77,10 @@ function Quiz({
   };
 
   const handleShowDescription = () => {
+    if (!isSelectOption) {
+      return;
+    }
+
     setIsVisibleDesc(true);
   };
 
@@ -130,7 +138,6 @@ function Quiz({
               color="gray"
               style={{ paddingInline: `var(--space-10)` }}
               onClick={handleNextProblem}
-              disabled={!isSelectOption}
               aria-disabled={!isSelectOption}
               aria-label="다음 문제"
             >
@@ -139,7 +146,6 @@ function Quiz({
             <RoundedButton
               size="large"
               onClick={handleShowDescription}
-              disabled={!isSelectOption}
               aria-disabled={!isSelectOption}
             >
               해설보기
