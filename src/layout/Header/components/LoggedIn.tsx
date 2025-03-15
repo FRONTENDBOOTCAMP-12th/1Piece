@@ -11,10 +11,13 @@ interface LoggedInProps {
 }
 
 function LoggedIn({ src }: LoggedInProps) {
+  // 로그아웃 창을 보여주기 위한 상태
   const [isVisibleLoginBox, setIsVisibleLoginBox] = useState(false);
+  // 로그아웃 시 초기화
   const resetLogin = useLoginStore((state) => state.resetUser);
   const navigation = useNavigate();
 
+  // 화면 내부 어떤 영역을 클릭해도 로그아웃 창 숨김 처리
   useEffect(() => {
     if (!isVisibleLoginBox) {
       return;
@@ -31,21 +34,25 @@ function LoggedIn({ src }: LoggedInProps) {
     };
   }, [isVisibleLoginBox]);
 
+  // 프로필 사진 클릭 시 로그아웃 창의 상태 변경
   const handleVisibleLoginBox = () => {
     const nextIsVisibleLoginBox = !isVisibleLoginBox;
 
     setIsVisibleLoginBox(nextIsVisibleLoginBox);
   };
 
+  // 마이페이지로 이동 버튼 클릭 시
   const handleMoveToMyPage = () => {
     navigation('/bookmark');
     setIsVisibleLoginBox(false);
   };
 
+  // supabase 로그아웃 함수
   const handleLogoutAuth = async () => {
     await supabase.auth.signOut();
   };
 
+  // 로그아웃 후 완료됐음을 알리는 sweetalert2
   const handleConfirmLogout = () => {
     withReactContent(Swal).fire({
       title: (
@@ -60,6 +67,7 @@ function LoggedIn({ src }: LoggedInProps) {
     });
   };
 
+  // sweetalert2를 이용한 로그아웃 여부 체크
   const handleCheckLogout = () => {
     withReactContent(Swal)
       .fire({
@@ -87,11 +95,14 @@ function LoggedIn({ src }: LoggedInProps) {
       });
   };
 
+  // 로그아웃 버튼 클릭 시
   const handleLogOut = () => {
     handleCheckLogout();
     setIsVisibleLoginBox(false);
   };
 
+  // window에 할당된 이벤트를 무시
+  // 이는 현재 ul 내부를 클릭해도 일어나는 것을 방지하기 위함
   const handleBoxClick = (event: React.MouseEvent<HTMLUListElement>) => {
     event.stopPropagation();
   };

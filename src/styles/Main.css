@@ -139,6 +139,7 @@ body {
   clip: rect(0 0 0 0);
 }
 
+/* sweetalert2 커스텀 */
 .confirmButton {
   background: var(--primary);
   color: var(--black);

@@ -32,6 +32,7 @@ function Header() {
     getUser();
   }, []);
 
+  // NavLink를 사용하지 않은 링크 이동
   const handleMoveToHome = () => {
     navigate('/');
   };
@@ -80,7 +81,7 @@ function Header() {
         <div className={S.userInfoContainer}>
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
-          {/* 문제 생성 페이지로 이동 */}
+          {/* 로그인 상태에 따른 UI 변동 */}
           {isLogin ? (
             <>
               <button
