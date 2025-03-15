@@ -18,6 +18,7 @@ export interface CardData {
   checked: boolean;
   problemTitle: string;
   description: string;
+  count: number;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -66,6 +67,7 @@ const CardGrid: React.FC<CardSwiperProps> = ({
                   tags={item.tags}
                   checked={item.checked}
                   description={item.description}
+                  count={item.count}
                 >
                   {item.problemTitle}
                 </Card>

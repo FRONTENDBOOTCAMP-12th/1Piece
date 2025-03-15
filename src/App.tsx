@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import Common from '@/layout/Common';
+import ResetState from './lib/ResetState';
 
 const BadgePage = lazy(() => import('@/pages/Badge/Page'));
 const BookmarkPage = lazy(() => import('@/pages/Bookmark/Page'));
@@ -25,6 +26,7 @@ function App() {
     <ErrorBoundary fallback={<div>에러가 발생했습니다</div>}>
       <Suspense fallback={<div role="status">페이지 로딩 중...</div>}>
         <BrowserRouter>
+          <ResetState />
           <Routes>
             <Route element={<Common />}>
               <Route index element={<MainPage />} />

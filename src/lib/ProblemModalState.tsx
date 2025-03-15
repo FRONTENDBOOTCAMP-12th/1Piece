@@ -9,6 +9,7 @@ export interface CardInfo {
   tags: string[];
   userName: string;
   description: string;
+  count: number;
 }
 
 // 상태 변수 타입
@@ -22,6 +23,7 @@ interface Actions {
   setVisible: () => void;
   setNonVisible: () => void;
   setCardInfo: (value: CardInfo) => void;
+  resetIsVisible: () => void;
 }
 
 type Store = State & Actions;
@@ -38,6 +40,7 @@ const useModalVisibleStore = create(
         tags: [''],
         userName: '',
         description: '',
+        count: 0,
       },
 
       // 카드 정보 수정
@@ -56,6 +59,13 @@ const useModalVisibleStore = create(
       setNonVisible: () => {
         set((state) => ({
           isVisible: !state.isVisible,
+        }));
+      },
+
+      // 페이지 이동 시 초기화 되도록 설정하기 위한 함수
+      resetIsVisible: () => {
+        set(() => ({
+          isVisible: false,
         }));
       },
     }),

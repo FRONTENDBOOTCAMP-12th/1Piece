@@ -15,6 +15,7 @@ interface CardData {
   checked: boolean;
   problemTitle: string;
   description: string;
+  count: number;
 }
 
 function BookmarkPage() {
@@ -47,6 +48,7 @@ function BookmarkPage() {
         checked: false,
         problemTitle: item.problemTitle,
         description: item.desc,
+        count: item.count,
       }));
 
       setData(newData);

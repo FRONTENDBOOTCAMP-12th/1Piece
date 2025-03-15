@@ -1,3 +1,28 @@
+.quizContainer {
+  width: 100%;
+  min-width: fit-content;
+  padding-inline: var(--space-16);
+  padding-block: var(--space-16);
+  margin-block: var(--space-10);
+  border: 2px solid var(--black);
+  border-radius: var(--radius-3xl) var(--radius-3xl) 0 var(--radius-3xl);
+}
+
+.correctBgc {
+  background: var(--primary-g);
+}
+
+.inCorrectBgc {
+  background: var(--secondary-g);
+}
+
+.quizTitle {
+  color: #181818;
+  font-size: var(--large);
+  margin-block: var(--space-8);
+  text-align: center;
+}
+
 .optionContainer {
   width: 100%;
   margin-block-start: var(--space-20);
@@ -16,7 +41,12 @@
   margin-block: var(--space-5);
 
   p {
-    font-size: var(--xl);
+    font-size: var(--xxl);
+    border: 2px solid var(--black);
+    border-radius: var(--rounded-full);
+    padding-block: var(--space-12);
+    padding-inline: var(--space-10);
+    box-shadow: 0 5px 0 var(--black);
   }
 
   &.solveCorrect > p {
@@ -30,13 +60,10 @@
 
 .showProblemDetailBtn {
   display: flex;
-  justify-content: space-between;
   width: 50%;
-  transform: translateX(100%);
-
-  .nextProblemBtn {
-    border: 1px solid black;
-  }
+  justify-content: space-between;
+  transform: translateX(95%);
+  margin-block-start: var(--space-10);
 }
 
 .problemDescription {

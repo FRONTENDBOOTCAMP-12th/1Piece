@@ -10,6 +10,7 @@ type CardProps = React.ComponentProps<'img'> &
     tags: string[];
     checked: boolean;
     description?: string;
+    count: number;
   };
 
 function Card({
@@ -20,6 +21,7 @@ function Card({
   checked,
   description,
   children,
+  count,
 }: CardProps) {
   // 모달을 클릭할 시 나타나게 할 함수
   const setVisible = useModalVisibleStore((state) => state.setVisible);
@@ -34,6 +36,7 @@ function Card({
     userName,
     description,
     title: children,
+    count,
   };
 
   // 카드 클릭 시 정보 저장 후 모달 열기
