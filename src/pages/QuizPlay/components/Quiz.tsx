@@ -80,32 +80,36 @@ function Quiz({
     <>
       {visible ? (
         <>
-          <p className={S.quizTitle}>{title}</p>
-          <ProgressBar
-            currentQuestion={currentQuizCount}
-            totalQuestions={totalQuizCount}
-          />
-          <div className={S.optionContainer} ref={buttonRef}>
-            <Option
-              content={options[0]}
-              isCorrect={deleteBlank(options[0]) === deleteBlank(correct)}
-              onHit={handleHitQuiz}
+          <div
+            className={`${S.quizContainer} ${isSelectOption ? (correctState ? S.correctBgc : S.inCorrectBgc) : ''}`}
+          >
+            <p className={S.quizTitle}>{title}</p>
+            <ProgressBar
+              currentQuestion={currentQuizCount}
+              totalQuestions={totalQuizCount}
             />
-            <Option
-              content={options[1]}
-              isCorrect={deleteBlank(options[1]) === deleteBlank(correct)}
-              onHit={handleHitQuiz}
-            />
-            <Option
-              content={options[2]}
-              isCorrect={deleteBlank(options[2]) === deleteBlank(correct)}
-              onHit={handleHitQuiz}
-            />
-            <Option
-              content={options[3]}
-              isCorrect={deleteBlank(options[3]) === deleteBlank(correct)}
-              onHit={handleHitQuiz}
-            />
+            <div className={S.optionContainer} ref={buttonRef}>
+              <Option
+                content={options[0]}
+                isCorrect={deleteBlank(options[0]) === deleteBlank(correct)}
+                onHit={handleHitQuiz}
+              />
+              <Option
+                content={options[1]}
+                isCorrect={deleteBlank(options[1]) === deleteBlank(correct)}
+                onHit={handleHitQuiz}
+              />
+              <Option
+                content={options[2]}
+                isCorrect={deleteBlank(options[2]) === deleteBlank(correct)}
+                onHit={handleHitQuiz}
+              />
+              <Option
+                content={options[3]}
+                isCorrect={deleteBlank(options[3]) === deleteBlank(correct)}
+                onHit={handleHitQuiz}
+              />
+            </div>
           </div>
           {isSelectOption ? (
             correctState ? (
