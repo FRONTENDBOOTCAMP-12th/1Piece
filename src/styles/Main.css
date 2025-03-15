@@ -138,3 +138,17 @@ body {
   border: 0;
   clip: rect(0 0 0 0);
 }
+
+.confirmButton {
+  background: var(--primary);
+  color: var(--black);
+}
+
+.cancelButton {
+  background: var(--bookmark);
+  color: var(--black);
+}
+
+.alertTitle {
+  margin-block: var(--space-4);
+}
