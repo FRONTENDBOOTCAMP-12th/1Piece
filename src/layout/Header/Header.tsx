@@ -12,8 +12,8 @@ import useLoginStore from '@/lib/LoginState';
 
 function Header() {
   // 로그인 상태
-  const isLogin = useLoginStore((state) => state.isLogin);
   const userInfo = useLoginStore((state) => state.userInfo);
+  const isLogin = useLoginStore((state) => state.isLogin);
   const setUserInfo = useLoginStore((state) => state.setUserInfo);
   const navigate = useNavigate();
 
@@ -22,7 +22,9 @@ function Header() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    setUserInfo(user!);
+    if (user) {
+      setUserInfo(user);
+    }
   };
 
   // useEffect를 사용한 렌더링 차이
@@ -107,9 +109,7 @@ function Header() {
               />
             </>
           ) : (
-            <>
-              <LoggedOut />
-            </>
+            <LoggedOut />
           )}
         </div>
       </div>
