@@ -56,7 +56,8 @@
   justify-content: flex-end;
 }
 
-.btns {
+.btnCancel,
+.btnSubmit {
   width: 10rem;
   height: 5rem;
   font-size: var(--xl);
