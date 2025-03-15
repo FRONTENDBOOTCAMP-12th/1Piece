@@ -104,6 +104,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPageData = data.slice(startIndex, endIndex);
+  const isLastPage = currentPage === Math.ceil(data.length / itemsPerPage);
 
   return (
     <div className={S.cardListContainer}>
@@ -154,15 +155,20 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                 </Card>
               </SwiperSlide>
             ))}
-            <SwiperSlide>
-              <button
-                className={S.btnQuestionCreate}
-                onClick={handleCreateCardClick}
-                aria-label="카드 만들기"
-              >
-                <p className={S.questionCreateMessage}>클릭해서 카드 만들기</p>
-              </button>
-            </SwiperSlide>
+
+            {isLastPage && (
+              <SwiperSlide className={S.slide}>
+                <button
+                  className={S.btnQuestionCreate}
+                  onClick={handleCreateCardClick}
+                  aria-label="카드 만들기"
+                >
+                  <p className={S.questionCreateMessage}>
+                    클릭해서 카드 만들기
+                  </p>
+                </button>
+              </SwiperSlide>
+            )}
           </Swiper>
         </div>
       )}
