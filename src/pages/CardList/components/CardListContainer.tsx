@@ -1,11 +1,12 @@
+import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
-import React, { useEffect, useState } from 'react';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useNavigate } from 'react-router';
 
+import CardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
 import Card from '@/components/Card/Card';
-import CardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 import S from './CardListContainer.module.css';
@@ -22,7 +23,7 @@ export interface CardData {
   tags: string[];
   checked: boolean;
   description: string;
-  ProblemTitle: string;
+  problemTitle: string;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -41,46 +42,50 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   );
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
+  const navigate = useNavigate();
 
-  const fetchItems = async (sortBy: 'popular' | 'new') => {
-    try {
-      let query = supabase.from('card').select('*, users(*)');
+  const fetchItems = useCallback(
+    async (sortBy: 'popular' | 'new') => {
+      try {
+        let query = supabase.from('card').select('*, users(*)');
 
-      if (sortBy === 'popular') {
-        query = query.order('check', { ascending: false });
-      } else if (sortBy === 'new') {
-        query = query.order('created', { ascending: false });
+        if (sortBy === 'popular') {
+          query = query.order('check', { ascending: false });
+        } else if (sortBy === 'new') {
+          query = query.order('created', { ascending: false });
+        }
+
+        const { data: fetchedData, error } = await query;
+
+        if (error) throw error;
+
+        const newData = fetchedData.map((item) => ({
+          id: `${item.id}`,
+          src: supabase.storage
+            .from('profileImg/userProfile')
+            .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
+          userName: item.users.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+        }));
+
+        const filteredData = selectedTags.length
+          ? newData.filter((item) =>
+              item.tags.some((tag) => selectedTags.includes(`${tag}`))
+            )
+          : newData;
+
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
-
-      const { data: fetchedData, error } = await query;
-
-      if (error) throw error;
-
-      const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        ProblemTitle: item.problemTitle,
-        description: item.desc,
-      }));
-
-      const filteredData = selectedTags.length
-        ? newData.filter((item) =>
-            item.tags.some((tag) => selectedTags.includes(`${tag}`))
-          )
-        : newData;
-
-      setData(filteredData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [selectedTags]
+  );
 
   const handleSortChange = (standard: 'popular' | 'new') => {
     setSortStandard(standard);
@@ -88,13 +93,18 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     fetchItems(standard);
   };
 
+  const handleCreateCardClick = () => {
+    navigate('/card-create');
+  };
+
   useEffect(() => {
     fetchItems(sortStandard);
-  }, [selectedTags, sortStandard]);
+  }, [sortStandard, fetchItems]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPageData = data.slice(startIndex, endIndex);
+  const isLastPage = currentPage === Math.ceil(data.length / itemsPerPage);
 
   return (
     <div className={S.cardListContainer}>
@@ -114,7 +124,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             className={`${S.btnSort} ${sortStandard === 'new' ? S.active : ''}`}
             onClick={() => handleSortChange('new')}
           >
-            추천순
+            최신순
           </button>
         </div>
       </div>
@@ -141,10 +151,24 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   checked={item.checked}
                   description={item.description}
                 >
-                  {item.ProblemTitle}
+                  {item.problemTitle}
                 </Card>
               </SwiperSlide>
             ))}
+
+            {isLastPage && (
+              <SwiperSlide className={S.slide}>
+                <button
+                  className={S.btnQuestionCreate}
+                  onClick={handleCreateCardClick}
+                  aria-label="카드 만들기"
+                >
+                  <p className={S.questionCreateMessage}>
+                    클릭해서 카드 만들기
+                  </p>
+                </button>
+              </SwiperSlide>
+            )}
           </Swiper>
         </div>
       )}
