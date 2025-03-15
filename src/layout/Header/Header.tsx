@@ -7,21 +7,27 @@ import { useEffect, useState } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
+import { supabase } from '@/lib/SupabaseClient';
+import { User } from '@supabase/supabase-js';
 
-// 유저 프로필 사진을 props로 전달
-interface HeaderProps {
-  src?: string;
-}
-
-function Header({ src }: HeaderProps) {
+function Header() {
   // 로그인 상태
   const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    setIsLogin(!!user);
+    setUserInfo(user);
+  };
 
   // useEffect를 사용한 렌더링 차이
   useEffect(() => {
-    const nextIsLogin = Boolean(src);
-    setIsLogin(nextIsLogin);
-  }, [src]);
+    getUser();
+  }, []);
 
   return (
     <header className={S.header}>
@@ -49,23 +55,31 @@ function Header({ src }: HeaderProps) {
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
           {/* 문제 생성 페이지로 이동 */}
-          <NavLink to="/card-create">
-            <button type="button" className={S.headerCreateIcon}>
-              <BiPlus size={24} />
-            </button>
-          </NavLink>
-          {/* 북마크 페이지로 이동 */}
-          <NavLink to="/bookmark">
-            <button type="button" className={S.headerBookMarkIcon}>
-              <RiInbox2Line size={24} />
-            </button>
-          </NavLink>
-          {/* 로그인 상태에 따른 헤더 렌더링 다르게 */}
           {isLogin ? (
-            // 마이페이지로 이동(로그인 된 상태)
-            <LoggedIn src={src!} />
+            <>
+              <NavLink to="/card-create">
+                <button type="button" className={S.headerCreateIcon}>
+                  <BiPlus size={24} />
+                </button>
+              </NavLink>
+              {/* 북마크 페이지로 이동 */}
+              <NavLink to="/bookmark">
+                <button type="button" className={S.headerBookMarkIcon}>
+                  <RiInbox2Line size={24} />
+                </button>
+              </NavLink>
+              <LoggedIn
+                src={
+                  supabase.storage
+                    .from('profileImg/userProfile')
+                    .getPublicUrl(`${userInfo?.id}.png`).data.publicUrl
+                }
+              />
+            </>
           ) : (
-            <LoggedOut />
+            <>
+              <LoggedOut />
+            </>
           )}
         </div>
       </div>
