@@ -15,20 +15,21 @@ function LoggedIn({ src }: LoggedInProps) {
   const resetLogin = useLoginStore((state) => state.resetUser);
   const navigation = useNavigate();
 
-  // useEffect(() => {
-  //   if (!isVisibleLoginBox) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!isVisibleLoginBox) {
+      return;
+    }
 
-  //   const handleCloseLoginBox = () => {
-  //     setIsVisibleLoginBox(false);
-  //   };
-  //   window.addEventListener('mousedown', handleCloseLoginBox);
+    const handleCloseLoginBox = () => {
+      setIsVisibleLoginBox(false);
+    };
 
-  //   return () => {
-  //     window.removeEventListener('mousedown', handleCloseLoginBox);
-  //   };
-  // }, [isVisibleLoginBox]);
+    window.addEventListener('mousedown', handleCloseLoginBox);
+
+    return () => {
+      window.removeEventListener('mousedown', handleCloseLoginBox);
+    };
+  }, [isVisibleLoginBox]);
 
   const handleVisibleLoginBox = () => {
     const nextIsVisibleLoginBox = !isVisibleLoginBox;
@@ -91,6 +92,10 @@ function LoggedIn({ src }: LoggedInProps) {
     setIsVisibleLoginBox(false);
   };
 
+  const handleBoxClick = (event: React.MouseEvent<HTMLUListElement>) => {
+    event.stopPropagation();
+  };
+
   return (
     // 마이페이지로 이동(로그인 된 상태)
     <>
@@ -102,7 +107,11 @@ function LoggedIn({ src }: LoggedInProps) {
         <img src={src} alt="" className={S.headerProfile} />
       </button>
       {isVisibleLoginBox ? (
-        <ul className={S.settingLoginInfo}>
+        <ul
+          className={S.settingLoginInfo}
+          onMouseDown={handleBoxClick}
+          role="menu"
+        >
           <li>
             <button
               type="button"
