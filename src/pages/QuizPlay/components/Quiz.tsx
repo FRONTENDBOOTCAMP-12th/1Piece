@@ -42,7 +42,7 @@ function Quiz({
   const setVisibleIndex = useQuizSolvedStore((state) => state.setVisibleIndex);
   const visibleIndex = useQuizSolvedStore((state) => state.visibleIndex);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
-  const setReset = useQuizSolvedStore((state) => state.setReset);
+  const setCorrectQuiz = useQuizSolvedStore((state) => state.setCorrectQuiz);
   const navigate = useNavigate();
 
   // 현재 선택지가 쉼표로 구분된 형식이라 이를 split을 사용하여 배열로 변환
@@ -82,10 +82,13 @@ function Quiz({
       return;
     }
 
+    if (correctState) {
+      setCorrectQuiz();
+    }
+
     // 다음 문제가 없다면 문제풀이 완료 페이지로 이동
     if (visibleIndex + 1 === totalQuiz) {
       navigate(`/quiz-complete/?problemId=${cardInfo.id}`);
-      setReset();
       return;
     }
 
