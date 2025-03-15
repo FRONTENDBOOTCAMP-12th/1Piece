@@ -62,6 +62,7 @@ const useModalVisibleStore = create(
         }));
       },
 
+      // 페이지 이동 시 초기화 되도록 설정하기 위한 함수
       resetIsVisible: () => {
         set(() => ({
           isVisible: false,

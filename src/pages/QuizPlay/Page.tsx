@@ -6,11 +6,14 @@ import { supabase } from '@/lib/SupabaseClient';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 
 function QuizPlayPage() {
+  // 선택된 문제 카드 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  // 퀴즈에 대한 상태(각각)
   const [quizInfo, setQuizInfo] = useState([]);
   const visibleIndex = useQuizSolvedStore((state) => state.visibleIndex);
   const setTotalQuiz = useQuizSolvedStore((state) => state.setTotalQuiz);
 
+  // 선택된 카드를 기반으로 데이터 가져오기
   const fetchItems = async () => {
     try {
       const { data, error } = await supabase
@@ -27,6 +30,8 @@ function QuizPlayPage() {
     }
   };
 
+  // 문제 풀이 페이지로 이동 시, 항상 화면이 최상단에 고정
+  // 최초 1회 데이터 불러오기
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchItems();
@@ -35,6 +40,7 @@ function QuizPlayPage() {
   return (
     <div className={S.problemContainer}>
       <h3 className={S.solveProblemTitle}>{cardInfo.title}</h3>
+      {/* 퀴즈를 리스트 렌더링으로 렌더링 */}
       {quizInfo.map((item, index) => (
         <Quiz
           totalQuizCount={quizInfo.length}
