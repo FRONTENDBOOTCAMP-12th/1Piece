@@ -3,17 +3,18 @@ import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
 import { supabase } from '@/lib/SupabaseClient';
-import { User } from '@supabase/supabase-js';
+import useLoginStore from '@/lib/LoginState';
 
 function Header() {
   // 로그인 상태
-  const [isLogin, setIsLogin] = useState(false);
-  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const isLogin = useLoginStore((state) => state.isLogin);
+  const userInfo = useLoginStore((state) => state.userInfo);
+  const setUserInfo = useLoginStore((state) => state.setUserInfo);
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -21,8 +22,7 @@ function Header() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    setIsLogin(!!user);
-    setUserInfo(user);
+    setUserInfo(user!);
   };
 
   // useEffect를 사용한 렌더링 차이
