@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
@@ -14,6 +14,7 @@ function Header() {
   // 로그인 상태
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   const getUser = async () => {
     const {
@@ -29,6 +30,22 @@ function Header() {
     getUser();
   }, []);
 
+  const handleMoveToHome = () => {
+    navigate('/');
+  };
+
+  const handleMoveToCardList = () => {
+    navigate('/card-list');
+  };
+
+  const handleMoveToCardCreate = () => {
+    navigate('/card-create');
+  };
+
+  const handleMoveToBookMark = () => {
+    navigate('/bookmark');
+  };
+
   return (
     <header className={S.header}>
       <div className={S.headerContainer}>
@@ -38,17 +55,24 @@ function Header() {
           <NavLink to="/">
             <img src="/icons/logo.svg" alt="홈으로 이동" className={S.logo} />
           </NavLink>
-          <NavLink to="/">
-            <RoundedButton color="tertiary" font="pretendard" size="regular">
-              홈
-            </RoundedButton>
-          </NavLink>
+          <RoundedButton
+            color="tertiary"
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToHome}
+          >
+            홈
+          </RoundedButton>
           {/* 문제 목록 페이지로 이동 */}
-          <NavLink to="/card-list">
-            <RoundedButton color="darkgray" font="pretendard" size="regular">
-              목록
-            </RoundedButton>
-          </NavLink>
+
+          <RoundedButton
+            color="darkgray"
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToCardList}
+          >
+            목록
+          </RoundedButton>
         </div>
 
         <div className={S.userInfoContainer}>
@@ -57,17 +81,23 @@ function Header() {
           {/* 문제 생성 페이지로 이동 */}
           {isLogin ? (
             <>
-              <NavLink to="/card-create">
-                <button type="button" className={S.headerCreateIcon}>
-                  <BiPlus size={24} />
-                </button>
-              </NavLink>
+              <button
+                type="button"
+                className={S.headerCreateIcon}
+                aria-label="문제 생성 페이지로 이동"
+                onClick={handleMoveToCardCreate}
+              >
+                <BiPlus size={24} />
+              </button>
               {/* 북마크 페이지로 이동 */}
-              <NavLink to="/bookmark">
-                <button type="button" className={S.headerBookMarkIcon}>
-                  <RiInbox2Line size={24} />
-                </button>
-              </NavLink>
+              <button
+                type="button"
+                className={S.headerBookMarkIcon}
+                aria-label="북마크로 이동"
+                onClick={handleMoveToBookMark}
+              >
+                <RiInbox2Line size={24} />
+              </button>
               <LoggedIn
                 src={
                   supabase.storage

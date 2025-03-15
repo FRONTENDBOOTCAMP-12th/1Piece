@@ -1,14 +1,21 @@
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { NavLink } from 'react-router';
+import { useNavigate } from 'react-router';
 
 function LoggedOut() {
+  const navigation = useNavigate();
+
+  const handleMoveToLogin = () => {
+    navigation('/login');
+  };
   return (
     // 로그인 페이지로 이동(로그인 되지 않은 상태)
-    <NavLink to="/login">
-      <RoundedButton color="secondary" font="pretendard">
-        로그인
-      </RoundedButton>
-    </NavLink>
+    <RoundedButton
+      color="secondary"
+      font="pretendard"
+      onClick={handleMoveToLogin}
+    >
+      로그인
+    </RoundedButton>
   );
 }
 
