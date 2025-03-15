@@ -22,7 +22,7 @@ export interface CardData {
   tags: string[];
   checked: boolean;
   description: string;
-  CardTitle: string;
+  ProblemTitle: string;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -64,7 +64,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
         userName: item.users.nickname,
         tags: Object.values(item.tags!),
         checked: false,
-        CardTitle: item.CardTitle,
+        ProblemTitle: item.problemTitle,
         description: item.desc,
       }));
 
@@ -141,7 +141,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   checked={item.checked}
                   description={item.description}
                 >
-                  {item.CardTitle}
+                  {item.ProblemTitle}
                 </Card>
               </SwiperSlide>
             ))}
