@@ -14,21 +14,29 @@ interface CommentData {
   content: string;
 }
 
+const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
+
 function QuizCompletePage() {
   const [comments, setComments] = useState<CommentData[]>([]);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [chunk, setChunk] = useState<number>(1);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
 
-  const fetchItems = async () => {
+  const fetchComments = async (chunk: number) => {
     try {
       const { data, error } = await supabase
         .from('comment')
         .select('*, users(*)')
         .eq('card_id', cardInfo.id)
-        .order('written_at', { ascending: false });
+        .order('written_at', { ascending: false })
+        .range(
+          (chunk - 1) * COMMENTS_PER_CHUNK,
+          chunk * COMMENTS_PER_CHUNK - 1
+        );
 
       if (!data) throw error;
 
-      console.log('data: ', data);
+      setHasMore(data.length === COMMENTS_PER_CHUNK);
 
       const newData = data.map((item) => ({
         id: `${item.id}`,
@@ -38,22 +46,35 @@ function QuizCompletePage() {
         content: item.comment,
       }));
 
-      setComments(newData);
+      setComments((prevComments) => [
+        ...prevComments.filter(
+          (prevItem) => !newData.some((newItem) => newItem.id === prevItem.id)
+        ),
+        ...newData,
+      ]);
     } catch (error) {
       console.log('error: ', error);
     }
   };
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    fetchComments(chunk);
+  }, [chunk]);
 
   return (
     <div className={S.pageContainer}>
       <QuizResult />
       <div className={S.rightSection}>
         <InputBox />
-        <CommentList comments={comments} />
+        <CommentList
+          comments={comments}
+          hasMore={hasMore}
+          onLoadMore={() => {
+            if (hasMore) {
+              setChunk((prevChunk) => prevChunk + 1);
+            }
+          }}
+        />
       </div>
     </div>
   );
