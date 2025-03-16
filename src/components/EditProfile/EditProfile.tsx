@@ -2,7 +2,6 @@ import S from './EditProfile.module.css';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import EmailAlarm from './EmailAlarm';
-import ProfileImage from './ProfileImage';
 
 interface ProfileState {
   user_id: string;
@@ -40,8 +39,6 @@ function EditProfile({
 }: EditProfileProps) {
   return (
     <div className={S.editProfileContainer}>
-      <ProfileImage src={profile.profileImage} />
-
       <form className={S.inputForm}>
         <Input
           label="ID"
