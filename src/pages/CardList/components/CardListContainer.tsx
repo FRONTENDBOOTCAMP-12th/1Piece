@@ -42,23 +42,26 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
+  // 검색 상태를 감지하기 위한 함수
   const searchParam = useSearchStore((state) => state.searchParam);
-  const setSearchParam = useSearchStore((state) => state.setSearchParam);
 
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
 
+  // 검색된 상태가 있을 시 실행할 함수
   const searchFetchItems = useCallback(async () => {
-    console.log(searchParam);
     try {
+      // card테이블에서 카드 제목에 검색어가 포함된 결과만을 출력
       const { data: fetchedData, error } = await supabase
         .from('card')
         .select('* , users(*)')
         .ilike('problemTitle', `%${searchParam}%`);
 
+      // 통신 실패 시 오류 발생
       if (error) throw error;
 
+      // 통신된 데이터를 저장
       const newData = fetchedData.map((item) => ({
         id: `${item.id}`,
         src: supabase.storage
@@ -72,6 +75,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
         count: item.count,
       }));
 
+      // 렌더링 할 데이터 상태 변경
       setData(newData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -138,12 +142,11 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     const search = new URL(location.href).searchParams.get('search');
 
     if (search) {
-      setSearchParam(search);
       searchFetchItems();
     } else {
       fetchItems(sortStandard);
     }
-  }, [sortStandard, fetchItems, searchFetchItems, setSearchParam, searchParam]);
+  }, [sortStandard, fetchItems, searchFetchItems, searchParam]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

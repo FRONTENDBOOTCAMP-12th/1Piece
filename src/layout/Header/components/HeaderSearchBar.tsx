@@ -9,8 +9,10 @@ function HeaderSearchBar() {
 
   // 이후 검색하게 될 경우 일어날 이벤트 구현해야 함
   const handleSearch = (formData: FormData) => {
+    // formData를 받아와서 "" 를 삭제한 값을 저장
     const keyword = JSON.stringify(formData.get('searchKeyword')).slice(1, -1);
 
+    // 전역 상태 저장소에 값 변경
     setSearchParam(keyword);
     navigation(`/card-list/?search=${keyword}`);
   };
