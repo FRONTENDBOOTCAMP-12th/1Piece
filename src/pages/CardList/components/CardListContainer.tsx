@@ -24,6 +24,7 @@ export interface CardData {
   checked: boolean;
   description: string;
   problemTitle: string;
+  count: number;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -43,6 +44,36 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
+
+  const searchFetchItems = useCallback(async (search: string) => {
+    try {
+      const { data: fetchedData, error } = await supabase
+        .from('card')
+        .select('* , users(*)')
+        .ilike('problemTitle', `%${search}%`);
+
+      if (error) throw error;
+
+      const newData = fetchedData.map((item) => ({
+        id: `${item.id}`,
+        src: supabase.storage
+          .from('profileImg/userProfile')
+          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
+        userName: item.users.nickname,
+        tags: Object.values(item.tags!),
+        checked: false,
+        problemTitle: item.problemTitle,
+        description: item.desc,
+        count: item.count,
+      }));
+
+      setData(newData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const fetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
@@ -69,6 +100,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           checked: false,
           problemTitle: item.problemTitle,
           description: item.desc,
+          count: item.count,
         }));
 
         const filteredData = selectedTags.length
@@ -98,8 +130,14 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   };
 
   useEffect(() => {
-    fetchItems(sortStandard);
-  }, [sortStandard, fetchItems]);
+    const search = new URL(location.href).searchParams.get('search');
+
+    if (search) {
+      searchFetchItems(search);
+    } else {
+      fetchItems(sortStandard);
+    }
+  }, [sortStandard, fetchItems, searchFetchItems]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -144,6 +182,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>
                 <Card
+                  count={item.count}
                   id={item.id}
                   src={item.src}
                   userName={item.userName}
