@@ -1,6 +1,6 @@
 .header {
   background: var(--primary-2-g);
-  min-width: 48rem;
+  min-width: 1024px;
   border-block-end: 1px solid var(--black);
   position: relative;
 }
