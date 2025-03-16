@@ -13,6 +13,7 @@ interface ProblemCardData {
   checked: boolean;
   description: string;
   problemTitle: string;
+  count: number;
 }
 
 function MainPage() {
@@ -50,6 +51,7 @@ function MainPage() {
         checked: false,
         problemTitle: item.problemTitle,
         description: item.desc,
+        count: item.count,
       }));
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
@@ -63,6 +65,7 @@ function MainPage() {
         checked: false,
         problemTitle: item.problemTitle,
         description: item.desc,
+        count: item.count,
       }));
 
       // 데이터를 정상적으로 받지 못했다면 ERROR 발생
