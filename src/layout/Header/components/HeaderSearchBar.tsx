@@ -7,7 +7,7 @@ function HeaderSearchBar() {
 
   // 이후 검색하게 될 경우 일어날 이벤트 구현해야 함
   const handleSearch = (formData: FormData) => {
-    const keyword = JSON.stringify(formData.get('searchKeyword'));
+    const keyword = JSON.stringify(formData.get('searchKeyword')).slice(1, -1);
 
     navigation(`/card-list/?search=${keyword}`);
   };
