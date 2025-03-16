@@ -15,6 +15,7 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import useSearchStore from '@/lib/SearchState';
 
 export interface CardData {
   id: string;
@@ -41,16 +42,20 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const [sortStandard, setSortStandard] = useState<'popular' | 'new'>(
     'popular'
   );
+  const searchParam = useSearchStore((state) => state.searchParam);
+  const setSearchParam = useSearchStore((state) => state.setSearchParam);
+
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
 
-  const searchFetchItems = useCallback(async (search: string) => {
+  const searchFetchItems = useCallback(async () => {
+    console.log(searchParam);
     try {
       const { data: fetchedData, error } = await supabase
         .from('card')
         .select('* , users(*)')
-        .ilike('problemTitle', `%${search}%`);
+        .ilike('problemTitle', `%${searchParam}%`);
 
       if (error) throw error;
 
@@ -73,7 +78,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [searchParam]);
 
   const fetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
@@ -133,11 +138,12 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     const search = new URL(location.href).searchParams.get('search');
 
     if (search) {
-      searchFetchItems(search);
+      setSearchParam(search);
+      searchFetchItems();
     } else {
       fetchItems(sortStandard);
     }
-  }, [sortStandard, fetchItems, searchFetchItems]);
+  }, [sortStandard, fetchItems, searchFetchItems, setSearchParam, searchParam]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

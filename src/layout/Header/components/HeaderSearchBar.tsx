@@ -1,14 +1,17 @@
 import { CiSearch } from 'react-icons/ci';
 import S from './HeaderSearchBar.module.css';
 import { useNavigate } from 'react-router';
+import useSearchStore from '@/lib/SearchState';
 
 function HeaderSearchBar() {
   const navigation = useNavigate();
+  const setSearchParam = useSearchStore((state) => state.setSearchParam);
 
   // 이후 검색하게 될 경우 일어날 이벤트 구현해야 함
   const handleSearch = (formData: FormData) => {
     const keyword = JSON.stringify(formData.get('searchKeyword')).slice(1, -1);
 
+    setSearchParam(keyword);
     navigation(`/card-list/?search=${keyword}`);
   };
 
