@@ -17,10 +17,27 @@ interface CommentData {
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
 
+async function fetchUserData() {
+  try {
+    const { data: user } = await supabase.auth.getUser();
+    const { data: userData, error } = await supabase
+      .from('users')
+      .select('id, nickname, level')
+      .eq('auth_uid', user.user.id)
+      .single();
+    if (error) throw error;
+    return userData;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function QuizCompletePage() {
   const [comments, setComments] = useState<CommentData[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [chunk, setChunk] = useState<number>(1);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
   const correctQuiz = useQuizSolvedStore((state) => state.correctQuiz);
@@ -65,30 +82,68 @@ function QuizCompletePage() {
   }, [chunk]);
 
   const handleAddComment = async (content: string) => {
+    const userData = await fetchUserData();
+    if (!userData) return;
+
     try {
-      const { data: user } = await supabase.auth.getUser();
+      await supabase.from('comment').insert([
+        {
+          writer_id: userData.id,
+          card_id: cardInfo.id,
+          comment: content,
+          written_at: new Date().toISOString(),
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('id, nickname, level')
-        .eq('auth_uid', user.user.id)
-        .single();
+  const handleLike = async () => {
+    const userData = await fetchUserData();
+    if (!userData) return;
 
-      if (userError) {
-        throw userError;
-      }
-
-      const { data, error } = await supabase
-        .from('comment')
-        .insert([
+    try {
+      if (isLiked) {
+        await supabase
+          .from('like')
+          .delete()
+          .eq('like_user', userData.id)
+          .eq('like_question', cardInfo.id);
+      } else {
+        await supabase.from('like').insert([
           {
-            writer_id: userData.id,
-            card_id: cardInfo.id,
-            comment: content,
-            written_at: new Date().toISOString(),
+            like_user: userData.id,
+            like_question: cardInfo.id,
           },
-        ])
-        .single();
+        ]);
+      }
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBookmark = async () => {
+    const userData = await fetchUserData();
+    if (!userData) return;
+
+    try {
+      if (isBookmarked) {
+        await supabase
+          .from('bookmark')
+          .delete()
+          .eq('bookmark_user', userData.id)
+          .eq('bookmark_question', cardInfo.id);
+      } else {
+        await supabase.from('bookmark').insert([
+          {
+            bookmark_user: userData.id,
+            bookmark_question: cardInfo.id,
+          },
+        ]);
+      }
+      setIsBookmarked(!isBookmarked);
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +153,13 @@ function QuizCompletePage() {
     <div className={S.pageContainer}>
       <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
       <div className={S.rightSection}>
-        <InputBox onAddComment={handleAddComment} />
+        <InputBox
+          isLiked={isLiked}
+          isBookmarked={isBookmarked}
+          onLikeUpdate={handleLike}
+          onBookmarkUpdate={handleBookmark}
+          onAddComment={handleAddComment}
+        />
         <CommentList
           comments={comments}
           hasMore={hasMore}
