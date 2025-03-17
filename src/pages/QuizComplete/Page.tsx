@@ -119,14 +119,28 @@ function QuizCompletePage() {
     if (!userData) return;
 
     try {
+      const newComment = {
+        id: crypto.randomUUID(), // 임시 ID 생성
+        userNickname: userData.nickname,
+        userLevel: userData.level,
+        commentedAt: new Date().toISOString(),
+        content,
+      };
+
+      // Supabase에 댓글 추가
       await supabase.from('comment').insert([
         {
           writer_id: userData.id,
           card_id: cardInfo.id,
           comment: content,
-          written_at: new Date().toISOString(),
+          written_at: newComment.commentedAt,
         },
       ]);
+
+      // 상태 업데이트: 화면에 즉시 렌더링 + 새 댓글을 포함한 10개만 유지
+      setComments((prevComments) =>
+        [newComment, ...prevComments].slice(0, COMMENTS_PER_CHUNK)
+      );
     } catch (error) {
       console.log(error);
     }
