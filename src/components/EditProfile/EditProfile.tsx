@@ -7,111 +7,115 @@ interface ProfileState {
   user_id: string;
   nickname: string;
   email: string;
-  profileImage: string;
 }
 
 interface EditProfileProps {
   profile: ProfileState;
-  currentPassword: string;
   newPassword: string;
   confirmNewPassword: string;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: () => void;
-  onCheckPassword: (password: string) => void;
-  isPasswordVerified: boolean;
+  nicknameError: string;
+  emailError: string;
   passwordError: string;
   passwordSuccess: string;
-  nicknameError: string;
+  confirmPasswordError: string;
+  confirmPasswordSuccess: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSaveChanges: (e: React.FormEvent) => void;
 }
 
 function EditProfile({
   profile,
-  currentPassword,
   newPassword,
   confirmNewPassword,
-  onInputChange,
-  onSubmit,
-  onCheckPassword,
-  isPasswordVerified,
+  nicknameError,
+  emailError,
   passwordError,
   passwordSuccess,
-  nicknameError,
+  confirmPasswordError,
+  confirmPasswordSuccess,
+  onInputChange,
+  onSaveChanges,
 }: EditProfileProps) {
   return (
     <div className={S.editProfileContainer}>
-      <form className={S.inputForm}>
+      <form
+        className={S.inputForm}
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSaveChanges(e); // 통합된 저장 버튼
+        }}
+      >
+        {/* ID는 수정 불가 */}
         <Input
           label="ID"
           name="user_id"
-          type="id"
+          type="text"
           className={S.inputId}
           value={profile.user_id}
           disabled
         />
+
+        {/* 닉네임 수정 */}
         <Input
           label="닉네임"
           name="nickname"
           type="text"
-          value={profile.nickname}
+          value={profile?.nickname || ''}
           onChange={onInputChange}
         />
-        {/* 닉네임 에러 메시지 추가 */}
-        {nicknameError && (
-          <p className={S.errorMessage}>{nicknameError}</p>
-        )}{' '}
+        {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}
+
+        {/* 이메일 수정 */}
         <Input
           label="이메일"
           name="email"
           type="email"
-          value={profile.email}
+          value={profile?.email || ''}
           onChange={onInputChange}
         />
-        <Input
-          label="현재 비밀번호"
-          name="currentPassword"
-          type="password"
-          placeholder="현재 비밀번호 입력"
-          value={currentPassword}
-          onChange={onInputChange}
-          onBlur={(e) => onCheckPassword(e.target.value)}
-        />
-        <Input
-          label="새 비밀번호"
-          name="newPassword"
-          type="password"
-          placeholder="새 비밀번호 입력"
-          value={newPassword}
-          onChange={onInputChange}
-          disabled={!isPasswordVerified}
-          className={!isPasswordVerified ? S.disabledInput : ''}
-        />
-        <Input
-          label="새 비밀번호 확인"
-          name="confirmNewPassword"
-          type="password"
-          placeholder="새 비밀번호 다시 입력"
-          value={confirmNewPassword}
-          onChange={onInputChange}
-          disabled={!isPasswordVerified}
-          className={!isPasswordVerified ? S.disabledInput : ''}
-        />
-        {passwordError && <p className={S.errorMessage}>{passwordError}</p>}
-        {passwordSuccess && (
-          <p className={S.successMessage}>{passwordSuccess}</p>
-        )}
+        {emailError && <p className={S.errorMessage}>{emailError}</p>}
+
+        {/* 알림 설정 (예시) */}
+        <EmailAlarm initialTime="12:00" isChecked={false} />
+
+        {/* 비밀번호 변경 섹션 */}
+        <div className={S.passwordChangeSection}>
+          <h3>비밀번호 변경</h3>
+
+          <Input
+            label="새 비밀번호"
+            name="newPassword"
+            type="password"
+            placeholder="영문/숫자 조합 (8~16자)"
+            value={newPassword}
+            onChange={onInputChange}
+          />
+          {passwordError ? (
+            <p className={S.errorMessage}>{passwordError}</p>
+          ) : passwordSuccess ? (
+            <p className={S.successMessage}>{passwordSuccess}</p>
+          ) : null}
+
+          <Input
+            label="새 비밀번호 확인"
+            name="confirmNewPassword"
+            type="password"
+            placeholder="새 비밀번호 다시 입력"
+            value={confirmNewPassword}
+            onChange={onInputChange}
+          />
+          {confirmPasswordError ? (
+            <p className={S.errorMessage}>{confirmPasswordError}</p>
+          ) : confirmPasswordSuccess ? (
+            <p className={S.successMessage}>{confirmPasswordSuccess}</p>
+          ) : null}
+        </div>
+
+        {/* ✅ 수정 버튼 하나로 통합! */}
+        <div className={S.buttonGroup}>
+          <Button label="수정" color="primary" type="submit" />
+        </div>
       </form>
-
-      {/* 이메일 알람 설정 */}
-      <EmailAlarm initialTime="12:00" isChecked={false} />
-
-      <div className={S.buttonGroup}>
-        <Button
-          label="탈퇴"
-          color="gray"
-          onClick={() => console.log('회원 탈퇴')}
-        />
-        <Button label="수정" color="tertiary" onClick={() => onSubmit()} />
-      </div>
     </div>
   );
 }
