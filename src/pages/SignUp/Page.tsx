@@ -1,9 +1,11 @@
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
+import { toast } from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -23,8 +25,7 @@ function SignUpPage() {
     email: '',
     users: '',
   });
-  const formErrors = { ...errors };
-  const [success, setSuccess] = useState('');
+  const [success] = useState('');
   const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
   const [idCheckLoading, setIdCheckLoading] = useState(false);
   const [isEmailAvailable, setIsEmailAvailable] = useState<boolean | null>(
@@ -32,8 +33,11 @@ function SignUpPage() {
   );
   const [emailCheckLoading, setEmailCheckLoading] = useState(false);
 
-  const emailRegEx =
-    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+  const emailRegEx = useMemo(
+    () =>
+      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
+    []
+  );
   const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/;
   const startIsSubmitting = () => setIsSubmitting(true);
   const stopIsSubmitting = () => setIsSubmitting(false);
@@ -49,11 +53,11 @@ function SignUpPage() {
 
     if (name === 'email') {
       setIsEmailAvailable(null);
-      setErrors((prev) => ({ ...prev, email: '' }));
+      setErrors({ ...errors, email: '' });
     }
 
     if (name === 'password') {
-      setTimeout(passwordValidate, 0);
+      passwordValidate();
     }
   };
 
@@ -89,31 +93,48 @@ function SignUpPage() {
     }
   };
 
-  const handleIdCheck = async () => {
+  const handleIdCheck = useCallback(async () => {
     const id = formData.id.trim();
     if (!id) return setIsIdAvailable(false);
 
     setIdCheckLoading(true);
-    setIsIdAvailable(await idCheckAvailability(formData.id));
+    const available = await idCheckAvailability(formData.id);
+    setIsIdAvailable(available);
     setIdCheckLoading(false);
-  };
 
-  const handleEmailCheck = async () => {
-    if (!formData.email.trim()) {
-      setIsEmailAvailable(false);
-      return;
+    if (available) {
+      toast.success('사용가능한 ID입니다.');
+    } else {
+      toast.error('이미 사용중인 ID입니다.');
     }
+  }, [formData.id]);
 
-    if (!emailValidate()) {
-      setIsEmailAvailable(null);
-      return;
-    }
+  const emailValidate = useCallback(() => {
+    const isValid = emailRegEx.test(formData.email);
+    setErrors((prev) => ({
+      ...prev,
+      email: isValid ? '' : '이메일 주소가 유효하지 않습니다.',
+    }));
+    return isValid;
+  }, [formData.email, emailRegEx]);
+
+  const handleEmailCheck = useCallback(async () => {
+    const email = formData.email.trim();
+    if (!email) return setIsEmailAvailable(false);
+
+    if (!emailValidate()) return setIsEmailAvailable(null);
 
     setEmailCheckLoading(true);
-    const available = await emailCheckAvailability(formData.email);
+    const available = await emailCheckAvailability(email);
     setIsEmailAvailable(available);
     setEmailCheckLoading(false);
-  };
+
+    if (available) {
+      toast.success('사용가능한 Email입니다.');
+    } else {
+      toast.error('이미 사용중인 Email입니다.');
+    }
+  }, [formData.email, emailValidate]);
 
   const passwordValidate = () => {
     const { password } = formData;
@@ -122,7 +143,7 @@ function SignUpPage() {
       errorMessage = '비밀번호는 대소문자, 숫자를 포함해야합니다.';
     }
 
-    setErrors((prev) => ({ ...prev, password: errorMessage }));
+    setErrors({ ...errors, password: errorMessage });
     return !errorMessage;
   };
 
@@ -137,19 +158,6 @@ function SignUpPage() {
 
   const handlePasswordConfirmBlur = () => {
     passwordConfirmValidate();
-  };
-
-  const emailValidate = () => {
-    if (!emailRegEx.test(formData.email)) {
-      formErrors.email = '이메일 주소가 유효하지 않습니다.';
-      const isValid = emailRegEx.test(formData.email);
-      setErrors((prev) => ({
-        ...prev,
-        email: isValid ? '' : '이메일 주소가 유효하지 않습니다.',
-      }));
-      return isValid;
-    }
-    return true;
   };
 
   const clearErrors = () => {
@@ -167,19 +175,25 @@ function SignUpPage() {
     e.preventDefault();
     clearErrors();
 
-    const newErrors = { ...errors };
-
-    if (!formData.id.trim()) newErrors.id = 'ID를 입력해주세요.';
+    if (!formData.id.trim()) {
+      setErrors({ ...errors, id: 'ID를 입력해주세요.' });
+      toast.error('ID를 입력해주세요.');
+      return;
+    }
 
     if (!emailValidate()) return;
 
     if (!passwordValidate()) return;
 
-    if (formData.password !== formData.passwordConfirm)
-      newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
-
-    setErrors(newErrors);
-    if (Object.values(newErrors).some((error) => error)) return;
+    if (formData.password !== formData.passwordConfirm) {
+      setErrors((prev) => ({
+        ...prev,
+        passwordConfirm: '비밀번호가 일치하지 않습니다.',
+      }));
+      toast.error('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    if (!passwordConfirmValidate()) return;
 
     startIsSubmitting();
 
@@ -191,20 +205,14 @@ function SignUpPage() {
         });
 
       if (signUpError) {
-        setErrors((prev) => ({
-          ...prev,
-          email: signUpError.message,
-          password: signUpError.message,
-        }));
+        toast.error(signUpError.message);
+        return;
       }
 
       const user = signUpData?.user;
 
       if (!user) {
-        setErrors({
-          ...errors,
-          email: '회원가입에 실패했습니다. 다시 시도해주세요.',
-        });
+        toast.error('회원가입에 실패했습니다. 다시 시도해주세요.');
         return;
       }
 
@@ -217,27 +225,19 @@ function SignUpPage() {
 
       if (usersError) {
         console.error('사용자 테이블 삽입 실패:', usersError.message);
-        setErrors({ ...errors, users: '사용자 저장에 실패했습니다.' });
+        toast.error('사용자 저장에 실패했습니다.');
       } else {
-        setSuccess('회원가입에 성공했습니다.');
-        const isConfirmed = window.confirm(
-          '회원가입에 성공했습니다. 이메일을 확인해주세요'
-        );
-        if (isConfirmed) {
-          setTimeout(() => {
-            navigate('/login');
-          }, 1000);
-        }
+        await Swal.fire({
+          icon: 'success',
+          title: '회원가입 성공!',
+          text: '이메일을 확인해주세요',
+          confirmButtonText: '확인',
+        });
+
+        navigate('/login');
       }
     } catch {
-      setErrors({
-        ...errors,
-        id: '회원가입에 실패했습니다.',
-        password: '회원가입에 실패했습니다.',
-        passwordConfirm: '회원가입에 실패했습니다.',
-        nickname: '회원가입에 실패했습니다.',
-        email: '회원가입에 실패했습니다.',
-      });
+      toast.error('회원가입 중 오류가 발생했습니다.');
     } finally {
       stopIsSubmitting();
     }
@@ -246,18 +246,11 @@ function SignUpPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (formData.id) handleIdCheck();
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [formData.id, handleIdCheck]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
       if (formData.email) handleEmailCheck();
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [formData.email, handleEmailCheck]);
+  }, [formData.id, handleIdCheck, formData.email, handleEmailCheck]);
 
   return (
     <div className={S.container}>
