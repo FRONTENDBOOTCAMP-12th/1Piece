@@ -1,7 +1,8 @@
 .header {
   background: var(--primary-2-g);
-  min-width: 48rem;
+  min-width: 1024px;
   border-block-end: 1px solid var(--black);
+  position: relative;
 }
 
 .headerContainer {
@@ -52,17 +53,5 @@
 
   &:active {
     background: var(--clicked-dark-gray-g);
-  }
-}
-
-.headerProfile {
-  box-sizing: border-box;
-  width: var(--space-10);
-  border-radius: var(--rounded-full);
-  border: 1px solid var(--black);
-  transition: all 0.3s;
-
-  &:hover {
-    transform: scale(1.2);
   }
 }

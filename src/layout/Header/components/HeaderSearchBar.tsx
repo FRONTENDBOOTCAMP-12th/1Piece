@@ -29,7 +29,7 @@ function HeaderSearchBar() {
         name="searchKeyword"
       />
       {/* submit 타입으로 action을 트리거할 수 있다 */}
-      <button type="submit" className={S.headerSearchBtn}>
+      <button type="submit" className={S.headerSearchBtn} aria-label="검색하기">
         <CiSearch size={24} />
       </button>
     </form>
