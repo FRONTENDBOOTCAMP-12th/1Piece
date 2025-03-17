@@ -1,8 +1,9 @@
-import S from './CardModal.module.css';
+import useLoginStore from '@/lib/LoginState';
+import useModalVisibleStore from '@/lib/ProblemModalState';
+import { useNavigate } from 'react-router';
 import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
-import useModalVisibleStore from '@/lib/ProblemModalState';
-import { NavLink } from 'react-router';
+import S from './CardModal.module.css';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -24,9 +25,20 @@ function CardModal({
   const setNonVisible = useModalVisibleStore((state) => state.setNonVisible);
   // 링크 이동을 위한 userInfo의 id만 사용
   const { id } = useModalVisibleStore((state) => state.cardInfo);
+  const isLogin = useLoginStore((state) => state.isLogin);
+  const navigation = useNavigate();
 
   const handleClose = () => {
     setNonVisible();
+  };
+
+  // 로그인 상태라면 퀴즈 풀기로, 아니라면 로그인 페이지로 이동
+  const handleMoveToSolveCard = () => {
+    if (isLogin) {
+      navigation(`/quiz-play/?problemId=${id}`);
+    } else {
+      navigation('/login');
+    }
   };
 
   return (
@@ -57,16 +69,14 @@ function CardModal({
             취소
           </RoundedButton>
           {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
-          <NavLink to={`/quiz-play/?problemId=${id}`}>
-            <RoundedButton
-              color="primary"
-              size="large"
-              font="neo"
-              onClick={handleClose}
-            >
-              풀기
-            </RoundedButton>
-          </NavLink>
+          <RoundedButton
+            color="primary"
+            size="large"
+            font="neo"
+            onClick={handleMoveToSolveCard}
+          >
+            풀기
+          </RoundedButton>
         </div>
       </div>
     </div>

@@ -1,0 +1,32 @@
+.headerProfile {
+  box-sizing: border-box;
+  width: var(--space-10);
+  aspect-ratio: 1/1;
+  border-radius: var(--rounded-full);
+  border: 1px solid var(--black);
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.settingLoginInfo {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  top: 6rem;
+  right: 10%;
+  background: var(--dark-gray-g);
+  border-radius: var(--radius-large);
+  border: 1px solid var(--black);
+  font-size: var(--medium);
+  padding: var(--space-4);
+
+  .settingLoginInfoList {
+    cursor: pointer;
+  }
+}
