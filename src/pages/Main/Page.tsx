@@ -93,7 +93,7 @@ function MainPage() {
     <>
       {/* 메인 배너 DUMMY 데이터 */}
       <img
-        src="/dummy/dummy_banner.png"
+        src="/images/main_banner.jpg"
         alt="큐젤리란"
         className={S.mainBanner}
       />
