@@ -77,8 +77,33 @@ function QuizCompletePage() {
     }
   };
 
+  const fetchUserPreferences = async () => {
+    const userData = await fetchUserData();
+    if (!userData) return;
+
+    try {
+      const { data: likeData } = await supabase
+        .from('like')
+        .select('*')
+        .eq('like_user', userData.id)
+        .eq('like_question', cardInfo.id);
+
+      const { data: bookmarkData } = await supabase
+        .from('bookmark')
+        .select('*')
+        .eq('bookmark_user', userData.id)
+        .eq('bookmark_question', cardInfo.id);
+
+      setIsLiked(likeData && likeData.length > 0);
+      setIsBookmarked(bookmarkData && bookmarkData.length > 0);
+    } catch (error) {
+      console.error('fetchUserPreferences error:', error);
+    }
+  };
+
   useEffect(() => {
     fetchComments(chunk);
+    fetchUserPreferences();
   }, [chunk]);
 
   const handleAddComment = async (content: string) => {
