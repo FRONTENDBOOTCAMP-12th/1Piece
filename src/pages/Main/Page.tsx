@@ -5,6 +5,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import CardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import fetchImg from '@/lib/FetchImg';
 
 interface ProblemCardData {
   id: string;
@@ -42,32 +43,32 @@ function MainPage() {
         .range(0, 6);
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCheck = dataCheck?.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
-      }));
+      const newDataCheck = await Promise.all(
+        dataCheck?.map(async (item) => ({
+          id: `${item.id}`,
+          src: await fetchImg(item.users.id),
+          userName: item.users.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+          count: item.count,
+        })) ?? []
+      );
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCreated = dataCreated?.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
-      }));
+      const newDataCreated = await Promise.all(
+        dataCreated?.map(async (item) => ({
+          id: `${item.id}`,
+          src: await fetchImg(item.users.id),
+          userName: item.users.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+          count: item.count,
+        })) ?? []
+      );
 
       // 데이터를 정상적으로 받지 못했다면 ERROR 발생
       if (errorCreated) throw errorCreated;
@@ -93,7 +94,7 @@ function MainPage() {
     <>
       {/* 메인 배너 DUMMY 데이터 */}
       <img
-        src="/dummy/dummy_banner.png"
+        src="/images/main_banner.jpg"
         alt="큐젤리란"
         className={S.mainBanner}
       />
