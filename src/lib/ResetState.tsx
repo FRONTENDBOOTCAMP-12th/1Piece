@@ -18,7 +18,7 @@ const ResetState = () => {
 
     resetIsVisible();
     setReset();
-  }, [location.pathname]);
+  }, [location.pathname, resetIsVisible, setReset]);
 
   return null;
 };
