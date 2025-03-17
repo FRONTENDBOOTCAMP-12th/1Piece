@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import QuizResult from '@/components/QuizResult/QuizResult';
 import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
@@ -21,6 +22,8 @@ function QuizCompletePage() {
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [chunk, setChunk] = useState<number>(1);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
+  const correctQuiz = useQuizSolvedStore((state) => state.correctQuiz);
 
   const fetchComments = async (chunk: number) => {
     try {
@@ -93,7 +96,7 @@ function QuizCompletePage() {
 
   return (
     <div className={S.pageContainer}>
-      <QuizResult />
+      <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
       <div className={S.rightSection}>
         <InputBox onAddComment={handleAddComment} />
         <CommentList
