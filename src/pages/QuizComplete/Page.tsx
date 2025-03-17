@@ -17,6 +17,7 @@ interface CommentData {
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
 
+// 사용자 정보 가져오는 함수
 async function fetchUserData() {
   try {
     const { data: user } = await supabase.auth.getUser();
@@ -34,7 +35,7 @@ async function fetchUserData() {
 
 function QuizCompletePage() {
   const [comments, setComments] = useState<CommentData[]>([]);
-  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(false); // 더 불러올 댓글 존재 여부
   const [chunk, setChunk] = useState<number>(1);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
@@ -42,6 +43,7 @@ function QuizCompletePage() {
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
   const correctQuiz = useQuizSolvedStore((state) => state.correctQuiz);
 
+  // 해당 퀴즈의 댓글 불러오기
   const fetchComments = async (chunk: number) => {
     try {
       const { data, error } = await supabase
@@ -56,6 +58,7 @@ function QuizCompletePage() {
 
       if (!data) throw error;
 
+      // 다음 댓글이 있는지 확인
       setHasMore(data.length === COMMENTS_PER_CHUNK);
 
       const newData = data.map((item) => ({
@@ -66,6 +69,7 @@ function QuizCompletePage() {
         content: item.comment,
       }));
 
+      // 중복 댓글 제거 후 추가
       setComments((prevComments) => [
         ...prevComments.filter(
           (prevItem) => !newData.some((newItem) => newItem.id === prevItem.id)
@@ -77,17 +81,20 @@ function QuizCompletePage() {
     }
   };
 
+  // 좋아요, 북마크 여부 가져오는 함수
   const fetchUserPreferences = async () => {
     const userData = await fetchUserData();
     if (!userData) return;
 
     try {
+      // 좋아요 데이터 불러오기
       const { data: likeData } = await supabase
         .from('like')
         .select('*')
         .eq('like_user', userData.id)
         .eq('like_question', cardInfo.id);
 
+      // 북마크 데이터 불러오기
       const { data: bookmarkData } = await supabase
         .from('bookmark')
         .select('*')
@@ -106,6 +113,7 @@ function QuizCompletePage() {
     fetchUserPreferences();
   }, [chunk]);
 
+  // 댓글 추가
   const handleAddComment = async (content: string) => {
     const userData = await fetchUserData();
     if (!userData) return;
@@ -124,18 +132,21 @@ function QuizCompletePage() {
     }
   };
 
+  // 좋아요
   const handleLike = async () => {
     const userData = await fetchUserData();
     if (!userData) return;
 
     try {
       if (isLiked) {
+        // 좋아요 취소
         await supabase
           .from('like')
           .delete()
           .eq('like_user', userData.id)
           .eq('like_question', cardInfo.id);
       } else {
+        // 좋아요 추가
         await supabase.from('like').insert([
           {
             like_user: userData.id,
@@ -149,18 +160,21 @@ function QuizCompletePage() {
     }
   };
 
+  // 북마크
   const handleBookmark = async () => {
     const userData = await fetchUserData();
     if (!userData) return;
 
     try {
       if (isBookmarked) {
+        // 북마크 취소
         await supabase
           .from('bookmark')
           .delete()
           .eq('bookmark_user', userData.id)
           .eq('bookmark_question', cardInfo.id);
       } else {
+        // 북마크 추가
         await supabase.from('bookmark').insert([
           {
             bookmark_user: userData.id,
