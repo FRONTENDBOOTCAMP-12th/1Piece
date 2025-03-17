@@ -1,3 +1,4 @@
+// 브랜치와 상관없는 작업 삭제를 위한 커밋
 import CardSwiper from '@/components/CardSwiper/CardSwiper';
 import S from './MainPage.module.css';
 import { supabase } from '@/lib/SupabaseClient';
