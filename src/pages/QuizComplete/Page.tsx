@@ -7,7 +7,7 @@ import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
 
 interface CommentData {
-  id: string;
+  id?: string;
   userNickname: string;
   userLevel: number;
   commentedAt: string;
@@ -61,11 +61,41 @@ function QuizCompletePage() {
     fetchComments(chunk);
   }, [chunk]);
 
+  const handleAddComment = async (content: string) => {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('id, nickname, level')
+        .eq('auth_uid', user.user.id)
+        .single();
+
+      if (userError) {
+        throw userError;
+      }
+
+      const { data, error } = await supabase
+        .from('comment')
+        .insert([
+          {
+            writer_id: userData.id,
+            card_id: cardInfo.id,
+            comment: content,
+            written_at: new Date().toISOString(),
+          },
+        ])
+        .single();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={S.pageContainer}>
       <QuizResult />
       <div className={S.rightSection}>
-        <InputBox />
+        <InputBox onAddComment={handleAddComment} />
         <CommentList
           comments={comments}
           hasMore={hasMore}
