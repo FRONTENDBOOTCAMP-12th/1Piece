@@ -224,13 +224,12 @@ function SignUpPage() {
       });
 
       if (usersError) {
-        console.error('사용자 테이블 삽입 실패:', usersError.message);
         toast.error('사용자 저장에 실패했습니다.');
       } else {
         await Swal.fire({
           icon: 'success',
           title: '회원가입 성공!',
-          text: '이메일을 확인해주세요',
+          text: '로그인 페이지로 이동합니다.',
           confirmButtonText: '확인',
         });
 
