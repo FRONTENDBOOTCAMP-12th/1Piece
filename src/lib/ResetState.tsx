@@ -11,10 +11,13 @@ const ResetState = () => {
   const setReset = useQuizSolvedStore((state) => state.setReset);
 
   useEffect(() => {
-    return () => {
-      resetIsVisible();
-      setReset();
-    };
+    // quiz-complete가 pathname에 포함되어있다면 즉, 문제 완료 페이지로 이동했다면 초기화 취소
+    if (location.pathname.includes('quiz-complete')) {
+      return;
+    }
+
+    resetIsVisible();
+    setReset();
   }, [location.pathname]);
 
   return null;
