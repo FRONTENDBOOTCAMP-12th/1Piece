@@ -2,10 +2,12 @@ import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import { supabase } from '@/lib/SupabaseClient';
+
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import QuizCreate from './QuizCreate/QuizCreate';
+
 import S from './Page.module.css';
 
 function CardCreatePage() {
@@ -137,8 +139,10 @@ function CardCreatePage() {
         return;
       }
 
-      navigate('/card-list');
       toast.success('카드가 등록되었습니다.');
+      setTimeout(() => {
+        navigate('/card-list');
+      }, 1000);
     } catch (error) {
       toast.error('카드 저장 중 오류가 발생했습니다.');
       console.error('카드 저장 중 오류:', error);
@@ -215,7 +219,7 @@ function CardCreatePage() {
           onClick={handleSubmit}
         />
       </div>
-      <Toaster />
+      <Toaster position="bottom-right" />
     </div>
   );
 }
