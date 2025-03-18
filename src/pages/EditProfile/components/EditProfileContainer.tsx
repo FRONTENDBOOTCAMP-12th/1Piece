@@ -4,13 +4,13 @@ import EditProfile from '@/components/EditProfile/EditProfile';
 import PasswordVerification from './PasswordVerification';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import toast from 'react-hot-toast';
-import Swal from 'sweetalert2';
 
 interface ProfileState {
   user_id: string;
   nickname: string;
   email: string;
   uid?: string;
+  password?: string;
 }
 
 const useDebouncedValue = (value: string, delay = 500) => {
@@ -36,10 +36,9 @@ function EditProfileContainer() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [initialProfile, setInitialProfile] = useState<ProfileState | null>(
     null
-  ); // 서버에서 가져온 원본 프로필
+  );
 
   const debouncedNickname = useDebouncedValue(profile?.nickname ?? '', 500);
-  const debouncedEmail = useDebouncedValue(profile?.email ?? '', 500);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -56,7 +55,10 @@ function EditProfileContainer() {
           .single();
 
         if (error) {
-          throw new Error('프로필 데이터를 가져오는 중 오류가 발생했습니다.');
+          toast.error('프로필 데이터를 가져오는 중 오류가 발생했습니다.', {
+            position: 'bottom-right',
+          });
+          return;
         }
 
         if (data) {
@@ -94,97 +96,108 @@ function EditProfileContainer() {
     checkNickname();
   }, [debouncedNickname, profile?.user_id]);
 
-  useEffect(() => {
-    if (!debouncedEmail.trim() || !profile) return;
-    const checkEmail = async () => {
-      const emailRegEx = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-      if (!emailRegEx.test(debouncedEmail)) {
-        setErrors((prev) => ({
-          ...prev,
-          email: '이메일 주소가 유효하지 않습니다.',
-        }));
-        return;
-      }
-
-      const { data } = await supabase
-        .from('users')
-        .select('email')
-        .eq('email', debouncedEmail)
-        .neq('user_id', profile.user_id)
-        .maybeSingle();
-      setErrors((prev) => ({
-        ...prev,
-        email: data ? '이미 사용 중인 이메일입니다.' : '',
-      }));
-    };
-    checkEmail();
-  }, [debouncedEmail, profile]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const sanitizedValue = value.trim();
 
     if (name === 'newPassword') {
       setNewPassword(sanitizedValue);
+      const passwordError = validatePassword(
+        sanitizedValue,
+        confirmNewPassword
+      );
+
       setErrors((prev) => ({
         ...prev,
-        password:
-          sanitizedValue.length < 8 || sanitizedValue.length > 16
-            ? '비밀번호는 8자 이상 16자 이하로 입력해야 합니다.'
-            : !/[A-Za-z]/.test(sanitizedValue)
-              ? '비밀번호에는 최소 1개의 영문이 포함되어야 합니다.'
-              : !/[0-9]/.test(sanitizedValue)
-                ? '비밀번호에는 최소 1개의 숫자가 포함되어야 합니다.'
-                : '',
+        password: passwordError.includes('비밀번호') ? passwordError : '',
+        confirmPassword:
+          sanitizedValue === confirmNewPassword
+            ? ''
+            : '비밀번호가 일치하지 않습니다.',
       }));
     } else if (name === 'confirmNewPassword') {
       setConfirmNewPassword(sanitizedValue);
+
       setErrors((prev) => ({
         ...prev,
         confirmPassword:
-          newPassword !== sanitizedValue ? '비밀번호가 일치하지 않습니다.' : '',
+          newPassword === sanitizedValue ? '' : '비밀번호가 일치하지 않습니다.',
+        password: validatePassword(newPassword, sanitizedValue), // 새 비밀번호도 다시 검증
       }));
     } else {
       setProfile((prev) => (prev ? { ...prev, [name]: sanitizedValue } : prev));
     }
   };
 
+  const validatePassword = (password: string, confirmPassword: string) => {
+    if (!password) return '비밀번호를 입력하세요.';
+    if (password.length < 8 || password.length > 16)
+      return '비밀번호는 8자 이상 16자 이하로 입력해야 합니다.';
+    if (!/[A-Za-z]/.test(password))
+      return '비밀번호에는 최소 1개의 영문이 포함되어야 합니다.';
+    if (!/[0-9]/.test(password))
+      return '비밀번호에는 최소 1개의 숫자가 포함되어야 합니다.';
+    if (password !== confirmPassword) return '비밀번호가 일치하지 않습니다.';
+    return ''; // 에러가 없을 경우 빈 문자열 반환
+  };
+
   const handlePasswordChange = async () => {
-    if (
-      !newPassword ||
-      newPassword.length < 8 ||
-      newPassword.length > 16 ||
-      !/[A-Za-z]/.test(newPassword) ||
-      !/[0-9]/.test(newPassword) ||
-      newPassword !== confirmNewPassword
-    ) {
-      setErrors((prev) => ({
-        ...prev,
-        password:
-          newPassword.length < 8 || newPassword.length > 16
-            ? '비밀번호는 8자 이상 16자 이하로 입력해야 합니다.'
-            : !/[A-Za-z]/.test(newPassword)
-              ? '비밀번호에는 최소 1개의 영문이 포함되어야 합니다.'
-              : !/[0-9]/.test(newPassword)
-                ? '비밀번호에는 최소 1개의 숫자가 포함되어야 합니다.'
-                : '',
-        confirmPassword:
-          newPassword !== confirmNewPassword
-            ? '비밀번호가 일치하지 않습니다.'
-            : '',
-      }));
-      toast.error('비밀번호 조건을 확인해주세요.', {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      toast.error('로그인이 필요합니다.', { position: 'bottom-right' });
+      return false;
+    }
+
+    if (!profile) {
+      toast.error('프로필 정보를 불러오는 중 오류가 발생했습니다.', {
         position: 'bottom-right',
       });
       return false;
     }
 
+    const passwordError = validatePassword(newPassword, confirmNewPassword);
+    if (passwordError) {
+      setErrors((prev) => ({
+        ...prev,
+        password: passwordError.includes('비밀번호') ? passwordError : '',
+        confirmPassword: passwordError.includes('일치') ? passwordError : '',
+      }));
+      toast.error(passwordError, { position: 'bottom-right' });
+      return false;
+    }
+
     try {
-      const { error } = await supabase.auth.updateUser({
+      console.log('비밀번호 변경 요청 시작');
+      const { data, error } = await supabase.auth.updateUser({
         password: newPassword,
       });
-      if (error) throw new Error('비밀번호 변경 실패');
-      toast.success('비밀번호가 성공적으로 변경되었습니다. 🎉', {
+
+      if (error) {
+        console.error('비밀번호 변경 실패:', error);
+
+        // 새 비밀번호가 기존 비밀번호와 같을 경우 에러 메시지 표시
+        if (
+          error.message.includes(
+            'New password should be different from the old password'
+          )
+        ) {
+          setErrors((prev) => ({
+            ...prev,
+            password: '새 비밀번호는 기존 비밀번호와 달라야 합니다.',
+          }));
+          toast.error('새 비밀번호는 기존 비밀번호와 달라야 합니다.', {
+            position: 'bottom-right',
+          });
+          return false;
+        }
+
+        throw new Error('비밀번호 변경 실패');
+      }
+
+      console.log('비밀번호 변경 성공:', data);
+      setErrors({ password: '', confirmPassword: '', nickname: '', email: '' });
+
+      toast.success('비밀번호가 성공적으로 변경되었습니다.', {
         position: 'bottom-right',
       });
       return true;
@@ -208,13 +221,16 @@ function EditProfileContainer() {
         .update(updates)
         .eq('user_id', profile.user_id);
 
-      if (error) throw new Error('닉네임 & 이메일 업데이트 실패');
+      if (error) throw new Error('닉네임 변경 실패');
 
-      console.log('닉네임 & 이메일이 성공적으로 업데이트되었습니다!');
+      console.log('닉네임 변경되었습니다.');
+      toast.success('닉네임이 변경되었습니다.', {
+        position: 'bottom-right',
+      });
       return true;
     } catch (error) {
       console.error(
-        '닉네임 & 이메일 저장 중 오류 발생:',
+        '닉네임 저장 중 오류 발생:',
         error instanceof Error ? error.message : '알 수 없는 오류 발생'
       );
       return false;
@@ -259,11 +275,6 @@ function EditProfileContainer() {
         hasChanges = true;
       }
 
-      if (initialProfile.email.trim() !== debouncedEmail.trim()) {
-        updates.email = debouncedEmail.trim();
-        hasChanges = true;
-      }
-
       if (hasChanges) {
         isProfileUpdated = await handleProfileUpdate(updates);
         if (isProfileUpdated) {
@@ -273,7 +284,7 @@ function EditProfileContainer() {
       }
 
       if (isPasswordUpdated || isProfileUpdated) {
-        console.log('프로필이 성공적으로 수정되었습니다!');
+        console.log('프로필이 수정되었습니다.');
       } else {
         console.log('변경된 내용이 없습니다.');
         toast.error('변경된 내용이 없습니다.', { position: 'bottom-right' });
@@ -288,7 +299,7 @@ function EditProfileContainer() {
     }
   };
 
-  if (loading) return <p>로딩 중...🚀</p>;
+  if (loading) return <p>로딩 중... 🚀</p>;
 
   return (
     <MyPageDiary title="P r o f i l e">
@@ -303,7 +314,6 @@ function EditProfileContainer() {
           newPassword={newPassword}
           confirmNewPassword={confirmNewPassword}
           nicknameError={errors.nickname}
-          emailError={errors.email}
           passwordError={errors.password}
           confirmPasswordError={errors.confirmPassword}
           onInputChange={handleInputChange}
