@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: row;
   gap: var(--space-4);
-  width: 75rem;
+  width: 80rem;
   min-height: fit-content;
   margin-inline: auto;
   position: relative;
@@ -16,6 +16,17 @@
   border: 1px solid var(--black);
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
 .rightDiary {
@@ -24,19 +35,18 @@
   border: 1px solid var(--black);
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: var(--space-15);
+  padding: 0 var(--space-10) var(--space-15) var(--space-10);
 }
 
 .springContainer {
   display: flex;
   position: absolute;
   flex-flow: column;
-  left: 32%;
+  left: 31.5%;
   top: 10%;
   gap: 25rem;
 
@@ -47,7 +57,7 @@
 
     & div {
       height: var(--space-4);
-      width: var(--space-8);
+      width: var(--space-10);
       background: var(--dark-gray-g);
       border-radius: var(--rounded-full);
     }
@@ -60,14 +70,15 @@
 
     & div {
       height: var(--space-4);
-      width: var(--space-8);
+      width: var(--space-10);
       background: var(--dark-gray-g);
       border-radius: var(--rounded-full);
     }
   }
 }
 
-.levelText {
+.level,
+.nickname {
   font-size: var(--large-2);
   text-align: center;
   margin-block: var(--space-4);
@@ -86,10 +97,22 @@
 
 .btnNavigate {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   gap: var(--space-16);
   align-items: center;
   margin-block-end: var(--space-8);
+}
+
+.customButton {
+  font-size: var(--large-2);
+  border-radius: var(--radius-xl);
+  border: 0.125rem solid var(--black);
+  width: 18rem;
+  height: 5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pageName {

@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router';
-import Button from '../Button/Button';
-import S from './MyPageDiary.module.css';
 import React from 'react';
+import { useNavigate } from 'react-router';
+
+import Button from '../Button/Button';
+
+import S from './MyPageDiary.module.css';
 
 interface MyPageDiaryProps {
   children: React.ReactNode;
@@ -17,12 +19,13 @@ function MyPageDiary({
   const navigate = useNavigate();
 
   return (
-    // 디자인을 위한 container
     <div className={S.diaryContainer}>
-      {/* 다이어리의 왼쪽과 오른쪽의 디자인 구분 */}
       <div className={S.leftDiary}>
-        {/* 이후 유저의 정보를 받아와야함 */}
-        <p className={S.levelText}>LV.999 | 김멋사</p>
+        <div className={S.userInfo}>
+          <p className={S.level}>LV.999 </p> |{' '}
+          <p className={S.nickname}>김멋사 </p>
+        </div>
+
         <img
           src="/dummy/dummy_profile.jpg"
           alt="유저 프로필 사진"
@@ -33,16 +36,19 @@ function MyPageDiary({
             label="라이브러리"
             color={activeButton === 1 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/bookmark')}
+            className={S.customButton} // className 추가
           />
           <Button
             label="출석과 보상"
             color={activeButton === 2 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/calendar')}
+            className={S.customButton} // className 추가
           />
           <Button
             label="개인정보 관리"
             color={activeButton === 3 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/edit-profile')}
+            className={S.customButton} // className 추가
           />
         </div>
       </div>
@@ -50,7 +56,6 @@ function MyPageDiary({
         <h1 className={S.pageName}>{title}</h1>
         {children}
       </div>
-      {/* 오른쪽과 왼쪽을 연결하는 스프링 디자인 */}
       <div className={S.springContainer}>
         <div className={S.topSpringContainer}>
           <div />
