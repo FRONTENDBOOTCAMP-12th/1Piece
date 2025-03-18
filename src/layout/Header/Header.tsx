@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
@@ -8,11 +8,14 @@ import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
 import { supabase } from '@/lib/SupabaseClient';
 import useLoginStore from '@/lib/LoginState';
+import { useEffect, useState } from 'react';
 
 function Header() {
   // 로그인 상태
   const userInfo = useLoginStore((state) => state.userInfo);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [current, setCurrent] = useState('/');
 
   // NavLink를 사용하지 않은 링크 이동
   const handleMoveToHome = () => {
@@ -31,6 +34,12 @@ function Header() {
     navigate('/bookmark');
   };
 
+  // 현재 pathname에 따라 홈과 목록 버튼의 색상 변경
+  useEffect(() => {
+    const currentPage = location.pathname;
+    setCurrent(currentPage);
+  }, [location.pathname]);
+
   return (
     <header className={S.header}>
       <div className={S.headerContainer}>
@@ -41,7 +50,7 @@ function Header() {
             <img src="/icons/logo.svg" alt="홈으로 이동" className={S.logo} />
           </NavLink>
           <RoundedButton
-            color="tertiary"
+            color={current === '/' ? 'tertiary' : 'darkgray'}
             font="pretendard"
             size="regular"
             onClick={handleMoveToHome}
@@ -51,7 +60,7 @@ function Header() {
           {/* 문제 목록 페이지로 이동 */}
 
           <RoundedButton
-            color="darkgray"
+            color={current.includes('card-list') ? 'tertiary' : 'darkgray'}
             font="pretendard"
             size="regular"
             onClick={handleMoveToCardList}
