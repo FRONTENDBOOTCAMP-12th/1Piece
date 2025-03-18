@@ -17,3 +17,7 @@
   gap: var(--space-4);
   margin-top: var(--space-6);
 }
+
+.inputForm {
+  width: 60%;
+}
