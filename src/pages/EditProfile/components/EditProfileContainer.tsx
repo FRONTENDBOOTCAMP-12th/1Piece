@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 
-import S from './EditProfile.module.css';
-
 interface ProfileState {
   user_id: string;
   nickname: string;
@@ -211,7 +209,7 @@ function EditProfileContainer() {
   if (!profile) return <p>프로필 정보를 가져올 수 없습니다.</p>;
 
   return (
-    <div className={S.MyPageContainer}>
+    <div>
       <MyPageDiary title="P r o f i l e">
         <EditProfile
           profile={profile}
