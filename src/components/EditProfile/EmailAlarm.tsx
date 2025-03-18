@@ -65,11 +65,13 @@ function EmailAlarm({
             checked={checked}
             onChange={handleToggle}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') handleToggle();
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleToggle();
+              }
             }}
             role="switch"
             aria-checked={checked}
-            aria-label="이메일 푸시 알람 토글"
+            aria-labelledby="email-alarm-label"
           />
           <span className={S.switchThumb} />
         </label>

@@ -28,6 +28,7 @@ function PasswordVerification({
           placeholder="현재 비밀번호를 입력하세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className={S.inputBox}
         />
         {passwordError && (
           <p id="password-error" className={S.errorMessage} aria-live="polite">

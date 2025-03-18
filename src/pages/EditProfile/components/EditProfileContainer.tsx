@@ -1,15 +1,16 @@
-import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/SupabaseClient';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
+import S from './EditProfileContainer.module.css';
+import PasswordVerification from './PasswordVerification';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import PasswordVerification from './PasswordVerification';
 
 interface ProfileState {
   user_id: string;
-  nickname: string;
   email: string;
+  nickname: string;
   uid?: string;
   password?: string;
   alarm?: string | null;
@@ -352,26 +353,28 @@ function EditProfileContainer() {
   if (loading) return <p>로딩 중... 🚀</p>;
 
   return (
-    <MyPageDiary title="P r o f i l e">
-      {!isPasswordVerified ? (
-        <PasswordVerification
-          onVerify={() => setIsPasswordVerified(true)}
-          passwordError={errors.password}
-        />
-      ) : (
-        <EditProfile
-          profile={profile!}
-          newPassword={newPassword}
-          confirmNewPassword={confirmNewPassword}
-          nicknameError={errors.nickname}
-          passwordError={errors.password}
-          confirmPasswordError={errors.confirmPassword}
-          onInputChange={handleInputChange}
-          onSaveChanges={handleSaveChanges}
-          onSaveAlarm={handleSaveAlarm}
-        />
-      )}
-    </MyPageDiary>
+    <div className={S.MyPageContainer}>
+      <MyPageDiary title="P r o f i l e">
+        {!isPasswordVerified ? (
+          <PasswordVerification
+            onVerify={() => setIsPasswordVerified(true)}
+            passwordError={errors.password}
+          />
+        ) : (
+          <EditProfile
+            profile={profile!}
+            newPassword={newPassword}
+            confirmNewPassword={confirmNewPassword}
+            nicknameError={errors.nickname}
+            passwordError={errors.password}
+            confirmPasswordError={errors.confirmPassword}
+            onInputChange={handleInputChange}
+            onSaveChanges={handleSaveChanges}
+            onSaveAlarm={handleSaveAlarm}
+          />
+        )}
+      </MyPageDiary>
+    </div>
   );
 }
 

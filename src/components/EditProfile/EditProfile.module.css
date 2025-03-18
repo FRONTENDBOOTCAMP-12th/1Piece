@@ -49,8 +49,11 @@
   outline-offset: 2px;
 }
 
-.inputImage {
-  display: none;
+.inputBox {
+  max-width: 20rem;
+  padding: var(--space-3);
+  border: 1px solid var(--white);
+  border-radius: 0.625rem;
 }
 
 .inputId {

@@ -40,7 +40,7 @@ function EditProfile({
   return (
     <div className={S.editProfileContainer}>
       <form
-        className={S.inputForm}
+        className={S.inputBox}
         onSubmit={(e) => {
           e.preventDefault();
           onSaveChanges(e); // 통합된 저장 버튼
@@ -51,8 +51,8 @@ function EditProfile({
           label="ID"
           name="user_id"
           type="text"
-          className={S.inputId}
           value={profile.user_id}
+          className={S.inputBox}
           disabled
         />
         {/* 이메일 수정 불가*/}
@@ -61,6 +61,7 @@ function EditProfile({
           name="email"
           type="email"
           value={profile?.email || ''}
+          className={S.inputBox}
           disabled
         />
         {/* 닉네임 수정 */}
@@ -70,6 +71,7 @@ function EditProfile({
           type="text"
           value={profile?.nickname || ''}
           onChange={onInputChange}
+          className={S.inputBox}
         />
         {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}
         {/* 알림 설정 */}
@@ -88,6 +90,7 @@ function EditProfile({
             placeholder="영문+숫자 조합 8~16자"
             value={newPassword}
             onChange={onInputChange}
+            className={S.inputBox}
           />
           {passwordError ? (
             <p className={S.errorMessage}>{passwordError}</p>
@@ -101,6 +104,7 @@ function EditProfile({
             placeholder="새 비밀번호 다시 입력"
             value={confirmNewPassword}
             onChange={onInputChange}
+            className={S.inputBox}
           />
           {confirmPasswordError ? (
             <p className={S.errorMessage}>{confirmPasswordError}</p>
