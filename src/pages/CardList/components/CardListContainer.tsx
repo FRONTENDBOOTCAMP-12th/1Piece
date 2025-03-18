@@ -50,39 +50,57 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const navigate = useNavigate();
 
   // 검색된 상태가 있을 시 실행할 함수
-  const searchFetchItems = useCallback(async () => {
-    try {
-      // card테이블에서 카드 제목에 검색어가 포함된 결과만을 출력
-      const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('* , users(*)')
-        .ilike('problemTitle', `%${searchParam}%`);
+  const searchFetchItems = useCallback(
+    async (sortBy: 'popular' | 'new') => {
+      try {
+        let query = supabase.from('card').select('*, users(*)');
 
-      // 통신 실패 시 오류 발생
-      if (error) throw error;
+        if (sortBy === 'popular') {
+          query = query.order('check', { ascending: false });
+        } else if (sortBy === 'new') {
+          query = query.order('created', { ascending: false });
+        }
 
-      // 통신된 데이터를 저장
-      const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
-      }));
+        // card테이블에서 카드 제목에 검색어가 포함된 결과만을 출력
+        const { data: fetchedData, error } = await query.ilike(
+          'problemTitle',
+          `%${searchParam}%`
+        );
 
-      // 렌더링 할 데이터 상태 변경
-      setData(newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [searchParam]);
+        // 통신 실패 시 오류 발생
+        if (error) throw error;
+
+        // 통신된 데이터를 저장
+        const newData = fetchedData.map((item) => ({
+          id: `${item.id}`,
+          src: supabase.storage
+            .from('profileImg/userProfile')
+            .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
+          userName: item.users!.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+          count: item.count,
+        }));
+
+        // 체크된 태그에 따라 렌더링 다르게
+        const filteredData = selectedTags.length
+          ? newData.filter((item) =>
+              item.tags.some((tag) => selectedTags.includes(`${tag}`))
+            )
+          : newData;
+
+        // 렌더링 할 데이터 상태 변경
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [searchParam, selectedTags]
+  );
 
   const fetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
@@ -103,8 +121,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           id: `${item.id}`,
           src: supabase.storage
             .from('profileImg/userProfile')
-            .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-          userName: item.users.nickname,
+            .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
+          userName: item.users!.nickname,
           tags: Object.values(item.tags!),
           checked: false,
           problemTitle: item.problemTitle,
@@ -142,7 +160,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     const search = new URL(location.href).searchParams.get('search');
 
     if (search) {
-      searchFetchItems();
+      searchFetchItems(sortStandard);
     } else {
       fetchItems(sortStandard);
     }
