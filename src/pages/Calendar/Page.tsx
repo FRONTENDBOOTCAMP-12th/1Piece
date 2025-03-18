@@ -19,8 +19,12 @@ function CalendarPage() {
 
     console.log(new Date(2025, 1, 25));
     data?.map((item) => {
-      const dateArr = item['attendance_date'].split('-');
-      const date = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+      const dateArr = item.attendance_date.split('-');
+      const date = new Date(
+        Number(dateArr[0]),
+        Number(dateArr[1]) - 1,
+        Number(dateArr[2])
+      );
 
       newAttendanceDate.push(date);
     });
