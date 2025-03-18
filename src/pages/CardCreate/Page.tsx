@@ -52,7 +52,7 @@ function CardCreatePage() {
     }
 
     if (title.trim() === '' || description.trim() === '') {
-      toast.error('모든 입력창을 채워주세요.');
+      toast.error('카드 입력창을 채워주세요.');
       return;
     }
 
@@ -64,7 +64,7 @@ function CardCreatePage() {
     );
 
     if (!isAllFilled) {
-      toast.error('모든 입력창을 채워주세요.');
+      toast.error('퀴즈 입력창을 채워주세요.');
       return;
     }
 
@@ -92,7 +92,7 @@ function CardCreatePage() {
         return;
       }
 
-      const { error: cardError } = await supabase
+      const { data: cardData, error: cardError } = await supabase
         .from('card')
         .upsert([
           {
@@ -119,8 +119,26 @@ function CardCreatePage() {
         return;
       }
 
-      toast.success('카드가 성공적으로 저장되었습니다.');
+      const cardId = cardData[0].id;
+
+      const { error: questionsError } = await supabase.from('questions').insert(
+        questions.map((q) => ({
+          title: q.question,
+          card_id: cardId,
+          explanation: q.explanation,
+          correct: q.options[0],
+          answer: q.options.join(','),
+        }))
+      );
+
+      if (questionsError) {
+        toast.error('퀴즈 저장에 실패했습니다.');
+        console.error('퀴즈 저장 오류:', questionsError.message);
+        return;
+      }
+
       navigate('/card-list');
+      toast.success('카드가 등록되었습니다.');
     } catch (error) {
       toast.error('카드 저장 중 오류가 발생했습니다.');
       console.error('카드 저장 중 오류:', error);
