@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import S from './EditProfile.module.css';
+import S from './EditProfileContainer.module.css';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 
@@ -17,6 +17,10 @@ function PasswordVerification({
   return (
     <div className={S.editProfileContainer}>
       <form className={S.inputForm}>
+        <h2 className="sr-only">개인정보 관리</h2>
+        <label htmlFor="password" className="sr-only">
+          현재 비밀번호 입력
+        </label>
         <Input
           label=""
           name="password"
@@ -25,16 +29,19 @@ function PasswordVerification({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {passwordError && <p className={S.errorMessage}>{passwordError}</p>}
+        {passwordError && (
+          <p id="password-error" className={S.errorMessage} aria-live="polite">
+            {passwordError}
+          </p>
+        )}
+        <div className={S.buttonGroup}>
+          <Button
+            label="확인"
+            color="primary"
+            onClick={() => onVerify(password)}
+          />
+        </div>
       </form>
-
-      <div className={S.buttonGroup}>
-        <Button
-          label="확인"
-          color="primary"
-          onClick={() => onVerify(password)}
-        />
-      </div>
     </div>
   );
 }
