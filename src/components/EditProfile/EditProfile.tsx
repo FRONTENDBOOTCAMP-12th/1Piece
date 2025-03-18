@@ -7,6 +7,7 @@ interface ProfileState {
   user_id: string;
   nickname: string;
   email: string;
+  alarm?: string | null; // 알람 시간 정보 추가
 }
 
 interface EditProfileProps {
@@ -20,6 +21,7 @@ interface EditProfileProps {
   confirmPasswordSuccess: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges: (e: React.FormEvent) => void;
+  onSaveAlarm: (time: string, checked: boolean) => void; // 알람 저장 함수 추가
 }
 
 function EditProfile({
@@ -33,6 +35,7 @@ function EditProfile({
   confirmPasswordSuccess,
   onInputChange,
   onSaveChanges,
+  onSaveAlarm,
 }: EditProfileProps) {
   return (
     <div className={S.editProfileContainer}>
@@ -70,7 +73,12 @@ function EditProfile({
         />
         {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}
         {/* 알림 설정 */}
-        <EmailAlarm initialTime="12:00" isChecked={false} />
+
+        <EmailAlarm
+          initialTime={profile?.alarm ?? '09:00'} // 기존 알람 시간 또는 기본값
+          isChecked={Boolean(profile?.alarm)} // null이면 false 처리
+          onSave={onSaveAlarm} // props로 전달됨
+        />
         {/* 비밀번호 변경 */}
         <div className={S.passwordChangeSection}>
           <Input
