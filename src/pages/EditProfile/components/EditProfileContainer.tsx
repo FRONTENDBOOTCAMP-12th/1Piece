@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
-import EditProfile from '@/components/EditProfile/EditProfile';
-import PasswordVerification from './PasswordVerification';
-import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
+import EditProfile from '@/components/EditProfile/EditProfile';
+import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
+import PasswordVerification from './PasswordVerification';
 
 interface ProfileState {
   user_id: string;
@@ -11,6 +12,7 @@ interface ProfileState {
   email: string;
   uid?: string;
   password?: string;
+  alarm?: string | null;
 }
 
 const useDebouncedValue = (value: string, delay = 500) => {
@@ -39,6 +41,14 @@ function EditProfileContainer() {
   );
 
   const debouncedNickname = useDebouncedValue(profile?.nickname ?? '', 500);
+  const [time, setTime] = useState(() =>
+    dayjs(`2025-01-01T${profile?.alarm ?? '12:00'}`)
+  );
+
+  // 실제로 time을 사용
+  useEffect(() => {
+    console.log('설정된 알람 시간:', time.format('HH:mm'));
+  }, [time]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -95,6 +105,12 @@ function EditProfileContainer() {
     };
     checkNickname();
   }, [debouncedNickname, profile?.user_id]);
+
+  useEffect(() => {
+    if (profile?.alarm) {
+      setTime(dayjs(`2025-01-01T${profile.alarm}`));
+    }
+  }, [profile?.alarm]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -237,6 +253,40 @@ function EditProfileContainer() {
     }
   };
 
+  const handleSaveAlarm = async (newTime: string | null, checked: boolean) => {
+    if (!profile) return; // 프로필이 없으면 실행 X
+    if (profile.alarm === newTime && (profile.alarm !== null) === checked)
+      return; // 중복 호출 방지
+
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({ alarm: checked ? newTime : null }) // OFF 시 null 저장
+        .eq('user_id', profile.user_id);
+
+      if (error) throw error;
+
+      setProfile((prev) =>
+        prev ? { ...prev, alarm: checked ? newTime : null } : prev
+      );
+
+      toast.dismiss(); // 기존 알림 제거
+      if (checked) {
+        toast.success('알람이 설정되었습니다.', { position: 'bottom-right' });
+      } else {
+        toast.success('알람이 해제되었습니다.', { position: 'bottom-right' });
+      }
+    } catch (error) {
+      console.error('알람 설정 실패:', error);
+      toast.error(
+        `알람 설정 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
+        {
+          position: 'bottom-right',
+        }
+      );
+    }
+  };
+
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -318,6 +368,7 @@ function EditProfileContainer() {
           confirmPasswordError={errors.confirmPassword}
           onInputChange={handleInputChange}
           onSaveChanges={handleSaveChanges}
+          onSaveAlarm={handleSaveAlarm}
         />
       )}
     </MyPageDiary>
