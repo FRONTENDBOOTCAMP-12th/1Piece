@@ -52,10 +52,11 @@
   border: 2px solid var(--black);
   border-radius: 16px;
   align-items: center;
-}
+  cursor: pointer;
 
-.btnMoreCard:hover {
-  background: var(--white);
+  &:active {
+    background: var(--clicked-gray-g);
+  }
 }
 
 .MoreCardMessage {

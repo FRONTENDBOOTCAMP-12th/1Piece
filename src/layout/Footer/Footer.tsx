@@ -1,39 +1,41 @@
 import S from './Footer.module.css';
 import FooterNavigation from './FooterNav';
 
+const navigation = {
+  about: {
+    title: 'About',
+    menu: [
+      { text: 'How it works', path: '/' },
+      { text: 'Featured', path: '/' },
+      { text: 'Partnership', path: '/' },
+      { text: 'Business Relation', path: '/' },
+    ],
+  },
+
+  community: {
+    title: 'Community',
+    menu: [
+      { text: 'Events', path: '/' },
+      { text: 'Blog', path: '/' },
+      { text: 'Podcast', path: '/' },
+      { text: 'Invite a friend', path: '/' },
+    ],
+  },
+
+  socials: {
+    title: 'Socials',
+    menu: [
+      { text: 'Discord', path: '/' },
+      { text: 'Instagram', path: '/' },
+      { text: 'Twitter', path: '/' },
+      { text: 'Facebook', path: '/' },
+    ],
+  },
+};
+
+const sns = ['facebook', 'instagram', 'twitter'];
+
 function Footer() {
-  const navigation = {
-    about: {
-      title: 'About',
-      menu: [
-        { text: 'How it works', path: '/' },
-        { text: 'Featured', path: '/' },
-        { text: 'Partnership', path: '/' },
-        { text: 'Business Relation', path: '/' },
-      ],
-    },
-
-    community: {
-      title: 'Community',
-      menu: [
-        { text: 'Events', path: '/' },
-        { text: 'Blog', path: '/' },
-        { text: 'Podcast', path: '/' },
-        { text: 'Invite a friend', path: '/' },
-      ],
-    },
-
-    socials: {
-      title: 'Socials',
-      menu: [
-        { text: 'Discord', path: '/' },
-        { text: 'Instagram', path: '/' },
-        { text: 'Twitter', path: '/' },
-        { text: 'Facebook', path: '/' },
-      ],
-    },
-  };
-
   return (
     <footer className={S.footerContainer}>
       <section className={S.wrapperBox}>
@@ -46,7 +48,7 @@ function Footer() {
             <p>and help increase your sales business.</p>
           </div>
           <div className={S.snsContainer}>
-            {['facebook', 'instagram', 'twitter'].map((sns, index) => (
+            {sns.map((sns, index) => (
               <a key={`sns-${index}`} href="/">
                 <img src={`/icons/${sns}.svg`} alt={`${sns} 바로가기`} />
               </a>

@@ -1,27 +1,53 @@
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
+import { supabase } from '@/lib/SupabaseClient';
+import useLoginStore from '@/lib/LoginState';
 
-// 유저 프로필 사진을 props로 전달
-interface HeaderProps {
-  src?: string;
-}
-
-function Header({ src }: HeaderProps) {
+function Header() {
   // 로그인 상태
-  const [isLogin, setIsLogin] = useState(false);
+  const userInfo = useLoginStore((state) => state.userInfo);
+  const isLogin = useLoginStore((state) => state.isLogin);
+  const setUserInfo = useLoginStore((state) => state.setUserInfo);
+  const navigate = useNavigate();
+
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      setUserInfo(user);
+    }
+  };
 
   // useEffect를 사용한 렌더링 차이
   useEffect(() => {
-    const nextIsLogin = Boolean(src);
-    setIsLogin(nextIsLogin);
-  }, [src]);
+    getUser();
+  }, []);
+
+  // NavLink를 사용하지 않은 링크 이동
+  const handleMoveToHome = () => {
+    navigate('/');
+  };
+
+  const handleMoveToCardList = () => {
+    navigate('/card-list');
+  };
+
+  const handleMoveToCardCreate = () => {
+    navigate('/card-create');
+  };
+
+  const handleMoveToBookMark = () => {
+    navigate('/bookmark');
+  };
 
   return (
     <header className={S.header}>
@@ -32,38 +58,57 @@ function Header({ src }: HeaderProps) {
           <NavLink to="/">
             <img src="/icons/logo.svg" alt="홈으로 이동" className={S.logo} />
           </NavLink>
-          <NavLink to="/">
-            <RoundedButton color="tertiary" font="pretendard" size="regular">
-              홈
-            </RoundedButton>
-          </NavLink>
+          <RoundedButton
+            color="tertiary"
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToHome}
+          >
+            홈
+          </RoundedButton>
           {/* 문제 목록 페이지로 이동 */}
-          <NavLink to="/card-list">
-            <RoundedButton color="darkgray" font="pretendard" size="regular">
-              목록
-            </RoundedButton>
-          </NavLink>
+
+          <RoundedButton
+            color="darkgray"
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToCardList}
+          >
+            목록
+          </RoundedButton>
         </div>
 
         <div className={S.userInfoContainer}>
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
-          {/* 문제 생성 페이지로 이동 */}
-          <NavLink to="/card-create">
-            <button type="button" className={S.headerCreateIcon}>
-              <BiPlus size={24} />
-            </button>
-          </NavLink>
-          {/* 북마크 페이지로 이동 */}
-          <NavLink to="/bookmark">
-            <button type="button" className={S.headerBookMarkIcon}>
-              <RiInbox2Line size={24} />
-            </button>
-          </NavLink>
-          {/* 로그인 상태에 따른 헤더 렌더링 다르게 */}
+          {/* 로그인 상태에 따른 UI 변동 */}
           {isLogin ? (
-            // 마이페이지로 이동(로그인 된 상태)
-            <LoggedIn src={src!} />
+            <>
+              <button
+                type="button"
+                className={S.headerCreateIcon}
+                aria-label="문제 생성 페이지로 이동"
+                onClick={handleMoveToCardCreate}
+              >
+                <BiPlus size={24} />
+              </button>
+              {/* 북마크 페이지로 이동 */}
+              <button
+                type="button"
+                className={S.headerBookMarkIcon}
+                aria-label="북마크로 이동"
+                onClick={handleMoveToBookMark}
+              >
+                <RiInbox2Line size={24} />
+              </button>
+              <LoggedIn
+                src={
+                  supabase.storage
+                    .from('profileImg/userProfile')
+                    .getPublicUrl(`${userInfo?.id}.png`).data.publicUrl
+                }
+              />
+            </>
           ) : (
             <LoggedOut />
           )}
