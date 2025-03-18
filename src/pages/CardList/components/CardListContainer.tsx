@@ -205,6 +205,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             grid={{ rows: 6, fill: 'row' }}
             pagination={{ clickable: true }}
             className={S.swiper}
+            style={{ width: '83rem' }}
           >
             {currentPageData.map((item) => (
               <SwiperSlide key={item.id} className={S.slide}>

@@ -31,7 +31,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 83rem;
+  width: 83rem !important;
+  min-width: 83rem;
   z-index: 0;
 }
 
