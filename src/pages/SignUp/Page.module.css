@@ -13,7 +13,7 @@
   height: 45.9375rem;
   padding: 4rem;
   border-radius: 2rem;
-  background: var(--light-gray, linear-gradient(0deg, #e2e2e2 0%, #fff 100%));
+  background: var(--gray-g);
 }
 
 .title {

@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      attendance: {
+        Row: {
+          attendance_date: string;
+          id: number;
+          user_id: string;
+        };
+        Insert: {
+          attendance_date?: string;
+          id?: number;
+          user_id: string;
+        };
+        Update: {
+          attendance_date?: string;
+          id?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'attendance_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['auth_uid'];
+          },
+        ];
+      };
       bookmark: {
         Row: {
           bookmark_question: number;
@@ -51,7 +77,7 @@ export interface Database {
           id: number;
           problemTitle: string;
           tags: Json;
-          writer: string;
+          writer: string | null;
         };
         Insert: {
           check?: number;
@@ -61,7 +87,7 @@ export interface Database {
           id?: never;
           problemTitle: string;
           tags: Json;
-          writer: string;
+          writer?: string | null;
         };
         Update: {
           check?: number;
@@ -71,12 +97,51 @@ export interface Database {
           id?: never;
           problemTitle?: string;
           tags?: Json;
-          writer?: string;
+          writer?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'questions_writer_fkey';
+            foreignKeyName: 'card_writer_fkey';
             columns: ['writer'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comment: {
+        Row: {
+          card_id: number;
+          comment: string;
+          id: number;
+          writer_id: string;
+          written_at: string;
+        };
+        Insert: {
+          card_id: number;
+          comment: string;
+          id?: number;
+          writer_id: string;
+          written_at?: string;
+        };
+        Update: {
+          card_id?: number;
+          comment?: string;
+          id?: number;
+          writer_id?: string;
+          written_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comment_card_id_fkey';
+            columns: ['card_id'];
+            isOneToOne: false;
+            referencedRelation: 'card';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comment_writer_id_fkey';
+            columns: ['writer_id'];
             isOneToOne: false;
             referencedRelation: 'users';
             referencedColumns: ['id'];
@@ -151,6 +216,42 @@ export interface Database {
           },
         ];
       };
+      recent: {
+        Row: {
+          id: number;
+          recent_time: string;
+          solved_question: number;
+          solved_user: string;
+        };
+        Insert: {
+          id?: number;
+          recent_time?: string;
+          solved_question: number;
+          solved_user: string;
+        };
+        Update: {
+          id?: number;
+          recent_time?: string;
+          solved_question?: number;
+          solved_user?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'solved_solved_question_fkey';
+            columns: ['solved_question'];
+            isOneToOne: false;
+            referencedRelation: 'card';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'solved_solved_user_fkey';
+            columns: ['solved_user'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       selectedtag: {
         Row: {
           card_id: number;
@@ -184,39 +285,6 @@ export interface Database {
           },
         ];
       };
-      solved: {
-        Row: {
-          id: number;
-          solved_question: number;
-          solved_user: string;
-        };
-        Insert: {
-          id?: number;
-          solved_question: number;
-          solved_user: string;
-        };
-        Update: {
-          id?: number;
-          solved_question?: number;
-          solved_user?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'solved_solved_question_fkey';
-            columns: ['solved_question'];
-            isOneToOne: false;
-            referencedRelation: 'card';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'solved_solved_user_fkey';
-            columns: ['solved_user'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
       tags: {
         Row: {
           id: number;
@@ -235,41 +303,41 @@ export interface Database {
       users: {
         Row: {
           alarm: string | null;
-          auth_uid: string | null;
+          auth_uid: string;
           badge: Json | null;
           email: string;
           id: string;
-          new_pw: string | null;
+          level: number | null;
           nickname: string;
           user_id: string;
         };
         Insert: {
           alarm?: string | null;
-          auth_uid?: string | null;
+          auth_uid: string;
           badge?: Json | null;
           email: string;
           id?: string;
-          new_pw?: string | null;
+          level?: number | null;
           nickname: string;
           user_id: string;
         };
         Update: {
           alarm?: string | null;
-          auth_uid?: string | null;
+          auth_uid?: string;
           badge?: Json | null;
           email?: string;
           id?: string;
-          new_pw?: string | null;
+          level?: number | null;
           nickname?: string;
           user_id?: string;
         };
         Relationships: [];
       };
     };
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
-    Enums: Record<string, never>;
-    CompositeTypes: Record<string, never>;
+    Views: Record<never, never>;
+    Functions: Record<never, never>;
+    Enums: Record<never, never>;
+    CompositeTypes: Record<never, never>;
   };
 }
 
@@ -344,8 +412,8 @@ export type TablesUpdate<
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema['Enums']
-    | { schema: keyof Database },
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    keyof PublicSchema['Enums'] | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
     : never = never,
@@ -357,8 +425,8 @@ export type Enums<
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof PublicSchema['CompositeTypes']
-    | { schema: keyof Database },
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    keyof PublicSchema['CompositeTypes'] | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof Database;
   }

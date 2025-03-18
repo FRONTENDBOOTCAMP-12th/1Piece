@@ -29,7 +29,9 @@
 .dot {
   height: 50px;
   width: 50px;
-  background: url(/images/calender_stamp.svg);
+  background-image: url('/images/attendance.png');
+  background-size: contain;
+  background-repeat: no-repeat;
   border-radius: 50%;
   position: absolute;
   bottom: 5px;

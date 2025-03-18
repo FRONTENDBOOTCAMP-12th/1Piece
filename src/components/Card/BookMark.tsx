@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import S from './Card.module.css';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
@@ -9,6 +9,10 @@ type BookMarkProps = React.ComponentProps<'button'> & {
 
 function BookMark({ checked, onUpdate }: BookMarkProps) {
   const [isBookMark, setIsBookMark] = useState(checked);
+
+  useEffect(() => {
+    setIsBookMark(checked);
+  }, [checked]);
 
   const handleClickBookMark = (e: React.MouseEvent) => {
     // 버블링 방지
