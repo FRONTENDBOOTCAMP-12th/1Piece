@@ -11,6 +11,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &:disabled:not(.clicked) {
+    cursor: not-allowed;
+  }
 }
 
 .clicked {

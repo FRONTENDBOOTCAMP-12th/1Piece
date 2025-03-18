@@ -4,12 +4,12 @@
 }
 
 .footerContainer {
+  min-width: 1024px;
   display: flex;
   background: var(
     --dark-gray-g,
     linear-gradient(180deg, #fff 0%, #adadad 99.99%)
   );
-  width: 100vw;
   align-items: center;
   flex-direction: column;
   font-family: var(--pretendard);
@@ -48,6 +48,7 @@
   display: flex;
   padding: 2rem 0;
   gap: var(--space-5);
+  white-space: nowrap;
 
   img {
     width: var(--icons);

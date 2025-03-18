@@ -15,6 +15,7 @@ interface CardData {
   checked: boolean;
   description: string;
   problemTitle: string;
+  count: number;
 }
 
 function RecentViewPage() {
@@ -47,6 +48,7 @@ function RecentViewPage() {
         checked: false,
         problemTitle: item.problemTitle,
         description: item.desc,
+        count: item.count,
       }));
 
       setData(newData);

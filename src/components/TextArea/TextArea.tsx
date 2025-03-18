@@ -7,6 +7,8 @@ interface TextAreaProps {
   className?: string;
   height?: string;
   maxLength?: number;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 function TextArea({
@@ -15,14 +17,18 @@ function TextArea({
   className,
   height,
   maxLength = 500,
+  value = '',
+  onChange,
 }: TextAreaProps) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(value);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (event.target.value.length > maxLength) {
-      event.target.value = event.target.value.substring(0, maxLength);
+    let newValue = event.target.value;
+    if (newValue.length > maxLength) {
+      newValue = newValue.substring(0, maxLength);
     }
-    setText(event.target.value);
+    setText(newValue);
+    onChange?.(newValue);
   };
 
   return (

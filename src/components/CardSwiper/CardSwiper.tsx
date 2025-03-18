@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
 import S from './CardSwiper.module.css';
 import Card from '@/components/Card/Card';
+import { useNavigate } from 'react-router';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -17,6 +18,7 @@ export interface ProblemCardData {
   checked: boolean;
   problemTitle: string;
   description: string;
+  count: number;
 }
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
@@ -44,11 +46,21 @@ const CustomNavigationPrev = () => {
 };
 
 const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
+  const navigation = useNavigate();
+
+  const handleMoveToCardList = () => {
+    navigation('/card-list');
+  };
+
   return (
     <div className={S.cardSwiperContainer}>
       <div className={S.header}>
         <h2>{children}</h2>
-        <button className={S.btnMoreHeader}>
+        <button
+          type="button"
+          className={S.btnMoreHeader}
+          onClick={handleMoveToCardList}
+        >
           <span>더보기</span>
         </button>
       </div>
@@ -70,15 +82,20 @@ const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
                 checked={item.checked}
                 id={item.id}
                 description={item.description}
+                count={item.count}
               >
                 {item.problemTitle}
               </Card>
             </SwiperSlide>
           ))}
           <SwiperSlide>
-            <div className={S.btnMoreCard}>
+            <button
+              type="button"
+              className={S.btnMoreCard}
+              onClick={handleMoveToCardList}
+            >
               <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
-            </div>
+            </button>
           </SwiperSlide>
           <CustomNavigationNext />
           <CustomNavigationPrev />

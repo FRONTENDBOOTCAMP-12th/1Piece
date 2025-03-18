@@ -15,13 +15,14 @@ interface CardData {
   checked: boolean;
   description: string;
   problemTitle: string;
+  count: number;
 }
 
 function CardWrittenPage() {
   const tabs = [
     { name: '북마크', path: '/bookmark' },
     { name: '최근본', path: '/recent-view' },
-    { name: '작성글', path: '/card-collection' },
+    { name: '작성글', path: '/card-written' },
   ];
 
   const [data, setData] = useState<CardData[]>([]);
@@ -47,6 +48,7 @@ function CardWrittenPage() {
         checked: false,
         problemTitle: item.problemTitle,
         description: item.desc,
+        count: item.count,
       }));
 
       setData(newData);

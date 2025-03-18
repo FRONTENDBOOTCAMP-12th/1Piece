@@ -1,20 +1,31 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
 import TextArea from '@/components/TextArea/TextArea';
-import SelectTag from '@/components/SelectTag/SelectTag';
+import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import QuizCreate from './QuizCreate/QuizCreate';
-import { useNavigate } from 'react-router';
+
 import S from './Page.module.css';
 
 function CardCreatePage() {
-  const [questions, setQuestions] = useState([{ id: 1 }]);
+  const [questions, setQuestions] = useState([
+    { id: 1, question: '', options: ['', '', '', ''], explanation: '' },
+  ]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [selectedTags, setSelectedTags] = useState<DummyKey[]>([]);
   const navigate = useNavigate();
 
   const addQuestion = () => {
     if (questions.length < 10) {
       const newId =
         questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-      setQuestions([...questions, { id: newId }]);
+      setQuestions([
+        ...questions,
+        { id: newId, question: '', options: ['', '', '', ''], explanation: '' },
+      ]);
     }
   };
 
@@ -24,7 +35,45 @@ function CardCreatePage() {
     }
   };
 
+  const updateQuestion = (
+    id: number,
+    data: { question: string; options: string[]; explanation: string }
+  ) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, ...data } : q)));
+  };
+
+  const handleTagSelect = (tags: DummyKey[]) => {
+    setSelectedTags(tags);
+  };
+
   const handleSubmit = () => {
+    if (questions.length === 1) {
+      toast.error('문제를 2개 이상 만들어 주세요.');
+      return;
+    }
+
+    if (title.trim() === '' || description.trim() === '') {
+      toast.error('모든 입력창을 채워주세요.');
+      return;
+    }
+
+    const isAllFilled = questions.every(
+      (q) =>
+        q.question.trim() !== '' &&
+        q.options.every((option) => option.trim() !== '') &&
+        q.explanation.trim() !== ''
+    );
+
+    if (!isAllFilled) {
+      toast.error('모든 입력창을 채워주세요.');
+      return;
+    }
+
+    if (selectedTags.length === 0) {
+      toast.error('태그를 선택해주세요.');
+      return;
+    }
+
     navigate('/card-list');
   };
 
@@ -40,7 +89,12 @@ function CardCreatePage() {
           <label className={S.label} htmlFor="title">
             제목
           </label>
-          <TextArea name="title" placeholder="문제 세트 제목을 입력하세요" />
+          <TextArea
+            name="title"
+            placeholder="문제 세트 제목을 입력하세요"
+            value={title}
+            onChange={(value) => setTitle(value)}
+          />
         </div>
         <div className={S.description}>
           <label className={S.label} htmlFor="description">
@@ -49,25 +103,26 @@ function CardCreatePage() {
           <TextArea
             name="description"
             placeholder="문제 세트 상세 설명을 입력하세요"
+            value={description}
+            onChange={(value) => setDescription(value)}
           />
         </div>
         <div className={S.tagSelect}>
           <label className={S.label} htmlFor="tagSelect">
             태그 선택
           </label>
-          <SelectTag maxTags={3} />
+          <SelectTag onTagSelect={handleTagSelect} maxTags={3} />
         </div>
       </div>
-
       {questions.map((question, index) => (
         <QuizCreate
           key={question.id}
           id={question.id}
           index={index + 1}
           onDelete={deleteQuestion}
+          onUpdate={updateQuestion}
         />
       ))}
-
       <Button
         type="submit"
         label="+"
@@ -76,23 +131,23 @@ function CardCreatePage() {
         onClick={addQuestion}
         disabled={questions.length >= 10}
       />
-
       <div className={S.btnContainer}>
         <Button
           type="button"
           label="취소"
           color={'dark-gray'}
-          className={S.btns}
+          className={S.btnCancel}
           onClick={handleCancel}
         />
         <Button
           type="button"
           label="등록"
           color={'tertiary'}
-          className={S.btns}
+          className={S.btnSubmit}
           onClick={handleSubmit}
         />
       </div>
+      <Toaster />
     </div>
   );
 }
