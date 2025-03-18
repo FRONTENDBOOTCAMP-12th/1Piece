@@ -61,7 +61,6 @@
   width: 10rem;
   height: 5rem;
   font-size: var(--xl);
-  font-weight: 400;
   border: 1px solid var(--black);
   border-radius: var(--radius-xl);
   cursor: pointer;

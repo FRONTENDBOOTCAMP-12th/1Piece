@@ -43,8 +43,8 @@ function CalendarPage() {
 
   return (
     <div className={S.MyPageContainer}>
-      <MyPageDiary title="C A L E N D A R">
-        <Calendar markedDates={attendanceDate} />
+      <MyPageDiary title="C A L E N D A R" activeButton={2}>
+       <Calendar markedDates={attendanceDate} />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />
     </div>

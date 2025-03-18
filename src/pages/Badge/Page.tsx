@@ -10,7 +10,9 @@ function BadgePage() {
 
   return (
     <div className={S.MyPageContainer}>
-      <MyPageDiary title="B A D G E">뱃지 공간</MyPageDiary>
+      <MyPageDiary title="B A D G E" activeButton={2}>
+        뱃지 공간
+      </MyPageDiary>
       <MyPageTab tabs={tabs} />
     </div>
   );
