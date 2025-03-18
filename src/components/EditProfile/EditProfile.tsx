@@ -112,14 +112,8 @@ function EditProfile({
           label="탈퇴"
           color="gray"
           onClick={() => console.log('회원 탈퇴')}
-          className={S.btnCancel}
         />
-        <Button
-          label="수정"
-          color="tertiary"
-          onClick={() => onSubmit()}
-          className={S.btnSubmit}
-        />
+        <Button label="수정" color="tertiary" onClick={() => onSubmit()} />
       </div>
     </div>
   );

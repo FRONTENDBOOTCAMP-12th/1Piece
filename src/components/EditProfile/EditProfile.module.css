@@ -200,15 +200,3 @@ input:disabled:focus,
   gap: var(--space-4);
   margin-top: var(--space-6);
 }
-
-.btnCancel,
-.btnSubmit {
-  width: 10rem;
-  height: 5rem;
-  font-size: var(--xl);
-  border: 1px solid var(--black);
-  border-radius: var(--radius-xl);
-  cursor: pointer;
-  align-self: center;
-  text-align: center;
-}
