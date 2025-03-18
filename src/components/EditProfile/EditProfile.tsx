@@ -14,7 +14,6 @@ interface EditProfileProps {
   newPassword: string;
   confirmNewPassword: string;
   nicknameError: string;
-  emailError: string;
   passwordError: string;
   passwordSuccess: string;
   confirmPasswordError: string;
@@ -28,7 +27,6 @@ function EditProfile({
   newPassword,
   confirmNewPassword,
   nicknameError,
-  emailError,
   passwordError,
   passwordSuccess,
   confirmPasswordError,
@@ -45,7 +43,7 @@ function EditProfile({
           onSaveChanges(e); // 통합된 저장 버튼
         }}
       >
-        {/* ID는 수정 불가 */}
+        {/* ID 수정 불가 */}
         <Input
           label="ID"
           name="user_id"
@@ -54,7 +52,14 @@ function EditProfile({
           value={profile.user_id}
           disabled
         />
-
+        {/* 이메일 수정 불가*/}
+        <Input
+          label="이메일"
+          name="email"
+          type="email"
+          value={profile?.email || ''}
+          disabled
+        />
         {/* 닉네임 수정 */}
         <Input
           label="닉네임"
@@ -64,29 +69,15 @@ function EditProfile({
           onChange={onInputChange}
         />
         {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}
-
-        {/* 이메일 수정 */}
-        <Input
-          label="이메일"
-          name="email"
-          type="email"
-          value={profile?.email || ''}
-          onChange={onInputChange}
-        />
-        {emailError && <p className={S.errorMessage}>{emailError}</p>}
-
-        {/* 알림 설정 (예시) */}
+        {/* 알림 설정 */}
         <EmailAlarm initialTime="12:00" isChecked={false} />
-
-        {/* 비밀번호 변경 섹션 */}
+        {/* 비밀번호 변경 */}
         <div className={S.passwordChangeSection}>
-          <h3>비밀번호 변경</h3>
-
           <Input
             label="새 비밀번호"
             name="newPassword"
             type="password"
-            placeholder="영문/숫자 조합 (8~16자)"
+            placeholder="영문+숫자 조합 8~16자"
             value={newPassword}
             onChange={onInputChange}
           />
@@ -95,7 +86,6 @@ function EditProfile({
           ) : passwordSuccess ? (
             <p className={S.successMessage}>{passwordSuccess}</p>
           ) : null}
-
           <Input
             label="새 비밀번호 확인"
             name="confirmNewPassword"
@@ -111,9 +101,9 @@ function EditProfile({
           ) : null}
         </div>
 
-        {/* ✅ 수정 버튼 하나로 통합! */}
+        {/* 수정 버튼 */}
         <div className={S.buttonGroup}>
-          <Button label="수정" color="primary" type="submit" />
+          <Button label="수정" color="tertiary" type="submit" />
         </div>
       </form>
     </div>
