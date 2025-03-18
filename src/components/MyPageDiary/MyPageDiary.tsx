@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+
 import Button from '../Button/Button';
-import { supabase } from '@/lib/SupabaseClient';
-import { PostgrestError } from '@supabase/supabase-js';
+import ProfileImage from '@/components/EditProfile/ProfileImage';
+
 import S from './MyPageDiary.module.css';
 
 interface MyPageDiaryProps {
@@ -14,6 +15,7 @@ interface MyPageDiaryProps {
 interface UserData {
   nickname: string;
   level: number;
+  profileImage?: string;
 }
 
 function MyPageDiary({
@@ -22,60 +24,30 @@ function MyPageDiary({
   activeButton = 1,
 }: MyPageDiaryProps) {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState<{
-    nickname: string;
-    level: number;
-  } | null>(null);
+  const [userInfo] = useState<UserData>({
+    nickname: '김멋사',
+    level: 999,
+    profileImage: '/dummy/dummy_profile.jpg',
+  });
 
-  const fetchUserInfo = useCallback(async () => {
-    try {
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
-
-      if (sessionError || !sessionData.session) {
-        console.error('로그인된 사용자가 없습니다.', sessionError);
-        return;
-      }
-
-      const authUid = sessionData.session.user.id;
-
-      const { data: userData, error: userError } = (await supabase
-        .from('users')
-        .select('nickname, level')
-        .eq('auth_uid', authUid)
-        .single()) as { data: UserData; error: PostgrestError | null };
-
-      if (userError || !userData) {
-        console.error('사용자 정보를 가져오는 데 실패했습니다.', userError);
-        return;
-      }
-
-      setUserInfo({
-        nickname: userData.nickname,
-        level: userData.level,
-      });
-    } catch (error) {
-      console.error('사용자 정보 조회 중 오류 발생:', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, [fetchUserInfo]);
+  const handleProfileChange = (file: File) => {
+    console.log('Profile image changed:', file);
+  };
 
   return (
     <div className={S.diaryContainer}>
       <div className={S.leftDiary}>
         <div className={S.userInfo}>
-          <p className={S.level}>LV.{userInfo?.level ?? '999'} </p> |{' '}
-          <p className={S.nickname}>{userInfo?.nickname ?? '김멋사'} </p>
+          <p className={S.level}>LV.{userInfo.level}</p> |{' '}
+          <p className={S.nickname}>{userInfo.nickname}</p>
         </div>
 
-        <img
-          src="/dummy/dummy_profile.jpg"
+        <ProfileImage
+          src={userInfo.profileImage ?? '/dummy/default_profile.jpg'}
           alt="유저 프로필 사진"
-          className={S.diaryProfile}
+          onChange={handleProfileChange}
         />
+
         <div className={S.btnNavigate}>
           <Button
             label="라이브러리"

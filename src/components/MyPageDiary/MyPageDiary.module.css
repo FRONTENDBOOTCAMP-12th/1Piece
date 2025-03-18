@@ -31,6 +31,10 @@
   margin-bottom: var(--space-5);
 }
 
+.largerProfileImage {
+  border: 2px solid var(--black);
+}
+
 .rightDiary {
   background: var(--primary-2-g);
   flex: 2;
@@ -48,8 +52,8 @@
   display: flex;
   position: absolute;
   flex-flow: column;
-  left: 31.5%;
-  top: 10%;
+  left: 21.4rem;
+  top: 20rem;
   gap: 25rem;
 
   .topSpringContainer {
@@ -103,6 +107,7 @@
   gap: var(--space-16);
   align-items: center;
   margin-block-end: var(--space-8);
+  margin-top: var(--space-24);
 }
 
 .customButton {
