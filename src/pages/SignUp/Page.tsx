@@ -4,7 +4,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 function SignUpPage() {
@@ -141,6 +141,7 @@ function SignUpPage() {
     let errorMessage = '';
     if (!passwordRegEx.test(password)) {
       errorMessage = '비밀번호는 대소문자, 숫자를 포함해야합니다.';
+      if (!errors.password) toast.error(errorMessage);
     }
 
     setErrors({ ...errors, password: errorMessage });
@@ -149,9 +150,15 @@ function SignUpPage() {
 
   const passwordConfirmValidate = () => {
     const isMatch = formData.password === formData.passwordConfirm;
+    const errorMessage = isMatch ? '' : '비밀번호가 일치하지 않습니다.';
+
+    if (errorMessage && !errors.passwordConfirm) {
+      toast.error(errorMessage);
+    }
+
     setErrors((prev) => ({
       ...prev,
-      passwordConfirm: isMatch ? '' : '비밀번호가 일치하지 않습니다.',
+      passwordConfirm: errorMessage,
     }));
     return isMatch;
   };
@@ -178,6 +185,11 @@ function SignUpPage() {
     if (!formData.id.trim()) {
       setErrors({ ...errors, id: 'ID를 입력해주세요.' });
       toast.error('ID를 입력해주세요.');
+      return;
+    }
+    if (!formData.email.trim()) {
+      setErrors({ ...errors, email: 'EMAIL를 입력해주세요.' });
+      toast.error('EMAIL를 입력해주세요.');
       return;
     }
 
@@ -342,6 +354,7 @@ function SignUpPage() {
         {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
         {success && <p style={{ color: 'green' }}>{success}</p>}
       </form>
+      <Toaster position="bottom-right" />
     </div>
   );
 }
