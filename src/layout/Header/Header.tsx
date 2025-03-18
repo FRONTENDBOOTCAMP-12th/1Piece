@@ -3,7 +3,6 @@ import { BiPlus } from 'react-icons/bi';
 import { RiInbox2Line } from 'react-icons/ri';
 import S from './Header.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { useEffect } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
@@ -13,24 +12,7 @@ import useLoginStore from '@/lib/LoginState';
 function Header() {
   // 로그인 상태
   const userInfo = useLoginStore((state) => state.userInfo);
-  const isLogin = useLoginStore((state) => state.isLogin);
-  const setUserInfo = useLoginStore((state) => state.setUserInfo);
   const navigate = useNavigate();
-
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      setUserInfo(user);
-    }
-  };
-
-  // useEffect를 사용한 렌더링 차이
-  useEffect(() => {
-    getUser();
-  }, []);
 
   // NavLink를 사용하지 않은 링크 이동
   const handleMoveToHome = () => {
@@ -82,7 +64,7 @@ function Header() {
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
           {/* 로그인 상태에 따른 UI 변동 */}
-          {isLogin ? (
+          {userInfo ? (
             <>
               <button
                 type="button"
