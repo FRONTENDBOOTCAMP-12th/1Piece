@@ -11,7 +11,7 @@ function CalendarPage() {
 
   return (
     <div className={S.MyPageContainer}>
-      <MyPageDiary title="C A L E N D A R">
+      <MyPageDiary title="C A L E N D A R" activeButton={2}>
         <Calendar />
       </MyPageDiary>
       <MyPageTab tabs={tabs} />

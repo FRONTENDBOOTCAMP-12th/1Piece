@@ -71,6 +71,7 @@
   font-size: var(--large-2);
   text-align: center;
   margin-block: var(--space-4);
+  margin-top: var(--space-5);
 }
 
 .diaryProfile {
@@ -83,19 +84,12 @@
   margin-block-end: var(--space-24);
 }
 
-.myPageButtonContainer {
+.btnNavigate {
   display: flex;
   flex-flow: column;
   gap: var(--space-16);
   align-items: center;
   margin-block-end: var(--space-8);
-}
-
-.myPageRouterBtn {
-  display: flex;
-  justify-content: center;
-  text-decoration: none;
-  width: 100%;
 }
 
 .pageName {

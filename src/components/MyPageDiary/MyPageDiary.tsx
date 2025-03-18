@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import Button from '../Button/Button';
 import S from './MyPageDiary.module.css';
 import React from 'react';
@@ -6,14 +6,15 @@ import React from 'react';
 interface MyPageDiaryProps {
   children: React.ReactNode;
   title?: string;
+  activeButton?: number;
 }
 
-function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
+function MyPageDiary({
+  children,
+  title = '',
+  activeButton = 1,
+}: MyPageDiaryProps) {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // 현재 pathname을 활용하여 버튼 색상 조정
-  const pathname = location.pathname;
 
   return (
     // 디자인을 위한 container
@@ -27,40 +28,22 @@ function MyPageDiary({ children, title = '' }: MyPageDiaryProps) {
           alt="유저 프로필 사진"
           className={S.diaryProfile}
         />
-        {/* 라우터를 활용한 버튼 */}
-        <div className={S.myPageButtonContainer}>
-          <button
-            className={S.myPageRouterBtn}
+        <div className={S.btnNavigate}>
+          <Button
+            label="라이브러리"
+            color={activeButton === 1 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/bookmark')}
-          >
-            <Button
-              label="라이브러리"
-              style={{ width: '80%' }}
-              color={pathname.includes('library') ? 'secondary' : 'dark-gray'}
-            />
-          </button>
-          <button
-            className={S.myPageRouterBtn}
+          />
+          <Button
+            label="출석과 보상"
+            color={activeButton === 2 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/calendar')}
-          >
-            <Button
-              label="출석과 보상"
-              style={{ width: '80%' }}
-              color={pathname.includes('Reward') ? 'secondary' : 'dark-gray'}
-            />
-          </button>
-          <button
-            className={S.myPageRouterBtn}
+          />
+          <Button
+            label="개인정보 관리"
+            color={activeButton === 3 ? 'tertiary' : 'dark-gray'}
             onClick={() => navigate('/edit-profile')}
-          >
-            <Button
-              label="개인정보 관리"
-              style={{ width: '80%' }}
-              color={
-                pathname.includes('edit-profile') ? 'secondary' : 'dark-gray'
-              }
-            />
-          </button>
+          />
         </div>
       </div>
       <div className={S.rightDiary}>
