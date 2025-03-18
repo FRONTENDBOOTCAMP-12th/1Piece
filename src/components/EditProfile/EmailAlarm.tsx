@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 interface EmailAlarmProps {
   initialTime?: string;
   isChecked?: boolean;
-  onSave?: (time: string, checked: boolean) => void;
+  onSave?: (time: string | null, checked: boolean) => void;
 }
 
 function EmailAlarm({
@@ -19,18 +19,31 @@ function EmailAlarm({
   const [time, setTime] = useState(dayjs(`2025-01-01T${initialTime}`));
   const [checked, setChecked] = useState(isChecked);
 
-  /* 상태 변경될 때만 onSave 실행 (onSave가 존재할 경우에만 실행) */
   useEffect(() => {
-    if (onSave) {
-      onSave(time.format('HH:mm'), checked);
-    }
-  }, [time, checked, onSave]);
+    if (!onSave) return;
+
+    const handler = setTimeout(() => {
+      if (time.format('HH:mm') !== initialTime) {
+        onSave(time.format('HH:mm'), checked);
+      }
+    }, 500); // 0.5초 지연 실행 (debounce 적용)
+
+    return () => clearTimeout(handler); // 이전 실행 취소
+  }, [time, checked, onSave, initialTime]);
 
   const handleTimeChange = (newTime: dayjs.Dayjs | null) => {
     if (newTime) setTime(newTime);
   };
 
-  const handleToggle = () => setChecked((prev) => !prev);
+  const handleToggle = () => {
+    setChecked((prev) => {
+      const newChecked = !prev;
+      if (onSave) {
+        onSave(newChecked && time ? time.format('HH:mm') : null, newChecked);
+      }
+      return newChecked;
+    });
+  };
 
   return (
     <div className={S.emailAlarmContainer}>
