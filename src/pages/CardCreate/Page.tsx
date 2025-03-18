@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
-
+import { supabase } from '@/lib/SupabaseClient';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
 import QuizCreate from './QuizCreate/QuizCreate';
-
 import S from './Page.module.css';
 
 function CardCreatePage() {
@@ -46,7 +45,7 @@ function CardCreatePage() {
     setSelectedTags(tags);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (questions.length === 1) {
       toast.error('문제를 2개 이상 만들어 주세요.');
       return;
@@ -74,7 +73,58 @@ function CardCreatePage() {
       return;
     }
 
-    navigate('/card-list');
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) {
+        toast.error('사용자 정보를 가져오는 데 실패했습니다.');
+        return;
+      }
+
+      const { data: publicUser, error: publicUserError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('auth_uid', userData.user?.id)
+        .single();
+
+      if (publicUserError || !publicUser) {
+        toast.error('사용자 프로필이 존재하지 않습니다.');
+        return;
+      }
+
+      const { error: cardError } = await supabase
+        .from('card')
+        .upsert([
+          {
+            problemTitle: title,
+            count: questions.length,
+            desc: description,
+            check: Math.floor(Math.random() * 100) + 1,
+            created: new Date().toISOString(),
+            tags: selectedTags.reduce(
+              (acc, tag, index) => {
+                acc[`${index + 1}`] = tag;
+                return acc;
+              },
+              {} as Record<string, string>
+            ),
+            writer: publicUser.id,
+          },
+        ])
+        .select();
+
+      if (cardError) {
+        toast.error('카드 저장에 실패했습니다.');
+        console.error('카드 저장 오류:', cardError.message);
+        return;
+      }
+
+      toast.success('카드가 성공적으로 저장되었습니다.');
+      navigate('/card-list');
+    } catch (error) {
+      toast.error('카드 저장 중 오류가 발생했습니다.');
+      console.error('카드 저장 중 오류:', error);
+    }
   };
 
   const handleCancel = () => {
