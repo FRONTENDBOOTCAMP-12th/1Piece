@@ -1,5 +1,5 @@
-import EditProfileContainer from './components/EditProfileContainer';
 import { Toaster } from 'react-hot-toast';
+import EditProfileContainer from './components/EditProfileContainer';
 
 function EditProfilePage() {
   return (
