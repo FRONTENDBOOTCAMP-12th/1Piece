@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import { supabase } from '@/lib/SupabaseClient';
 
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
@@ -46,14 +47,14 @@ function CardCreatePage() {
     setSelectedTags(tags);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (questions.length === 1) {
       toast.error('문제를 2개 이상 만들어 주세요.');
       return;
     }
 
     if (title.trim() === '' || description.trim() === '') {
-      toast.error('모든 입력창을 채워주세요.');
+      toast.error('카드 입력창을 채워주세요.');
       return;
     }
 
@@ -65,7 +66,7 @@ function CardCreatePage() {
     );
 
     if (!isAllFilled) {
-      toast.error('모든 입력창을 채워주세요.');
+      toast.error('퀴즈 입력창을 채워주세요.');
       return;
     }
 
@@ -74,7 +75,78 @@ function CardCreatePage() {
       return;
     }
 
-    navigate('/card-list');
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) {
+        toast.error('사용자 정보를 가져오는 데 실패했습니다.');
+        return;
+      }
+
+      const { data: publicUser, error: publicUserError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('auth_uid', userData.user?.id)
+        .single();
+
+      if (publicUserError || !publicUser) {
+        toast.error('사용자 프로필이 존재하지 않습니다.');
+        return;
+      }
+
+      const { data: cardData, error: cardError } = await supabase
+        .from('card')
+        .upsert([
+          {
+            problemTitle: title,
+            count: questions.length,
+            desc: description,
+            check: Math.floor(Math.random() * 100) + 1,
+            created: new Date().toISOString(),
+            tags: selectedTags.reduce(
+              (acc, tag, index) => {
+                acc[`${index + 1}`] = tag;
+                return acc;
+              },
+              {} as Record<string, string>
+            ),
+            writer: publicUser.id,
+          },
+        ])
+        .select();
+
+      if (cardError) {
+        toast.error('카드 저장에 실패했습니다.');
+        console.error('카드 저장 오류:', cardError.message);
+        return;
+      }
+
+      const cardId = cardData[0].id;
+
+      const { error: questionsError } = await supabase.from('questions').insert(
+        questions.map((q) => ({
+          title: q.question,
+          card_id: cardId,
+          explanation: q.explanation,
+          correct: q.options[0],
+          answer: q.options.join(','),
+        }))
+      );
+
+      if (questionsError) {
+        toast.error('퀴즈 저장에 실패했습니다.');
+        console.error('퀴즈 저장 오류:', questionsError.message);
+        return;
+      }
+
+      toast.success('카드가 등록되었습니다.');
+      setTimeout(() => {
+        navigate('/card-list');
+      }, 1000);
+    } catch (error) {
+      toast.error('카드 저장 중 오류가 발생했습니다.');
+      console.error('카드 저장 중 오류:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -147,7 +219,7 @@ function CardCreatePage() {
           onClick={handleSubmit}
         />
       </div>
-      <Toaster />
+      <Toaster position="bottom-right" />
     </div>
   );
 }
