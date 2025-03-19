@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: var(--space-10);
+  margin-bottom: var(--space-36);
 }
 
 .title {
