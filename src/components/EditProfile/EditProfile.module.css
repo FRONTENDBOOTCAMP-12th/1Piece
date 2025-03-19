@@ -71,14 +71,14 @@
   width: 70%;
 }
 
-/* input {
+input {
   width: 100%;
-} */
+}
 
-/* .inputForm label {
+.inputForm label {
   background-color: darkblue;
   width: 100px;
-} */
+}
 
 /* 비활성화된 입력 필드 스타일 */
 input:disabled,
