@@ -1,14 +1,16 @@
 import React from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
-import S from './CardSwiper.module.css';
-import Card from '@/components/Card/Card';
 import { useNavigate } from 'react-router';
+
+import Card from '@/components/Card/Card';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
+
+import S from './CardSwiper.module.css';
 
 export interface ProblemCardData {
   id: string;
@@ -23,6 +25,7 @@ export interface ProblemCardData {
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
   data: ProblemCardData[];
+  sortStandard?: 'popular' | 'new';
 };
 
 const CustomNavigationNext = () => {
@@ -45,11 +48,16 @@ const CustomNavigationPrev = () => {
   );
 };
 
-const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
+const CardSwiper: React.FC<CardSwiperProps> = ({
+  data,
+  children,
+  sortStandard = 'popular',
+}) => {
   const navigation = useNavigate();
 
   const handleMoveToCardList = () => {
-    navigation('/card-list');
+    navigation(`/card-list?sort=${sortStandard}`);
+    window.scrollTo(0, 0);
   };
 
   return (
