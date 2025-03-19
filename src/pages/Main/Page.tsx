@@ -7,6 +7,7 @@ import CardSwiper from '@/components/CardSwiper/CardSwiper';
 import CardModal from '@/components/CardModal/CardModal';
 
 import S from './MainPage.module.css';
+import { useNavigate } from 'react-router';
 
 interface ProblemCardData {
   id: string;
@@ -26,6 +27,7 @@ function MainPage() {
   const [itemCreated, setItemCreated] = useState<ProblemCardData[]>([]);
   // 모달 창에 나타낼 정보를 전달하기 위한 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const navigation = useNavigate();
 
   const fetchItems = async () => {
     try {
@@ -106,10 +108,10 @@ function MainPage() {
         <div className={S.mainContainer}>
           {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
           <CardSwiper data={itemCreated}>카드 Top 7 </CardSwiper>
-          <img
-            src="/images/mini-banner.jpg"
-            alt="가입에 5초 밖에 안 걸리는 회원 가입 페이지로 이동"
-            className={S.miniBanner}
+          <button
+            type="button"
+            className={S.miniBannerButton}
+            onClick={() => navigation('/sign-up')}
           />
           <CardSwiper data={itemCheck}>추천 최신 카드 </CardSwiper>
         </div>
