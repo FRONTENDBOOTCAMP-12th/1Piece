@@ -22,6 +22,7 @@ interface EditProfileProps {
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges?: (e: React.FormEvent) => void;
   onSaveAlarm: (time: string | null, checked: boolean) => void;
+  onDeleteAccount: () => void;
 }
 
 function EditProfile({
@@ -36,6 +37,7 @@ function EditProfile({
   onInputChange,
   onSaveChanges,
   onSaveAlarm,
+  onDeleteAccount,
 }: EditProfileProps) {
   return (
     <form
@@ -106,6 +108,12 @@ function EditProfile({
       />
       {/* 수정 버튼 */}
       <div className={S.buttonGroup}>
+        <Button
+          label="탈퇴"
+          color="secondary"
+          type="button"
+          onClick={onDeleteAccount}
+        />
         <Button label="수정" color="tertiary" type="submit" />
       </div>
     </form>

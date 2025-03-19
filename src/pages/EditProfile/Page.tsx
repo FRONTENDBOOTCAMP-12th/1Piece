@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
+import { useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
 import useDebounce from '@/lib/useDebounce';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import PasswordVerification from './components/PasswordVerification';
-
+import withReactContent from 'sweetalert2-react-content';
 interface ProfileState {
   user_id: string;
   email: string;
@@ -15,6 +17,11 @@ interface ProfileState {
   uid?: string;
   password?: string;
   alarm?: string | null;
+  status?: string;
+}
+
+interface DeactivateAccountProps {
+  onDeactivate: () => void; // 탈퇴 함수의 타입 정의
 }
 
 function EditProfilePage() {
@@ -35,6 +42,7 @@ function EditProfilePage() {
   const [time, setTime] = useState(() =>
     dayjs(`2025-01-01T${profile?.alarm ?? '09:00'}`)
   );
+  const navigation = useNavigate();
 
   // 닉네임 입력 시 디바운스 적용
   const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
@@ -342,6 +350,75 @@ function EditProfilePage() {
     }
   };
 
+  // 탈퇴 함수
+  const customSwal = withReactContent(Swal);
+  const handleDeactivateAccount: DeactivateAccountProps['onDeactivate'] =
+    async () => {
+      const result = await customSwal.fire({
+        title: (
+          <>
+            <p style={{ marginBlock: '16px' }}>정말 탈퇴하시겠습니까?</p>
+            <img src="/images/jellyfish_cry.png" alt="탈퇴 확인 이미지" />
+          </>
+        ),
+        icon: 'warning',
+        confirmButtonText: 'YES',
+        showCancelButton: true,
+        cancelButtonText: 'NO',
+        customClass: {
+          confirmButton: 'confirmButton',
+          cancelButton: 'cancelButton',
+          title: 'alertTitle',
+        },
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const { data: user } = await supabase.auth.getUser();
+          if (!user?.user?.id) {
+            await Swal.fire({
+              title: '오류 발생',
+              text: '사용자 정보를 가져올 수 없습니다.',
+              icon: 'error',
+            });
+            return;
+          }
+
+          const { error } = await supabase
+            .from('users')
+            .update({ status: 'inactive' } as Partial<ProfileState>)
+            .eq('user_id', user.user.id);
+
+          if (error) throw error;
+
+          await supabase.auth.signOut();
+
+          // 탈퇴 완료 후 sweetalert 알림
+          await customSwal.fire({
+            title: (
+              <>
+                <p style={{ marginBlock: '16px' }}>이용해주셔서 감사합니다</p>
+                <img src="/images/jellyfish.png" alt="탈퇴 완료 이미지" />
+              </>
+            ),
+            confirmButtonText: '확인',
+            customClass: {
+              confirmButton: 'confirmButton',
+            },
+          });
+
+          navigation('/sign-up'); // 홈으로 이동
+        } catch (error) {
+          console.error('탈퇴 실패:', error);
+          await Swal.fire({
+            title: '탈퇴 실패',
+            text: '탈퇴 처리 중 오류가 발생했습니다.',
+            icon: 'error',
+          });
+        }
+      }
+    };
+
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -424,6 +501,7 @@ function EditProfilePage() {
             onInputChange={handleInputChange}
             onSaveChanges={handleSaveChanges}
             onSaveAlarm={handleSaveAlarm}
+            onDeleteAccount={handleDeactivateAccount}
           />
         )}
       </MyPageDiary>
