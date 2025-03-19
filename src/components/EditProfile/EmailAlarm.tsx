@@ -2,9 +2,9 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useRef, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import S from './EditProfile.module.css';
+import S from './EmailAlarm.module.css';
 import dayjs from 'dayjs';
-import useDebounce from '@/pages/EditProfile/components/useDebounce';
+import useDebounce from '@/lib/useDebounce';
 
 interface EmailAlarmProps {
   initialTime?: string;
@@ -65,7 +65,7 @@ function EmailAlarm({
 
   return (
     <div className={S.emailAlarmContainer}>
-      <span className={S.emailAlarmLabel}>이메일 푸시 알람 설정</span>
+      <span className={S.emailAlarmLabel}>이메일 알람 설정</span>
 
       <div className={S.emailAlarmWrapper}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
