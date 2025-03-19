@@ -51,6 +51,7 @@
   align-items: flex-start;
   flex-shrink: 0;
   align-self: stretch;
+  margin-inline: 3rem;
 }
 
 .radioIcon {
@@ -66,4 +67,8 @@
 .subTitle {
   color: #898989;
   font-size: var(--space-3);
+}
+
+.checkboxInput {
+  display: none;
 }

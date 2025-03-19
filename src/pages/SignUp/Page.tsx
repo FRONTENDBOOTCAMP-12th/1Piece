@@ -410,51 +410,75 @@ function SignUpPage() {
         />
 
         <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="allChecked">
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${allChecked ? S.checked : ''}`}
-              onClick={handleAllCheckedChange}
             />
             전체 동의합니다.
           </label>
-          <p className={S.subTitle}>
-            선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
-            수 있습니다.
-          </p>
+          <input
+            type="checkbox"
+            id="allChecked"
+            checked={allChecked}
+            onChange={handleAllCheckedChange}
+            className={S.checkboxInput}
+          />
         </div>
+        <p className={S.subTitle}>
+          선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
+          수 있습니다.
+        </p>
 
         <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="termsOfService">
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.termsOfService ? S.checked : ''}`}
-              onClick={() => handleCheckChange('termsOfService')}
             />
             이용약관 동의(필수)
           </label>
+          <input
+            type="checkbox"
+            id="termsOfService"
+            checked={formData.termsOfService}
+            onClick={() => handleCheckChange('termsOfService')}
+            className={S.checkboxInput}
+          />
         </div>
 
         <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="privacyPolicy">
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.privacyPolicy ? S.checked : ''}`}
-              onClick={() => handleCheckChange('privacyPolicy')}
             />
             개인정보 수집 이용 동의(필수)
           </label>
+          <input
+            type="checkbox"
+            id="privacyPolicy"
+            checked={formData.privacyPolicy}
+            onClick={() => handleCheckChange('privacyPolicy')}
+            className={S.checkboxInput}
+          />
         </div>
 
         <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="ageConfirmation">
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.ageConfirmation ? S.checked : ''}`}
-              onClick={() => handleCheckChange('ageConfirmation')}
             />
             본인은 만 14세 이상입니다.(선택)
           </label>
+          <input
+            type="checkbox"
+            id="ageConfirmation"
+            checked={formData.ageConfirmation}
+            onClick={() => handleCheckChange('ageConfirmation')}
+            className={S.checkboxInput}
+          />
         </div>
 
         <Button
