@@ -9,5 +9,9 @@
     "**/.prettierrc.*": false,
     "**/CVS": true,
     "**/node_modules": false
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "",
+    "textMateRules": []
   }
 }
