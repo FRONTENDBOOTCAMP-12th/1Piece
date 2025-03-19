@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
 import { useNavigate, useLocation } from 'react-router';
 import useSearchStore from '@/lib/SearchState';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import useDebounce from '@/lib/useDebounce';
 
 import 'swiper/css';
 import 'swiper/css/grid';
@@ -44,6 +45,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   );
   // 검색 상태를 감지하기 위한 함수
   const searchParam = useSearchStore((state) => state.searchParam);
+  const debouncedSearchParam = useDebounce(searchParam, 500); // 디바운스 적용
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
@@ -56,8 +58,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
       setSortStandard(sort);
     }
   }, [location.search]);
-
   // 검색된 상태가 있을 시 실행할 함수
+
   const searchFetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
       try {
@@ -72,7 +74,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
 
         const { data: fetchedData, error } = await query.ilike(
           'problemTitle',
-          `%${searchParam}%`
+          `%${debouncedSearchParam}%`
         );
         // 통신 실패 시 오류 발생
 
@@ -91,7 +93,6 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           count: item.count,
         }));
         // 체크된 태그에 따라 렌더링 다르게
-
         const filteredData = selectedTags.length
           ? newData.filter((item) =>
               item.tags.some((tag) => selectedTags.includes(`${tag}`))
@@ -105,7 +106,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
         setLoading(false);
       }
     },
-    [searchParam, selectedTags]
+    [debouncedSearchParam, selectedTags]
   );
 
   const fetchItems = useCallback(
@@ -161,6 +162,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const handleCreateCardClick = () => {
     navigate('/card-create');
   };
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const search = searchParams.get('search');
@@ -170,7 +172,13 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     } else {
       fetchItems(sortStandard);
     }
-  }, [sortStandard, fetchItems, searchFetchItems, location.search]);
+  }, [
+    sortStandard,
+    fetchItems,
+    searchFetchItems,
+    location.search,
+    debouncedSearchParam,
+  ]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
