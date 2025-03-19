@@ -1,6 +1,5 @@
 import { Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
-import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
@@ -8,6 +7,7 @@ import toast from 'react-hot-toast';
 import useDebounce from '@/lib/useDebounce';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
+import useLoginStore from '@/lib/LoginState';
 import PasswordVerification from './components/PasswordVerification';
 import withReactContent from 'sweetalert2-react-content';
 interface ProfileState {
@@ -42,10 +42,11 @@ function EditProfilePage() {
   const [time, setTime] = useState(() =>
     dayjs(`2025-01-01T${profile?.alarm ?? '09:00'}`)
   );
-  const navigation = useNavigate();
 
   // 닉네임 입력 시 디바운스 적용
   const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
+
+  // 로그아웃 기능: Supabase 세션을 종료하고, 로컬 스토리지에서 사용자 정보를 삭제한 후 메인 페이지로 이동
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -93,6 +94,16 @@ function EditProfilePage() {
     fetchProfile();
   }, []);
 
+  // handleLogout 함수 추가
+  const handleLogout = async () => {
+    const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
+
+    await supabase.auth.signOut(); // Supabase 세션 종료
+    localStorage.removeItem('userInfo'); // 로컬스토리지 삭제
+    sessionStorage.clear(); // 세션 스토리지 삭제
+    resetUser(); // Zustand 상태 초기화
+    window.location.href = '/'; // 새로고침 + 홈으로 이동
+  };
   useEffect(() => {
     // 닉네임 중복 검사
     if (!debouncedNickname.trim() || !profile?.user_id) return;
@@ -350,15 +361,18 @@ function EditProfilePage() {
     }
   };
 
-  // 탈퇴 함수
+  // 탈퇴로 가장한 로그아웃 함수
   const customSwal = withReactContent(Swal);
+
   const handleDeactivateAccount: DeactivateAccountProps['onDeactivate'] =
     async () => {
+      const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
+
       const result = await customSwal.fire({
         title: (
           <>
             <p style={{ marginBlock: '16px' }}>정말 탈퇴하시겠습니까?</p>
-            <img src="/images/jellyfish_cry.png" alt="탈퇴 확인 이미지" />
+            <img src="/images/jellyfish_cry.png" alt="탈퇴 확인" />
           </>
         ),
         icon: 'warning',
@@ -374,8 +388,10 @@ function EditProfilePage() {
 
       if (result.isConfirmed) {
         try {
-          const { data: user } = await supabase.auth.getUser();
-          if (!user?.user?.id) {
+          // 현재 로그인된 사용자 정보 가져오기
+          const { data: user, error: userError } =
+            await supabase.auth.getUser();
+          if (userError || !user?.user) {
             await Swal.fire({
               title: '오류 발생',
               text: '사용자 정보를 가져올 수 없습니다.',
@@ -384,16 +400,22 @@ function EditProfilePage() {
             return;
           }
 
+          console.log('현재 로그인된 사용자 ID:', user.user.id);
+
+          // `users` 테이블에서 `status`를 `inactive`로 업데이트
           const { error } = await supabase
             .from('users')
-            .update({ status: 'inactive' } as Partial<ProfileState>)
-            .eq('user_id', user.user.id);
+            .update({ status: 'inactive' })
+            .eq('auth_uid', user.user.id); // auth_uid 필드 기준
 
           if (error) throw error;
 
-          await supabase.auth.signOut();
+          console.log('사용자 비활성화 성공!');
 
-          // 탈퇴 완료 후 sweetalert 알림
+          // Zustand 상태 초기화
+          resetUser();
+
+          // 탈퇴 완료 SweetAlert 알림
           await customSwal.fire({
             title: (
               <>
@@ -405,9 +427,12 @@ function EditProfilePage() {
             customClass: {
               confirmButton: 'confirmButton',
             },
-          });
 
-          navigation('/sign-up'); // 홈으로 이동
+            allowOutsideClick: false, // 바깥 클릭 방지
+            allowEscapeKey: false, // ESC 키 방지
+          });
+          // 로그아웃 실행 (handleLogout 호출)
+          await handleLogout();
         } catch (error) {
           console.error('탈퇴 실패:', error);
           await Swal.fire({
@@ -463,6 +488,9 @@ function EditProfilePage() {
 
       if (isPasswordUpdated || isProfileUpdated) {
         console.log('프로필이 수정되었습니다.');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } else {
         console.log('변경된 내용이 없습니다.');
         toast.error('변경된 내용이 없습니다.', { position: 'bottom-right' });
