@@ -345,7 +345,7 @@ function SignUpPage() {
   return (
     <div className={S.container}>
       <form onSubmit={handleSubmit} className={S.signUpForm}>
-        <h2 className={S.title}>회원가입</h2>
+        <h1 className={S.title}>회원가입</h1>
         <div>
           <Input
             label="ID"
@@ -357,16 +357,24 @@ function SignUpPage() {
             onBlur={handleIdCheck}
             className={S.inputBox}
           />
-          {errors.id && <p style={{ color: 'red' }}>{errors.id}</p>}
+          {errors.id && (
+            <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+              {errors.id}
+            </p>
+          )}
           {idCheckLoading && <p>중복 확인 중....</p>}
           {isIdAvailable === null && (
             <p>아이디 중복 여부를 확인해주세요.</p>
           )}{' '}
           {isIdAvailable === false && (
-            <p style={{ color: 'red' }}>이미 사용중인 ID입니다.</p>
+            <p style={{ color: 'red' }} aria-live="polite">
+              이미 사용중인 ID입니다.
+            </p>
           )}
           {isIdAvailable === true && (
-            <p style={{ color: 'green' }}>사용 가능한 ID입니다.</p>
+            <p style={{ color: 'green' }} aria-live="polite">
+              사용 가능한 ID입니다.
+            </p>
           )}
           <Input
             label="이메일"
@@ -378,16 +386,24 @@ function SignUpPage() {
             onBlur={handleEmailCheck}
             className={S.inputBox}
           />
-          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+          {errors.email && (
+            <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+              {errors.email}
+            </p>
+          )}
           {emailCheckLoading && <p>중복 확인 중....</p>}
           {isEmailAvailable === null && (
             <p>이메일 중복 여부를 확인해주세요.</p>
           )}{' '}
           {isEmailAvailable === false && (
-            <p style={{ color: 'red' }}>이미 사용중인 EMAIL입니다.</p>
+            <p style={{ color: 'red' }} aria-live="polite">
+              이미 사용중인 EMAIL입니다.
+            </p>
           )}
           {isEmailAvailable === true && (
-            <p style={{ color: 'green' }}>사용 가능한 EMAIL입니다.</p>
+            <p style={{ color: 'green' }} aria-live="polite">
+              사용 가능한 EMAIL입니다.
+            </p>
           )}
         </div>
         <Input
@@ -399,7 +415,11 @@ function SignUpPage() {
           onChange={handleChange}
           className={S.inputBox}
         />
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        {errors.password && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.password}
+          </p>
+        )}
         <Input
           label="비밀번호확인"
           name="passwordConfirm"
@@ -411,7 +431,9 @@ function SignUpPage() {
           className={S.inputBox}
         />
         {errors.passwordConfirm && (
-          <p style={{ color: 'red' }}>{errors.passwordConfirm}</p>
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.passwordConfirm}
+          </p>
         )}
         <Input
           label="닉네임"
@@ -423,13 +445,13 @@ function SignUpPage() {
           className={S.inputBox}
         />
 
-        <div className={S.termsContainer}>
-          <label htmlFor="allChecked">
+        <fieldset>
+          <label htmlFor="allChecked" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${allChecked ? S.checked : ''}`}
             />
-            전체 동의합니다.
+            <legend>전체 동의합니다.</legend>
           </label>
           <input
             type="checkbox"
@@ -438,73 +460,76 @@ function SignUpPage() {
             onChange={handleAllCheckedChange}
             className={S.checkboxInput}
           />
-        </div>
-        <p className={S.subTitle}>
-          선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
-          수 있습니다.
-        </p>
+          <p className={S.subTitle}>
+            선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
+            수 있습니다.
+          </p>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="termsOfService">
+          <label htmlFor="termsOfService" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.termsOfService ? S.checked : ''}`}
             />
             이용약관 동의(필수)
+            <input
+              type="checkbox"
+              id="termsOfService"
+              checked={formData.termsOfService}
+              onClick={() => handleCheckChange('termsOfService')}
+              className={S.checkboxInput}
+            />
           </label>
-          <input
-            type="checkbox"
-            id="termsOfService"
-            checked={formData.termsOfService}
-            onClick={() => handleCheckChange('termsOfService')}
-            className={S.checkboxInput}
-          />
-        </div>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="privacyPolicy">
+          <label htmlFor="privacyPolicy" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.privacyPolicy ? S.checked : ''}`}
             />
             개인정보 수집 이용 동의(필수)
+            <input
+              type="checkbox"
+              id="privacyPolicy"
+              checked={formData.privacyPolicy}
+              onClick={() => handleCheckChange('privacyPolicy')}
+              className={S.checkboxInput}
+            />
           </label>
-          <input
-            type="checkbox"
-            id="privacyPolicy"
-            checked={formData.privacyPolicy}
-            onClick={() => handleCheckChange('privacyPolicy')}
-            className={S.checkboxInput}
-          />
-        </div>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="ageConfirmation">
+          <label htmlFor="ageConfirmation" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.ageConfirmation ? S.checked : ''}`}
             />
             본인은 만 14세 이상입니다.(선택)
+            <input
+              type="checkbox"
+              id="ageConfirmation"
+              checked={formData.ageConfirmation}
+              onClick={() => handleCheckChange('ageConfirmation')}
+              className={S.checkboxInput}
+            />
           </label>
-          <input
-            type="checkbox"
-            id="ageConfirmation"
-            checked={formData.ageConfirmation}
-            onClick={() => handleCheckChange('ageConfirmation')}
-            className={S.checkboxInput}
-          />
-        </div>
+        </fieldset>
 
         <Button
           type="submit"
           disabled={isSubmitting}
           label="회원가입"
           className={S.submitButton}
+          aria-busy={isSubmitting}
         >
           {isSubmitting ? '회원가입 중...' : '회원가입'}
         </Button>
-        {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+        {isSubmitting && (
+          <p style={{ color: 'red' }} aria-live="assertive">
+            {isSubmitting}
+          </p>
+        )}
+        {success && (
+          <p style={{ color: 'green' }} aria-live="assertive">
+            {success}
+          </p>
+        )}
       </form>
       <Toaster position="bottom-right" />
     </div>
