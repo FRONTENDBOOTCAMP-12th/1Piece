@@ -18,7 +18,6 @@ function Card({
   src,
   tags,
   userName,
-  checked,
   description,
   children,
   count,
@@ -53,7 +52,15 @@ function Card({
       tabIndex={0}
     >
       {/* 이미지의 src와 alt텍스트는 부모 컴포넌트에서 받아온다 */}
-      <img src={src} alt={userName} className={S.profileImg} />
+      <img
+        src={src}
+        alt={userName}
+        className={S.profileImg}
+        //기본 이미지 넣어둠 (목록은 아직 프로필 사진 다 안 가져와져서?)
+        onError={(e) => {
+          e.currentTarget.src = '/images/jellyfish.png';
+        }}
+      />
       <div className={S.problemInfoContainer}>
         <p className={S.problemTitle}>{children}</p>
         {/* 더미 텍스트 이후 카드 태그 컴포넌트가 대체 될 예정 */}
@@ -63,7 +70,7 @@ function Card({
           ))}
         </div>
       </div>
-      <BookMark checked={checked} />
+      <BookMark id={id} />
     </div>
   );
 }

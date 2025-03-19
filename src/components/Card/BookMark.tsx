@@ -2,25 +2,69 @@ import { useEffect, useState } from 'react';
 import S from './Card.module.css';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import useBookmarkStore from '@/lib/BookmarkState';
+import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
 
 type BookMarkProps = React.ComponentProps<'button'> & {
-  userId: string;
-  questionId: number;
+  id: string;
 };
 
-function BookMark({ userId, questionId }: BookMarkProps) {
-  const { bookmarks, toggleBookmark } = useBookmarkStore();
+function BookMark({ id }: BookMarkProps) {
+  const bookmarks = useBookmarkStore((state) => state.bookmarks);
+  const userProfile = useProfileStore((state) => state.userProfile);
   const [isBookMark, setIsBookMark] = useState(false);
+  const setBookmarks = useBookmarkStore((state) => state.setBookmarks);
 
-  useEffect(() => {
-    setIsBookMark(bookmarks.has(questionId));
-  }, [bookmarks, questionId]);
+  const handleSetBookmark = async () => {
+    const { data } = await supabase.from('bookmark').insert([
+      {
+        bookmark_user: userProfile.id,
+        bookmark_question: id,
+      },
+    ]);
+
+    const { data: fetchedData } = await supabase
+      .from('bookmark')
+      .select('*')
+      .eq('bookmark_user', userProfile.id);
+
+    setBookmarks(fetchedData);
+  };
+
+  const handleDeleteBookmark = async () => {
+    const { data } = await supabase
+      .from('bookmark')
+      .delete()
+      .eq('bookmark_user', userProfile.id)
+      .eq('bookmark_question', id);
+
+    const { data: fetchedData } = await supabase
+      .from('bookmark')
+      .select('*')
+      .eq('bookmark_user', userProfile.id);
+
+    setBookmarks(fetchedData);
+  };
 
   const handleClickBookMark = (e: React.MouseEvent) => {
     // 버블링 방지
     e.stopPropagation();
-    toggleBookmark(userId, questionId);
+    setIsBookMark(!isBookMark);
+
+    if (!isBookMark) {
+      handleSetBookmark();
+    } else {
+      handleDeleteBookmark();
+    }
   };
+
+  useEffect(() => {
+    const nextIsBookMark = bookmarks.some((item) => {
+      return item.bookmark_question == id;
+    });
+
+    setIsBookMark(nextIsBookMark);
+  }, []);
 
   return (
     <button
