@@ -1,52 +1,32 @@
+// BookMarkState.tsx
 import { create } from 'zustand';
-import { supabase } from './SupabaseClient';
+import { persist } from 'zustand/middleware';
 
-interface BookmarkStore {
-  bookmarks: Set<number>;
-  fetchBookmark: (userId: string) => Promise<void>;
-  toggleBookmark: (userId: string, questionId: number) => Promise<void>;
+// 상태 변수 타입
+interface State {
+  bookmarks: number[];
 }
 
-const useBookmarkStore = create<BookmarkStore>((set, get) => ({
-  bookmarks: new Set(),
+// 함수 타입
+interface Actions {
+  setBookmarks: (bookmarkedData: number[]) => void;
+}
 
-  // 북마크 정보 가져오기
-  fetchBookmark: async (userId) => {
-    try {
-      const { data } = await supabase
-        .from('bookmark')
-        .select('bookmark_question')
-        .eq('bookmark_user', userId);
+type Store = State & Actions;
 
-      if (data) {
-        set({ bookmarks: new Set(data.map((b) => b.bookmark_question)) });
-      }
-    } catch (error) {
-      console.log(error);
+const useBookMarkStore = create(
+  persist<Store>(
+    (set) => ({
+      bookmarks: [],
+      setBookmarks: (bookmarkedData) =>
+        set(() => ({
+          bookmarks: bookmarkedData,
+        })),
+    }),
+    {
+      name: '로그인 정보 저장소',
     }
-  },
+  )
+);
 
-  // 북마크 추가/취소
-  toggleBookmark: async (userId, questionId) => {
-    const { bookmarks } = get();
-    const updatedBookmarks = new Set(bookmarks);
-
-    if (updatedBookmarks.has(questionId)) {
-      updatedBookmarks.delete(questionId);
-      await supabase
-        .from('bookmark')
-        .delete()
-        .eq('bookmark_user', userId)
-        .eq('bookmark_question', questionId);
-    } else {
-      updatedBookmarks.add(questionId);
-      await supabase
-        .from('bookmark')
-        .insert([{ bookmark_user: userId, bookmark_question: questionId }]);
-    }
-
-    set({ bookmarks: updatedBookmarks });
-  },
-}));
-
-export default useBookmarkStore;
+export default useBookMarkStore;
