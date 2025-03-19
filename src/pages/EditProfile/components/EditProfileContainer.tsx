@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
+import S from './EditProfileContainer.module.css';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
-import S from './EditProfileContainer.module.css';
-import PasswordVerification from './PasswordVerification';
+import useDebounce from './useDebounce';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-
+import PasswordVerification from './PasswordVerification';
 interface ProfileState {
   user_id: string;
   email: string;
@@ -15,15 +15,6 @@ interface ProfileState {
   password?: string;
   alarm?: string | null;
 }
-
-const useDebouncedValue = (value: string, delay = 500) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-};
 
 function EditProfileContainer() {
   const [profile, setProfile] = useState<ProfileState | null>(null);
@@ -40,16 +31,12 @@ function EditProfileContainer() {
   const [initialProfile, setInitialProfile] = useState<ProfileState | null>(
     null
   );
-
-  const debouncedNickname = useDebouncedValue(profile?.nickname ?? '', 500);
   const [time, setTime] = useState(() =>
-    dayjs(`2025-01-01T${profile?.alarm ?? '12:00'}`)
+    dayjs(`2025-01-01T${profile?.alarm ?? '09:00'}`)
   );
 
-  // 실제로 time을 사용
-  useEffect(() => {
-    console.log('설정된 알람 시간:', time.format('HH:mm'));
-  }, [time]);
+  // 닉네임 입력 시 디바운스 적용
+  const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -65,6 +52,8 @@ function EditProfileContainer() {
           .eq('auth_uid', userId)
           .single();
 
+        console.log('[Supabase] 업데이트 후 데이터:', data);
+
         if (error) {
           toast.error('프로필 데이터를 가져오는 중 오류가 발생했습니다.', {
             position: 'bottom-right',
@@ -74,8 +63,13 @@ function EditProfileContainer() {
 
         if (data) {
           console.log('가져온 프로필 데이터:', data);
-          setProfile(data);
-          setInitialProfile(data); // 원본 데이터 저장
+          // 기존 데이터와 다를 때만 상태 업데이트
+          setProfile((prev) =>
+            JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
+          );
+          setInitialProfile((prev) =>
+            JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
+          );
         }
       } catch (error) {
         toast.error(
@@ -91,6 +85,7 @@ function EditProfileContainer() {
   }, []);
 
   useEffect(() => {
+    // 닉네임 중복 검사
     if (!debouncedNickname.trim() || !profile?.user_id) return;
     const checkNickname = async () => {
       const { data } = await supabase
@@ -108,10 +103,14 @@ function EditProfileContainer() {
   }, [debouncedNickname, profile?.user_id]);
 
   useEffect(() => {
+    console.log('설정된 알람 시간:', time.format('HH:mm'));
+  }, [time]);
+
+  useEffect(() => {
     if (profile?.alarm) {
       setTime(dayjs(`2025-01-01T${profile.alarm}`));
     }
-  }, [profile?.alarm]);
+  }, [profile?.alarm]); // profile?.alarm 변경 시 한 번만 실행
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -156,6 +155,41 @@ function EditProfileContainer() {
       return '비밀번호에는 최소 1개의 숫자가 포함되어야 합니다.';
     if (password !== confirmPassword) return '비밀번호가 일치하지 않습니다.';
     return ''; // 에러가 없을 경우 빈 문자열 반환
+  };
+
+  // 비밀번호 검증 함수 추가
+  const handlePasswordVerification = async (password: string) => {
+    if (!profile?.email) {
+      toast.error('이메일 정보를 불러올 수 없습니다.', {
+        position: 'bottom-right',
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: profile.email,
+        password,
+      });
+
+      if (error) {
+        setErrors((prev) => ({
+          ...prev,
+          password: '비밀번호가 일치하지 않습니다.',
+        }));
+        toast.error('비밀번호가 일치하지 않습니다.', {
+          position: 'bottom-right',
+        });
+        return;
+      }
+
+      setIsPasswordVerified(true); //  인증 성공 시 개인정보관리 페이지로 이동
+    } catch (error) {
+      console.error('비밀번호 확인 중 오류 발생:', error);
+      toast.error('비밀번호 확인 중 오류가 발생했습니다.', {
+        position: 'bottom-right',
+      });
+    }
   };
 
   const handlePasswordChange = async () => {
@@ -255,35 +289,57 @@ function EditProfileContainer() {
   };
 
   const handleSaveAlarm = async (newTime: string | null, checked: boolean) => {
-    if (!profile) return; // 프로필이 없으면 실행 X
-    if (profile.alarm === newTime && (profile.alarm !== null) === checked)
-      return; // 중복 호출 방지
+    if (!profile || !initialProfile) return;
+
+    console.log(
+      `[handleSaveAlarm] 실행됨: newTime=${newTime}, checked=${checked}`
+    );
+
+    // 기존 값과 동일하면 API 호출 방지
+    if (
+      initialProfile.alarm === newTime &&
+      Boolean(initialProfile.alarm) === checked
+    ) {
+      console.log('[handleSaveAlarm] 변경된 값이 없으므로 API 호출 생략');
+      return;
+    }
 
     try {
+      console.log(
+        `[handleSaveAlarm] Supabase 업데이트 요청!: newTime=${newTime}, checked=${checked}`
+      );
+
       const { error } = await supabase
         .from('users')
-        .update({ alarm: checked ? newTime : null }) // OFF 시 null 저장
+        .update({ alarm: checked ? newTime : null })
         .eq('user_id', profile.user_id);
 
       if (error) throw error;
 
+      // 최신 상태 업데이트
       setProfile((prev) =>
         prev ? { ...prev, alarm: checked ? newTime : null } : prev
       );
+      setInitialProfile((prev) =>
+        prev ? { ...prev, alarm: checked ? newTime : null } : prev
+      );
 
-      toast.dismiss(); // 기존 알림 제거
-      if (checked) {
-        toast.success('알람이 설정되었습니다.', { position: 'bottom-right' });
-      } else {
-        toast.success('알람이 해제되었습니다.', { position: 'bottom-right' });
-      }
-    } catch (error) {
-      console.error('알람 설정 실패:', error);
-      toast.error(
-        `알람 설정 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
+      console.log(
+        `[handleSaveAlarm] 알람 업데이트 성공~: newTime=${newTime}, checked=${checked}`
+      );
+
+      toast.dismiss();
+      toast.success(
+        checked ? '알람이 설정되었습니다.' : '알람이 해제되었습니다.',
         {
           position: 'bottom-right',
         }
+      );
+    } catch (error) {
+      console.error('[handleSaveAlarm] 알람 설정 실패:', error);
+      toast.error(
+        `알람 설정 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
+        { position: 'bottom-right' }
       );
     }
   };
@@ -305,6 +361,7 @@ function EditProfileContainer() {
       let isPasswordUpdated = false;
       let isProfileUpdated = false;
 
+      // 비밀번호가 변경된 경우에만 업데이트
       if (newPassword || confirmNewPassword) {
         isPasswordUpdated = await handlePasswordChange();
       }
@@ -312,16 +369,11 @@ function EditProfileContainer() {
       const updates: Partial<ProfileState> = {};
       let hasChanges = false;
 
-      console.log('기존 닉네임:', initialProfile.nickname);
-      console.log('입력된 닉네임:', debouncedNickname);
-
-      const nicknameChanged =
+      // 닉네임이 변경된 경우에만 업데이트
+      if (
         initialProfile.nickname.trim() !== debouncedNickname.trim() &&
-        debouncedNickname.trim() !== '';
-
-      console.log('닉네임 변경 감지:', nicknameChanged);
-
-      if (nicknameChanged) {
+        debouncedNickname.trim() !== ''
+      ) {
         updates.nickname = debouncedNickname.trim();
         hasChanges = true;
       }
@@ -357,7 +409,7 @@ function EditProfileContainer() {
       <MyPageDiary title="P r o f i l e">
         {!isPasswordVerified ? (
           <PasswordVerification
-            onVerify={() => setIsPasswordVerified(true)}
+            onVerify={handlePasswordVerification} // 검증 함수 연결
             passwordError={errors.password}
           />
         ) : (
@@ -367,7 +419,9 @@ function EditProfileContainer() {
             confirmNewPassword={confirmNewPassword}
             nicknameError={errors.nickname}
             passwordError={errors.password}
+            passwordSuccess={''}
             confirmPasswordError={errors.confirmPassword}
+            confirmPasswordSuccess={''}
             onInputChange={handleInputChange}
             onSaveChanges={handleSaveChanges}
             onSaveAlarm={handleSaveAlarm}
