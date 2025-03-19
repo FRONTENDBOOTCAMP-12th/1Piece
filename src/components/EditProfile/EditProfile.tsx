@@ -7,7 +7,7 @@ interface ProfileState {
   user_id: string;
   nickname: string;
   email: string;
-  alarm?: string | null; // 알람 시간 정보 추가
+  alarm?: string | null;
 }
 
 interface EditProfileProps {
@@ -16,12 +16,12 @@ interface EditProfileProps {
   confirmNewPassword: string;
   nicknameError: string;
   passwordError: string;
-  passwordSuccess: string;
-  confirmPasswordError: string;
+  passwordSuccess?: string;
+  confirmPasswordError?: string;
   confirmPasswordSuccess: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSaveChanges: (e: React.FormEvent) => void;
-  onSaveAlarm: (time: string, checked: boolean) => void; // 알람 저장 함수 추가
+  onSaveChanges?: (e: React.FormEvent) => void;
+  onSaveAlarm: (time: string | null, checked: boolean) => void;
 }
 
 function EditProfile({
@@ -42,7 +42,7 @@ function EditProfile({
       className={S.editProfileContainer}
       onSubmit={(e) => {
         e.preventDefault();
-        onSaveChanges(e); // 통합된 저장 버튼
+        onSaveChanges(e);
       }}
     >
       {/* ID 수정 불가 */}
@@ -75,7 +75,7 @@ function EditProfile({
       <EmailAlarm
         initialTime={profile?.alarm ?? '09:00'} // 기존 알람 시간 또는 기본값
         isChecked={Boolean(profile?.alarm)} // null이면 false 처리
-        onSave={() => onSaveAlarm} // props로 전달됨
+        onSave={(time, checked) => onSaveAlarm(time, checked)} // null도 받을 수 있도록 전달
       />
       {/* 비밀번호 변경 */}
       <Input
