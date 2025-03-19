@@ -2,79 +2,80 @@
   --timepicker-width: 9.375rem;
   --timepicker-height: 3.5rem;
 }
-
-.EmailAlarmContainer {
+.emailAlarmContainer {
   display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: var(--space-2);
+  align-items: center;
+  gap: 2.8rem;
+  justify-content: start;
+  width: 92%;
 }
 
-.EmailAlarmLabel {
-  font-size: var(--space-4);
-  font-weight: var(--regular);
+.emailAlarmLabel {
+  font-size: var(--large);
+  white-space: nowrap;
 }
 
-.EmailAlarmWrapper {
+.emailAlarmWrapper {
   display: flex;
   align-items: center;
   gap: var(--space-4);
 }
 
-.EmailAlarmTimePicker {
+.emailAlarmTimePicker {
   width: var(--timepicker-width);
   height: var(--timepicker-height);
-  /* text-align: center; */
+  background-color: var(--white);
+  border-radius: var(--rounded-xl);
 }
 
-.Switch {
+/* 스위치 */
+.switch {
   position: relative;
   display: inline-block;
   width: 3.125rem;
   height: 1.75rem;
   cursor: pointer;
+}
 
-  input {
-    position: absolute;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    overflow: hidden;
-    border: 0;
-  }
+.switch input {
+  position: absolute;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  overflow: hidden;
+  border: 0;
+}
 
-  .SwitchThumb {
-    position: absolute;
-    inset: 0;
-    border-radius: var(--rounded-full);
-    transition: 0.4s;
-    background: linear-gradient(to bottom, #adadad, #ffffff);
-    border: 1px solid #c4c4c4;
+.switchThumb {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--rounded-full);
+  border: 1px solid #c4c4c4;
+  transition: 0.4s;
+  background: linear-gradient(to bottom, #adadad, #ffffff);
+}
 
-    &::before {
-      content: '';
-      position: absolute;
-      height: 1.5625rem;
-      width: 1.5625rem;
-      left: 1px;
-      bottom: 1px;
-      background: linear-gradient(#e2e2e2, #ffffff);
-      border-radius: 50%;
-      transition: 0.4s;
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    }
-  }
+.switchThumb::before {
+  content: '';
+  position: absolute;
+  height: 1.5625rem;
+  width: 1.5625rem;
+  left: 1px;
+  bottom: 1px;
+  border-radius: 50%;
+  background: linear-gradient(#e2e2e2, #ffffff);
+  transition: 0.4s;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
 
-  input:checked + .SwitchThumb {
-    background: linear-gradient(to bottom, #a3d9a5, #58a55c);
-    border: inherit;
+.switch input:checked + .switchThumb {
+  background: linear-gradient(to bottom, #a3d9a5, #58a55c);
+}
 
-    &::before {
-      transform: translateX(22px);
-    }
-  }
+.switch input:checked + .switchThumb::before {
+  transform: translateX(22px);
+}
 
-  input:focus-visible + .SwitchThumb {
-    outline: 2px solid var(--primary-color, #4a90e2);
-    outline-offset: 2px;
-  }
+.switch input:focus-visible + .switchThumb {
+  outline: 2px solid var(--primary-color, #4a90e2);
+  outline-offset: 2px;
 }
