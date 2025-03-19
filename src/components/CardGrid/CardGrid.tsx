@@ -76,7 +76,7 @@ const CardGrid: React.FC<CardSwiperProps> = ({
           </Swiper>
         </div>
       )}
-      {data.length > 0 && ( // 데이터가 있을 때만 Pagination 표시
+      {data.length > 0 && ( // 데이터가 있을 때만 Pagination 표시 -> 목록 페이지의 빈카드를 이쪽에도 넣을까 고민(그러면 코드 너무 길어짐)
         <Pagination
           totalItems={data.length}
           itemsPerPage={itemsPerPage}
