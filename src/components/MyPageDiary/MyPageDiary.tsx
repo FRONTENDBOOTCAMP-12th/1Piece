@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import Button from '../Button/Button';
-import ProfileImage from '@/components/EditProfile/ProfileImage';
 
 import S from './MyPageDiary.module.css';
+import ProfileImage from '../EditProfile/ProfileImage';
 
 interface MyPageDiaryProps {
   children: React.ReactNode;
