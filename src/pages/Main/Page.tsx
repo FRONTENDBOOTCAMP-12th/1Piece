@@ -1,11 +1,12 @@
-// 브랜치와 상관없는 작업 삭제를 위한 커밋
-import CardSwiper from '@/components/CardSwiper/CardSwiper';
-import S from './MainPage.module.css';
-import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
-import CardModal from '@/components/CardModal/CardModal';
+import { supabase } from '@/lib/SupabaseClient';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import fetchImg from '@/lib/FetchImg';
+
+import CardSwiper from '@/components/CardSwiper/CardSwiper';
+import CardModal from '@/components/CardModal/CardModal';
+
+import S from './MainPage.module.css';
 
 interface ProblemCardData {
   id: string;
@@ -107,7 +108,7 @@ function MainPage() {
           <CardSwiper data={itemCreated}>카드 Top 7 </CardSwiper>
           <img
             src="/images/mini-banner.jpg"
-            alt="큐젤리란"
+            alt="가입에 5초 밖에 안 걸리는 회원 가입 페이지로 이동"
             className={S.miniBanner}
           />
           <CardSwiper data={itemCheck}>추천 최신 카드 </CardSwiper>
