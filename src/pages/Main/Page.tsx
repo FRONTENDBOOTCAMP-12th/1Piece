@@ -104,8 +104,8 @@ function MainPage() {
       ) : (
         <div className={S.mainContainer}>
           {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
-          <CardSwiper data={itemCreated}>지난 주 베스트</CardSwiper>
-          <CardSwiper data={itemCheck}>지난 주 최다 조회수</CardSwiper>
+          <CardSwiper data={itemCreated}>카드 Top 7 </CardSwiper>
+          <CardSwiper data={itemCheck}>추천 최신 카드 </CardSwiper>
         </div>
       )}
       <CardModal
