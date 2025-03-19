@@ -105,6 +105,11 @@ function MainPage() {
         <div className={S.mainContainer}>
           {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
           <CardSwiper data={itemCreated}>카드 Top 7 </CardSwiper>
+          <img
+            src="/images/mini-banner.jpg"
+            alt="큐젤리란"
+            className={S.miniBanner}
+          />
           <CardSwiper data={itemCheck}>추천 최신 카드 </CardSwiper>
         </div>
       )}
