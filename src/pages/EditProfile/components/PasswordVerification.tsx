@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import S from './EditProfileContainer.module.css';
+import S from './PasswordVerification.module.css';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 
