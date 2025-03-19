@@ -363,66 +363,62 @@ function SignUpPage() {
     <div className={S.container}>
       <form onSubmit={handleSubmit} className={S.signUpForm}>
         <h1 className={S.title}>회원가입</h1>
-        <div>
-          <Input
-            label="ID"
-            name="id"
-            type="text"
-            placeholder="ID를 입력하세요"
-            value={formData.id}
-            onChange={handleChange}
-            onBlur={handleIdCheck}
-            className={S.inputBox}
-          />
-          {errors.id && (
-            <p style={{ color: 'red' }} aria-live="assertive" role="alert">
-              {errors.id}
-            </p>
-          )}
-          {idCheckLoading && <p>중복 확인 중....</p>}
-          {isIdAvailable === null && (
-            <p>아이디 중복 여부를 확인해주세요.</p>
-          )}{' '}
-          {isIdAvailable === false && (
-            <p style={{ color: 'red' }} aria-live="polite">
-              이미 사용중인 ID입니다.
-            </p>
-          )}
-          {isIdAvailable === true && (
-            <p style={{ color: 'green' }} aria-live="polite">
-              사용 가능한 ID입니다.
-            </p>
-          )}
-          <Input
-            label="이메일"
-            name="email"
-            type="email"
-            placeholder="Qzelly@gmail.com"
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={handleEmailCheck}
-            className={S.inputBox}
-          />
-          {errors.email && (
-            <p style={{ color: 'red' }} aria-live="assertive" role="alert">
-              {errors.email}
-            </p>
-          )}
-          {emailCheckLoading && <p>중복 확인 중....</p>}
-          {isEmailAvailable === null && (
-            <p>이메일 중복 여부를 확인해주세요.</p>
-          )}{' '}
-          {isEmailAvailable === false && (
-            <p style={{ color: 'red' }} aria-live="polite">
-              이미 사용중인 EMAIL입니다.
-            </p>
-          )}
-          {isEmailAvailable === true && (
-            <p style={{ color: 'green' }} aria-live="polite">
-              사용 가능한 EMAIL입니다.
-            </p>
-          )}
-        </div>
+        <Input
+          label="ID"
+          name="id"
+          type="text"
+          placeholder="ID를 입력하세요"
+          value={formData.id}
+          onChange={handleChange}
+          onBlur={handleIdCheck}
+          className={S.inputBox}
+        />
+        {errors.id && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.id}
+          </p>
+        )}
+        {idCheckLoading && <p>중복 확인 중....</p>}
+        {isIdAvailable === null && <p>아이디 중복 여부를 확인해주세요.</p>}{' '}
+        {isIdAvailable === false && (
+          <p style={{ color: 'red' }} aria-live="polite">
+            이미 사용중인 ID입니다.
+          </p>
+        )}
+        {isIdAvailable === true && (
+          <p style={{ color: 'green' }} aria-live="polite">
+            사용 가능한 ID입니다.
+          </p>
+        )}
+        <Input
+          label="이메일"
+          name="email"
+          type="email"
+          placeholder="Qzelly@gmail.com"
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleEmailCheck}
+          className={S.inputBox}
+        />
+        {errors.email && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.email}
+          </p>
+        )}
+        {emailCheckLoading && <p>중복 확인 중....</p>}
+        {isEmailAvailable === null && (
+          <p>이메일 중복 여부를 확인해주세요.</p>
+        )}{' '}
+        {isEmailAvailable === false && (
+          <p style={{ color: 'red' }} aria-live="polite">
+            이미 사용중인 EMAIL입니다.
+          </p>
+        )}
+        {isEmailAvailable === true && (
+          <p style={{ color: 'green' }} aria-live="polite">
+            사용 가능한 EMAIL입니다.
+          </p>
+        )}
         <Input
           label="비밀번호"
           name="password"
@@ -461,7 +457,6 @@ function SignUpPage() {
           onChange={handleChange}
           className={S.inputBox}
         />
-
         <fieldset>
           <label htmlFor="allChecked" className={S.termsContainer}>
             <IoCheckmark
@@ -527,7 +522,6 @@ function SignUpPage() {
             />
           </label>
         </fieldset>
-
         <Button
           type="submit"
           disabled={isSubmitting}
