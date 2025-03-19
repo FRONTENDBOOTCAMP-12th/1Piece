@@ -1,8 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router';
+import useSearchStore from '@/lib/SearchState';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/grid';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 import CardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
@@ -10,12 +16,6 @@ import Card from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 import S from './CardListContainer.module.css';
-
-import 'swiper/css';
-import 'swiper/css/grid';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import useSearchStore from '@/lib/SearchState';
 
 export interface CardData {
   id: string;
@@ -205,24 +205,9 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             grid={{ rows: 6, fill: 'row' }}
             pagination={{ clickable: true }}
             className={S.swiper}
+            style={{ width: '83rem' }}
           >
-            {currentPageData.map((item) => (
-              <SwiperSlide key={item.id} className={S.slide}>
-                <Card
-                  count={item.count}
-                  id={item.id}
-                  src={item.src}
-                  userName={item.userName}
-                  tags={item.tags}
-                  checked={item.checked}
-                  description={item.description}
-                >
-                  {item.problemTitle}
-                </Card>
-              </SwiperSlide>
-            ))}
-
-            {isLastPage && (
+            {data.length === 0 && (
               <SwiperSlide className={S.slide}>
                 <button
                   className={S.btnQuestionCreate}
@@ -234,6 +219,40 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   </p>
                 </button>
               </SwiperSlide>
+            )}
+
+            {data.length > 0 && (
+              <>
+                {currentPageData.map((item) => (
+                  <SwiperSlide key={item.id} className={S.slide}>
+                    <Card
+                      count={item.count}
+                      id={item.id}
+                      src={item.src}
+                      userName={item.userName}
+                      tags={item.tags}
+                      checked={item.checked}
+                      description={item.description}
+                    >
+                      {item.problemTitle}
+                    </Card>
+                  </SwiperSlide>
+                ))}
+
+                {isLastPage && (
+                  <SwiperSlide className={S.slide}>
+                    <button
+                      className={S.btnQuestionCreate}
+                      onClick={handleCreateCardClick}
+                      aria-label="카드 만들기"
+                    >
+                      <p className={S.questionCreateMessage}>
+                        클릭해서 카드 만들기
+                      </p>
+                    </button>
+                  </SwiperSlide>
+                )}
+              </>
             )}
           </Swiper>
         </div>
