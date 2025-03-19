@@ -102,12 +102,11 @@ function MainPage() {
         // 데이터를 불러오는 중에 사용할 UI
         <p>로딩 중...</p>
       ) : (
-        <>
+        <div className={S.mainContainer}>
           {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
           <CardSwiper data={itemCreated}>지난 주 베스트</CardSwiper>
-          <hr className={S.line} />
           <CardSwiper data={itemCheck}>지난 주 최다 조회수</CardSwiper>
-        </>
+        </div>
       )}
       <CardModal
         src={cardInfo.src}
