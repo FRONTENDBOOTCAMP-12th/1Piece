@@ -1,10 +1,11 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast, Toaster } from 'react-hot-toast';
+import { supabase } from '@/lib/SupabaseClient';
+import { IoCheckmark } from 'react-icons/io5';
+import { useNavigate } from 'react-router';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import { supabase } from '@/lib/SupabaseClient';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 import S from './Page.module.css';
-import { toast, Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 function SignUpPage() {
@@ -15,6 +16,9 @@ function SignUpPage() {
     nickname: '',
     email: '',
     users: '',
+    termsOfService: false,
+    privacyPolicy: false,
+    ageConfirmation: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({
@@ -24,6 +28,9 @@ function SignUpPage() {
     nickname: '',
     email: '',
     users: '',
+    termsOfService: '',
+    privacyPolicy: '',
+    ageConfirmation: '',
   });
   const [success] = useState('');
   const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
@@ -42,11 +49,49 @@ function SignUpPage() {
   const startIsSubmitting = () => setIsSubmitting(true);
   const stopIsSubmitting = () => setIsSubmitting(false);
   const navigate = useNavigate();
+  const allChecked = useMemo(
+    () =>
+      formData.termsOfService &&
+      formData.privacyPolicy &&
+      formData.ageConfirmation,
+    [formData]
+  );
+
+  const handleAllCheckedChange = () => {
+    const newState = !allChecked;
+    setFormData((prev) => ({
+      ...prev,
+      termsOfService: newState,
+      privacyPolicy: newState,
+      ageConfirmation: newState,
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, type, value, checked } = e.target;
+    setFormData((prev) => {
+      const updatedData = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      };
 
+      if (
+        name === 'termsOfService' ||
+        name === 'privacyPolicy' ||
+        name === 'ageConfirmation'
+      ) {
+        const allChecked =
+          updatedData.termsOfService &&
+          updatedData.privacyPolicy &&
+          updatedData.ageConfirmation;
+        setFormData((prevData) => ({
+          ...prevData,
+          allChecked,
+        }));
+      }
+
+      return updatedData;
+    });
     if (name === 'id') {
       setIsIdAvailable(null);
     }
@@ -59,6 +104,13 @@ function SignUpPage() {
     if (name === 'password') {
       passwordValidate();
     }
+  };
+
+  const handleCheckChange = (name: keyof typeof formData) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: !prevData[name],
+    }));
   };
 
   const idCheckAvailability = async (id: string) => {
@@ -175,6 +227,9 @@ function SignUpPage() {
       nickname: '',
       email: '',
       users: '',
+      termsOfService: '',
+      privacyPolicy: '',
+      ageConfirmation: '',
     });
   };
 
@@ -187,9 +242,20 @@ function SignUpPage() {
       toast.error('ID를 입력해주세요.');
       return;
     }
+
     if (!formData.email.trim()) {
       setErrors({ ...errors, email: 'EMAIL를 입력해주세요.' });
       toast.error('EMAIL를 입력해주세요.');
+      return;
+    }
+
+    if (!formData.termsOfService || !formData.privacyPolicy) {
+      toast.error('필수 약관에 동의해주세요.');
+      setErrors({
+        ...errors,
+        termsOfService: '필수 약관에 동의해주세요',
+        privacyPolicy: '필수 약관에 동의해주세요',
+      });
       return;
     }
 
@@ -282,7 +348,6 @@ function SignUpPage() {
           {isIdAvailable === null && (
             <p>아이디 중복 여부를 확인해주세요.</p>
           )}{' '}
-          {/* null일 때만 메시지 안내 */}
           {isIdAvailable === false && (
             <p style={{ color: 'red' }}>이미 사용중인 ID입니다.</p>
           )}
@@ -343,6 +408,55 @@ function SignUpPage() {
           onChange={handleChange}
           className={S.inputBox}
         />
+
+        <div className={S.termsContainer}>
+          <label htmlFor="allChecked" className={S.checkboxLabel}>
+            <IoCheckmark
+              size={20}
+              className={`${S.radioIcon} ${allChecked ? S.checked : ''}`}
+              onClick={handleAllCheckedChange}
+            />
+            전체 동의합니다.
+          </label>
+          <p className={S.subTitle}>
+            선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
+            수 있습니다.
+          </p>
+        </div>
+
+        <div className={S.termsContainer}>
+          <label htmlFor="allChecked" className={S.checkboxLabel}>
+            <IoCheckmark
+              size={20}
+              className={`${S.radioIcon} ${formData.termsOfService ? S.checked : ''}`}
+              onClick={() => handleCheckChange('termsOfService')}
+            />
+            이용약관 동의(필수)
+          </label>
+        </div>
+
+        <div className={S.termsContainer}>
+          <label htmlFor="allChecked" className={S.checkboxLabel}>
+            <IoCheckmark
+              size={20}
+              className={`${S.radioIcon} ${formData.privacyPolicy ? S.checked : ''}`}
+              onClick={() => handleCheckChange('privacyPolicy')}
+            />
+            개인정보 수집 이용 동의(필수)
+          </label>
+        </div>
+
+        <div className={S.termsContainer}>
+          <label htmlFor="allChecked" className={S.checkboxLabel}>
+            <IoCheckmark
+              size={20}
+              className={`${S.radioIcon} ${formData.ageConfirmation ? S.checked : ''}`}
+              onClick={() => handleCheckChange('ageConfirmation')}
+            />
+            본인은 만 14세 이상입니다.(선택)
+          </label>
+        </div>
+
         <Button
           type="submit"
           disabled={isSubmitting}
