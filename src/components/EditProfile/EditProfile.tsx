@@ -12,6 +12,7 @@ interface ProfileState {
 
 interface EditProfileProps {
   profile: ProfileState;
+  alarmTime: string;
   newPassword: string;
   confirmNewPassword: string;
   nicknameError: string;
@@ -19,14 +20,16 @@ interface EditProfileProps {
   passwordSuccess?: string;
   confirmPasswordError?: string;
   confirmPasswordSuccess: string;
+  setAlarmTime: (time: string) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges?: (e: React.FormEvent) => void;
-  onSaveAlarm: (time: string | null, checked: boolean) => void;
+  onSaveAlarm?: (time: string | null, checked: boolean) => void;
   onDeleteAccount: () => void;
 }
 
 function EditProfile({
   profile,
+  alarmTime,
   newPassword,
   confirmNewPassword,
   nicknameError,
@@ -34,19 +37,14 @@ function EditProfile({
   passwordSuccess,
   confirmPasswordError,
   confirmPasswordSuccess,
-  onInputChange,
+  setAlarmTime,
   onSaveChanges,
-  onSaveAlarm,
+  onInputChange,
   onDeleteAccount,
+  onSaveAlarm,
 }: EditProfileProps) {
   return (
-    <form
-      className={S.editProfileContainer}
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSaveChanges(e);
-      }}
-    >
+    <form className={S.editProfileContainer} onSubmit={onSaveChanges}>
       {/* ID 수정 불가 */}
       <Input
         label="ID"
@@ -102,9 +100,11 @@ function EditProfile({
       ) : null}
       {/* 알림 설정 */}
       <EmailAlarm
-        initialTime={profile?.alarm ?? '09:00'} // 기존 알람 시간 또는 기본값
-        isChecked={Boolean(profile?.alarm)} // null이면 false 처리
-        onSave={(time, checked) => onSaveAlarm(time, checked)} // null도 받을 수 있도록 전달
+        initialTime={alarmTime}
+        isChecked={Boolean(profile?.alarm)} // profile의 데이터를 직접 활용
+        onChange={(time, checked) => {
+          setAlarmTime(time ?? '09:00'); // 상태 업데이트
+        }}
       />
       {/* 수정 버튼 */}
       <div className={S.buttonGroup}>

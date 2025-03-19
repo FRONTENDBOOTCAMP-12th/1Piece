@@ -2,7 +2,6 @@ import { Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
 import useDebounce from '@/lib/useDebounce';
 import EditProfile from '@/components/EditProfile/EditProfile';
@@ -39,12 +38,17 @@ function EditProfilePage() {
   const [initialProfile, setInitialProfile] = useState<ProfileState | null>(
     null
   );
-  const [time, setTime] = useState(() =>
-    dayjs(`2025-01-01T${profile?.alarm ?? '09:00'}`)
-  );
-
   // 닉네임 입력 시 디바운스 적용
   const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
+  // 알람 시간 상태 추가
+  const [alarmTime, setAlarmTime] = useState(profile?.alarm ?? '09:00');
+
+  // 프로필 데이터가 바뀌면 알람 시간도 업데이트
+  useEffect(() => {
+    if (profile?.alarm) {
+      setAlarmTime(profile.alarm);
+    }
+  }, [profile?.alarm]);
 
   // 로그아웃 기능: Supabase 세션을 종료하고, 로컬 스토리지에서 사용자 정보를 삭제한 후 메인 페이지로 이동
 
@@ -121,16 +125,6 @@ function EditProfilePage() {
     };
     checkNickname();
   }, [debouncedNickname, profile?.user_id]);
-
-  useEffect(() => {
-    console.log('설정된 알람 시간:', time.format('HH:mm'));
-  }, [time]);
-
-  useEffect(() => {
-    if (profile?.alarm) {
-      setTime(dayjs(`2025-01-01T${profile.alarm}`));
-    }
-  }, [profile?.alarm]); // profile?.alarm 변경 시 한 번만 실행
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -305,62 +299,6 @@ function EditProfilePage() {
     }
   };
 
-  const handleSaveAlarm = async (newTime: string | null, checked: boolean) => {
-    if (!profile || !initialProfile) return;
-
-    console.log(
-      `[handleSaveAlarm] 실행됨: newTime=${newTime}, checked=${checked}`
-    );
-
-    // 기존 값과 동일하면 API 호출 방지
-    if (
-      initialProfile.alarm === newTime &&
-      Boolean(initialProfile.alarm) === checked
-    ) {
-      console.log('[handleSaveAlarm] 변경된 값이 없으므로 API 호출 생략');
-      return;
-    }
-
-    try {
-      console.log(
-        `[handleSaveAlarm] Supabase 업데이트 요청!: newTime=${newTime}, checked=${checked}`
-      );
-
-      const { error } = await supabase
-        .from('users')
-        .update({ alarm: checked ? newTime : null })
-        .eq('user_id', profile.user_id);
-
-      if (error) throw error;
-
-      // 최신 상태 업데이트
-      setProfile((prev) =>
-        prev ? { ...prev, alarm: checked ? newTime : null } : prev
-      );
-      setInitialProfile((prev) =>
-        prev ? { ...prev, alarm: checked ? newTime : null } : prev
-      );
-
-      console.log(
-        `[handleSaveAlarm] 알람 업데이트 성공~: newTime=${newTime}, checked=${checked}`
-      );
-
-      toast.dismiss();
-      toast.success(
-        checked ? '알람이 설정되었습니다.' : '알람이 해제되었습니다.',
-        {
-          position: 'bottom-right',
-        }
-      );
-    } catch (error) {
-      console.error('[handleSaveAlarm] 알람 설정 실패:', error);
-      toast.error(
-        `알람 설정 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
-        { position: 'bottom-right' }
-      );
-    }
-  };
-
   // 탈퇴로 가장한 로그아웃 함수
   const customSwal = withReactContent(Swal);
 
@@ -449,57 +387,67 @@ function EditProfilePage() {
     setLoading(true);
 
     try {
-      console.log('handleSaveChanges 실행됨');
-      console.log('profile 상태:', profile);
-      console.log('initialProfile 상태:', initialProfile);
+      if (!profile || !initialProfile) return;
+      const updates: Partial<ProfileState> = {};
+      let hasChanges = false;
 
-      if (!profile || !initialProfile) {
-        console.error('profile이 설정되지 않음. 업데이트 불가');
-        return;
+      // 닉네임 변경 감지
+      if (initialProfile.nickname.trim() !== profile.nickname.trim()) {
+        updates.nickname = profile.nickname.trim();
+        hasChanges = true;
       }
 
-      let isPasswordUpdated = false;
-      let isProfileUpdated = false;
+      // ✅ 알람 변경 감지 (null 값 허용)
+      if (initialProfile.alarm !== alarmTime) {
+        updates.alarm = alarmTime ?? null; // null 값도 저장되도록 보장
+        hasChanges = true;
+      }
 
-      // 비밀번호가 변경된 경우에만 업데이트
+      // 비밀번호 변경 감지
+      let isPasswordUpdated = false;
       if (newPassword || confirmNewPassword) {
         isPasswordUpdated = await handlePasswordChange();
       }
 
-      const updates: Partial<ProfileState> = {};
-      let hasChanges = false;
-
-      // 닉네임이 변경된 경우에만 업데이트
-      if (
-        initialProfile.nickname.trim() !== debouncedNickname.trim() &&
-        debouncedNickname.trim() !== ''
-      ) {
-        updates.nickname = debouncedNickname.trim();
-        hasChanges = true;
-      }
-
       if (hasChanges) {
-        isProfileUpdated = await handleProfileUpdate(updates);
-        if (isProfileUpdated) {
-          setProfile((prev) => (prev ? { ...prev, ...updates } : prev));
-          setInitialProfile((prev) => (prev ? { ...prev, ...updates } : prev)); // 원본 데이터 업데이트
+        await supabase
+          .from('users')
+          .update(updates)
+          .eq('user_id', profile.user_id);
+
+        // Supabase에서 alarm이 null일 경우에도 유지되도록 설정
+        setProfile((prev) =>
+          prev ? { ...prev, ...updates, alarm: updates.alarm ?? null } : prev
+        );
+        setInitialProfile((prev) =>
+          prev ? { ...prev, ...updates, alarm: updates.alarm ?? null } : prev
+        );
+
+        // 알람 설정 변경 메시지 추가
+        if (updates.alarm !== undefined) {
+          toast.success(
+            updates.alarm ? '알람이 설정되었습니다.' : '알람이 해제되었습니다.'
+          );
+        }
+        if (updates.nickname) {
+          toast.success('닉네임이 변경되었습니다.');
         }
       }
 
-      if (isPasswordUpdated || isProfileUpdated) {
-        console.log('프로필이 수정되었습니다.');
+      // 비밀번호 변경 성공 시 핫토스트 출력
+      if (isPasswordUpdated) {
+        toast.success('비밀번호가 성공적으로 변경되었습니다.');
+      }
+
+      if (hasChanges || isPasswordUpdated) {
         setTimeout(() => {
           window.location.reload();
         }, 1500);
       } else {
-        console.log('변경된 내용이 없습니다.');
-        toast.error('변경된 내용이 없습니다.', { position: 'bottom-right' });
+        toast.error('변경된 내용이 없습니다.');
       }
     } catch (error) {
-      console.error(
-        '프로필 수정 실패:',
-        error instanceof Error ? error.message : error
-      );
+      console.error('프로필 수정 실패:', error);
     } finally {
       setLoading(false);
     }
@@ -519,16 +467,17 @@ function EditProfilePage() {
         ) : (
           <EditProfile
             profile={profile!}
-            newPassword={newPassword}
-            confirmNewPassword={confirmNewPassword}
+            alarmTime={alarmTime}
             nicknameError={errors.nickname}
-            passwordError={errors.password}
-            passwordSuccess={''}
+            setAlarmTime={setAlarmTime}
             confirmPasswordError={errors.confirmPassword}
             confirmPasswordSuccess={''}
+            confirmNewPassword={confirmNewPassword}
+            passwordError={errors.password}
+            passwordSuccess={''}
+            newPassword={newPassword}
             onInputChange={handleInputChange}
             onSaveChanges={handleSaveChanges}
-            onSaveAlarm={handleSaveAlarm}
             onDeleteAccount={handleDeactivateAccount}
           />
         )}
