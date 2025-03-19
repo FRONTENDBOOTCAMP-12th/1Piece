@@ -124,7 +124,7 @@ function MainPage() {
     <div>
       {/* 메인 배너 DUMMY 데이터 */}
       <img
-        src="/images/main_banner.jpg"
+        src="/images/main_banner.webp"
         alt="큐젤리란"
         className={S.mainBanner}
       />

@@ -29,7 +29,7 @@
 .miniBannerButton {
   width: 100%;
   height: 8rem;
-  background: url('/images/mini_banner.jpg') no-repeat center/cover;
+  background: url('/images/mini_banner.webp') no-repeat center/cover;
   border: none;
   cursor: pointer;
   margin-bottom: var(--space-5);
