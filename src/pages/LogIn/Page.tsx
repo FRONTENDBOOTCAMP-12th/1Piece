@@ -14,7 +14,7 @@ function LogInPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
-  const { setUserProfile } = useProfileStore();
+  const { setUserProfile, setProfileImg } = useProfileStore();
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -56,10 +56,13 @@ function LogInPage() {
         .select('*')
         .eq('auth_uid', data.user.id);
 
-      console.log(profileData![0]);
+      const { data: profileImg } = supabase.storage
+        .from('profileImg/userProfile')
+        .getPublicUrl(`${profileData![0].id}.png`);
 
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
+      setProfileImg(profileImg.publicUrl);
 
       await Swal.fire({
         icon: 'success',

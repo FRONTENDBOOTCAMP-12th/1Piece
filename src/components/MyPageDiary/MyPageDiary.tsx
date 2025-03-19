@@ -18,7 +18,7 @@ function MyPageDiary({
 }: MyPageDiaryProps) {
   const navigate = useNavigate();
   const userProfile = useProfileStore((state) => state.userProfile);
-  const [src] = useState('/dummy/dummy_profile.jpg');
+  const [src] = useState('/dummy/dummy_profile.png');
 
   const handleProfileChange = (file: File) => {
     console.log('Profile image changed:', file);
