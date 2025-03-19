@@ -46,9 +46,7 @@
 .termsContainer {
   display: flex;
   height: var(--space-10);
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   flex-shrink: 0;
   align-self: stretch;
 }
@@ -66,4 +64,8 @@
 .subTitle {
   color: #898989;
   font-size: var(--space-3);
+}
+
+.checkboxInput {
+  display: none;
 }

@@ -45,7 +45,11 @@ function SignUpPage() {
       /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
     []
   );
-  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/;
+  const passwordRegEx = useMemo(
+    () => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/,
+    []
+  );
+  const idRegEx = useMemo(() => /^[a-z0-9]+$/, []);
   const startIsSubmitting = () => setIsSubmitting(true);
   const stopIsSubmitting = () => setIsSubmitting(false);
   const navigate = useNavigate();
@@ -145,9 +149,21 @@ function SignUpPage() {
     }
   };
 
+  const idValidate = useCallback(() => {
+    const isValid = idRegEx.test(formData.id);
+    setErrors((prev) => ({
+      ...prev,
+      id: isValid ? '' : 'ID는 영어와 숫자만 포함해야 합니다.',
+    }));
+    return isValid;
+  }, [formData.id, idRegEx]);
   const handleIdCheck = useCallback(async () => {
     const id = formData.id.trim();
     if (!id) return setIsIdAvailable(false);
+    if (!idValidate()) {
+      setIsIdAvailable(false);
+      return toast.error('ID는 영어와 숫자만 포함해야 합니다.');
+    }
 
     setIdCheckLoading(true);
     const available = await idCheckAvailability(formData.id);
@@ -159,7 +175,7 @@ function SignUpPage() {
     } else {
       toast.error('이미 사용중인 ID입니다.');
     }
-  }, [formData.id]);
+  }, [formData.id, idValidate]);
 
   const emailValidate = useCallback(() => {
     const isValid = emailRegEx.test(formData.email);
@@ -188,19 +204,16 @@ function SignUpPage() {
     }
   }, [formData.email, emailValidate]);
 
-  const passwordValidate = () => {
-    const { password } = formData;
-    let errorMessage = '';
-    if (!passwordRegEx.test(password)) {
-      errorMessage = '비밀번호는 대소문자, 숫자를 포함해야합니다.';
-      if (!errors.password) toast.error(errorMessage);
-    }
+  const passwordValidate = useCallback(() => {
+    const isValid = passwordRegEx.test(formData.password);
+    setErrors((prev) => ({
+      ...prev,
+      password: isValid ? '' : '비밀번호는 대소문자, 숫자를 포함해야합니다.',
+    }));
+    return isValid;
+  }, [formData.password, passwordRegEx]);
 
-    setErrors({ ...errors, password: errorMessage });
-    return !errorMessage;
-  };
-
-  const passwordConfirmValidate = () => {
+  const passwordConfirmValidate = useCallback(() => {
     const isMatch = formData.password === formData.passwordConfirm;
     const errorMessage = isMatch ? '' : '비밀번호가 일치하지 않습니다.';
 
@@ -213,7 +226,7 @@ function SignUpPage() {
       passwordConfirm: errorMessage,
     }));
     return isMatch;
-  };
+  }, [formData.password, formData.passwordConfirm, errors.passwordConfirm]);
 
   const handlePasswordConfirmBlur = () => {
     passwordConfirmValidate();
@@ -323,59 +336,89 @@ function SignUpPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (formData.id) handleIdCheck();
-      if (formData.email) handleEmailCheck();
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [formData.id, handleIdCheck, formData.email, handleEmailCheck]);
+  }, [formData.id, handleIdCheck]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (formData.email) handleEmailCheck();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData.email, handleEmailCheck]);
+
+  useEffect(() => {
+    passwordValidate();
+    passwordConfirmValidate();
+  }, [
+    formData.password,
+    formData.passwordConfirm,
+    passwordValidate,
+    passwordConfirmValidate,
+  ]);
 
   return (
     <div className={S.container}>
       <form onSubmit={handleSubmit} className={S.signUpForm}>
-        <h2 className={S.title}>회원가입</h2>
-        <div>
-          <Input
-            label="ID"
-            name="id"
-            type="text"
-            placeholder="ID를 입력하세요"
-            value={formData.id}
-            onChange={handleChange}
-            onBlur={handleIdCheck}
-            className={S.inputBox}
-          />
-          {idCheckLoading && <p>중복 확인 중....</p>}
-          {isIdAvailable === null && (
-            <p>아이디 중복 여부를 확인해주세요.</p>
-          )}{' '}
-          {isIdAvailable === false && (
-            <p style={{ color: 'red' }}>이미 사용중인 ID입니다.</p>
-          )}
-          {isIdAvailable === true && (
-            <p style={{ color: 'green' }}>사용 가능한 ID입니다.</p>
-          )}
-          <Input
-            label="이메일"
-            name="email"
-            type="email"
-            placeholder="Qzelly@gmail.com"
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={handleEmailCheck}
-            className={S.inputBox}
-          />
-          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
-          {emailCheckLoading && <p>중복 확인 중....</p>}
-          {isEmailAvailable === null && (
-            <p>이메일 중복 여부를 확인해주세요.</p>
-          )}{' '}
-          {isEmailAvailable === false && (
-            <p style={{ color: 'red' }}>이미 사용중인 EMAIL입니다.</p>
-          )}
-          {isEmailAvailable === true && (
-            <p style={{ color: 'green' }}>사용 가능한 EMAIL입니다.</p>
-          )}
-        </div>
+        <h1 className={S.title}>회원가입</h1>
+        <Input
+          label="ID"
+          name="id"
+          type="text"
+          placeholder="ID를 입력하세요"
+          value={formData.id}
+          onChange={handleChange}
+          onBlur={handleIdCheck}
+          className={S.inputBox}
+        />
+        {errors.id && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.id}
+          </p>
+        )}
+        {idCheckLoading && <p>중복 확인 중....</p>}
+        {isIdAvailable === null && <p>아이디 중복 여부를 확인해주세요.</p>}{' '}
+        {isIdAvailable === false && (
+          <p style={{ color: 'red' }} aria-live="polite">
+            이미 사용중인 ID입니다.
+          </p>
+        )}
+        {isIdAvailable === true && (
+          <p style={{ color: 'green' }} aria-live="polite">
+            사용 가능한 ID입니다.
+          </p>
+        )}
+        <Input
+          label="이메일"
+          name="email"
+          type="email"
+          placeholder="Qzelly@gmail.com"
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleEmailCheck}
+          className={S.inputBox}
+        />
+        {errors.email && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.email}
+          </p>
+        )}
+        {emailCheckLoading && <p>중복 확인 중....</p>}
+        {isEmailAvailable === null && (
+          <p>이메일 중복 여부를 확인해주세요.</p>
+        )}{' '}
+        {isEmailAvailable === false && (
+          <p style={{ color: 'red' }} aria-live="polite">
+            이미 사용중인 EMAIL입니다.
+          </p>
+        )}
+        {isEmailAvailable === true && (
+          <p style={{ color: 'green' }} aria-live="polite">
+            사용 가능한 EMAIL입니다.
+          </p>
+        )}
         <Input
           label="비밀번호"
           name="password"
@@ -385,7 +428,11 @@ function SignUpPage() {
           onChange={handleChange}
           className={S.inputBox}
         />
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        {errors.password && (
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.password}
+          </p>
+        )}
         <Input
           label="비밀번호확인"
           name="passwordConfirm"
@@ -397,7 +444,9 @@ function SignUpPage() {
           className={S.inputBox}
         />
         {errors.passwordConfirm && (
-          <p style={{ color: 'red' }}>{errors.passwordConfirm}</p>
+          <p style={{ color: 'red' }} aria-live="assertive" role="alert">
+            {errors.passwordConfirm}
+          </p>
         )}
         <Input
           label="닉네임"
@@ -408,65 +457,90 @@ function SignUpPage() {
           onChange={handleChange}
           className={S.inputBox}
         />
-
-        <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+        <fieldset>
+          <label htmlFor="allChecked" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${allChecked ? S.checked : ''}`}
-              onClick={handleAllCheckedChange}
             />
-            전체 동의합니다.
+            <legend>전체 동의합니다.</legend>
           </label>
+          <input
+            type="checkbox"
+            id="allChecked"
+            checked={allChecked}
+            onChange={handleAllCheckedChange}
+            className={S.checkboxInput}
+          />
           <p className={S.subTitle}>
             선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
             수 있습니다.
           </p>
-        </div>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="termsOfService" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.termsOfService ? S.checked : ''}`}
-              onClick={() => handleCheckChange('termsOfService')}
             />
             이용약관 동의(필수)
+            <input
+              type="checkbox"
+              id="termsOfService"
+              checked={formData.termsOfService}
+              onClick={() => handleCheckChange('termsOfService')}
+              className={S.checkboxInput}
+            />
           </label>
-        </div>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="privacyPolicy" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.privacyPolicy ? S.checked : ''}`}
-              onClick={() => handleCheckChange('privacyPolicy')}
             />
             개인정보 수집 이용 동의(필수)
+            <input
+              type="checkbox"
+              id="privacyPolicy"
+              checked={formData.privacyPolicy}
+              onClick={() => handleCheckChange('privacyPolicy')}
+              className={S.checkboxInput}
+            />
           </label>
-        </div>
 
-        <div className={S.termsContainer}>
-          <label htmlFor="allChecked" className={S.checkboxLabel}>
+          <label htmlFor="ageConfirmation" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${formData.ageConfirmation ? S.checked : ''}`}
-              onClick={() => handleCheckChange('ageConfirmation')}
             />
             본인은 만 14세 이상입니다.(선택)
+            <input
+              type="checkbox"
+              id="ageConfirmation"
+              checked={formData.ageConfirmation}
+              onClick={() => handleCheckChange('ageConfirmation')}
+              className={S.checkboxInput}
+            />
           </label>
-        </div>
-
+        </fieldset>
         <Button
           type="submit"
           disabled={isSubmitting}
           label="회원가입"
           className={S.submitButton}
+          aria-busy={isSubmitting}
         >
           {isSubmitting ? '회원가입 중...' : '회원가입'}
         </Button>
-        {isSubmitting && <p style={{ color: 'red' }}>{isSubmitting}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+        {isSubmitting && (
+          <p style={{ color: 'red' }} aria-live="assertive">
+            {isSubmitting}
+          </p>
+        )}
+        {success && (
+          <p style={{ color: 'green' }} aria-live="assertive">
+            {success}
+          </p>
+        )}
       </form>
       <Toaster position="bottom-right" />
     </div>
