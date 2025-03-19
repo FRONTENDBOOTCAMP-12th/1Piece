@@ -70,13 +70,7 @@ function EditProfile({
         onChange={onInputChange}
       />
       {nicknameError && <p className={S.errorMessage}>{nicknameError}</p>}
-      {/* 알림 설정 */}
 
-      <EmailAlarm
-        initialTime={profile?.alarm ?? '09:00'} // 기존 알람 시간 또는 기본값
-        isChecked={Boolean(profile?.alarm)} // null이면 false 처리
-        onSave={(time, checked) => onSaveAlarm(time, checked)} // null도 받을 수 있도록 전달
-      />
       {/* 비밀번호 변경 */}
       <Input
         label="새 비밀번호"
@@ -104,7 +98,12 @@ function EditProfile({
       ) : confirmPasswordSuccess ? (
         <p className={S.successMessage}>{confirmPasswordSuccess}</p>
       ) : null}
-
+      {/* 알림 설정 */}
+      <EmailAlarm
+        initialTime={profile?.alarm ?? '09:00'} // 기존 알람 시간 또는 기본값
+        isChecked={Boolean(profile?.alarm)} // null이면 false 처리
+        onSave={(time, checked) => onSaveAlarm(time, checked)} // null도 받을 수 있도록 전달
+      />
       {/* 수정 버튼 */}
       <div className={S.buttonGroup}>
         <Button label="수정" color="tertiary" type="submit" />
