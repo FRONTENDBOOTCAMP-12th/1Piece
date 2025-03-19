@@ -1,28 +1,69 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import S from './EditProfile.module.css';
+import { supabase } from '@/lib/SupabaseClient';
+import fetchImg from '@/lib/FetchImg';
+import useProfileStore from '@/lib/UserProfileState';
 
 interface ProfileImageProps {
   src: string;
   alt?: string;
+  id: string;
   onChange?: (file: File) => void;
 }
 
 function ProfileImage({
   src,
   alt = 'Profile image',
+  id,
   onChange,
 }: ProfileImageProps) {
   const [preview, setPreview] = useState(src);
+  const userProfile = useProfileStore((state) => state.userProfile);
+
+  const handleFileUpload = async (file: File) => {
+    if (!file) {
+      return;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const newFileName = `${id}.${fileExt}`;
+    const filePath = `${newFileName}`;
+
+    const { data, error } = await supabase.storage
+      .from('profileImg/userProfile')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('업로드 성공:', data);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    handleFileUpload(file);
+
     const imageUrl = URL.createObjectURL(file);
     setPreview(imageUrl);
     onChange?.(file);
   };
+
+  const handleSetProfile = async () => {
+    const nextPreview = await fetchImg(userProfile!.id);
+    setPreview(nextPreview);
+  };
+
+  useEffect(() => {
+    setPreview(src);
+    handleSetProfile();
+  }, [src]);
 
   return (
     <div className={S.profileImageContainer}>

@@ -6,16 +6,19 @@ import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
 import LoggedOut from './components/LoggedOut';
 import LoggedIn from './components/LoggedIn';
-import { supabase } from '@/lib/SupabaseClient';
 import useLoginStore from '@/lib/LoginState';
 import { useEffect, useState } from 'react';
+import fetchImg from '@/lib/FetchImg';
+import useProfileStore from '@/lib/UserProfileState';
 
 function Header() {
   // 로그인 상태
   const userInfo = useLoginStore((state) => state.userInfo);
+  const userProfile = useProfileStore((state) => state.userProfile);
   const navigate = useNavigate();
   const location = useLocation();
   const [current, setCurrent] = useState('/');
+  const [src, setSrc] = useState('/dummy/dummy_profile.jpg');
 
   // NavLink를 사용하지 않은 링크 이동
   const handleMoveToHome = () => {
@@ -34,10 +37,16 @@ function Header() {
     navigate('/bookmark');
   };
 
+  const handleSetProfile = async () => {
+    const nextSrc = await fetchImg(userProfile!.id);
+    setSrc(nextSrc);
+  };
+
   // 현재 pathname에 따라 홈과 목록 버튼의 색상 변경
   useEffect(() => {
     const currentPage = location.pathname;
     setCurrent(currentPage);
+    handleSetProfile();
   }, [location.pathname]);
 
   return (
@@ -92,13 +101,7 @@ function Header() {
               >
                 <RiInbox2Line size={24} />
               </button>
-              <LoggedIn
-                src={
-                  supabase.storage
-                    .from('profileImg/userProfile')
-                    .getPublicUrl(`${userInfo?.id}.png`).data.publicUrl
-                }
-              />
+              <LoggedIn src={src} />
             </>
           ) : (
             <LoggedOut />
