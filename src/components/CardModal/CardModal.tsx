@@ -48,7 +48,14 @@ function CardModal({
           <p className={S.alert}>문제를 푸시겠습니까?</p>
         </div>
         <div className={S.content}>
-          <img src={src} alt={userName} className={S.profileImg} />
+          <img
+            src={src}
+            alt={userName}
+            className={S.profileImg}
+            onError={(e) => {
+              e.currentTarget.src = '/dummy/dummy_profile.png';
+            }}
+          />
           <div className={S.info}>
             <p className={S.problemTitle}>{children}</p>
             <div className={S.tagContainer}>
