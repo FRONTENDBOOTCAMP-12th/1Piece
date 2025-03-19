@@ -1,3 +1,12 @@
+.loading {
+  margin-top: var(--space-36);
+  margin-bottom: var(--space-36);
+  font-size: var(--xxl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .mainBanner {
   display: flex;
   width: 100%;

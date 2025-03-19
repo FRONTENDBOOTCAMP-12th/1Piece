@@ -23,6 +23,7 @@ export interface ProblemCardData {
 
 type CardSwiperProps = React.ComponentProps<'h2'> & {
   data: ProblemCardData[];
+  sortStandard?: 'popular' | 'new';
 };
 
 const CustomNavigationNext = () => {
@@ -45,11 +46,16 @@ const CustomNavigationPrev = () => {
   );
 };
 
-const CardSwiper: React.FC<CardSwiperProps> = ({ data, children }) => {
+const CardSwiper: React.FC<CardSwiperProps> = ({
+  data,
+  children,
+  sortStandard = 'popular',
+}) => {
   const navigation = useNavigate();
 
   const handleMoveToCardList = () => {
-    navigation('/card-list');
+    navigation(`/card-list?sort=${sortStandard}`);
+    window.scrollTo(0, 0);
   };
 
   return (
