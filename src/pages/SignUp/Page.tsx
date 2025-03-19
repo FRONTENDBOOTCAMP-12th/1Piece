@@ -45,7 +45,10 @@ function SignUpPage() {
       /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
     []
   );
-  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/;
+  const passwordRegEx = useMemo(
+    () => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/,
+    []
+  );
   const idRegEx = useMemo(() => /^[a-z0-9]+$/, []);
   const startIsSubmitting = () => setIsSubmitting(true);
   const stopIsSubmitting = () => setIsSubmitting(false);
@@ -201,19 +204,16 @@ function SignUpPage() {
     }
   }, [formData.email, emailValidate]);
 
-  const passwordValidate = () => {
-    const { password } = formData;
-    let errorMessage = '';
-    if (!passwordRegEx.test(password)) {
-      errorMessage = '비밀번호는 대소문자, 숫자를 포함해야합니다.';
-      if (!errors.password) toast.error(errorMessage);
-    }
+  const passwordValidate = useCallback(() => {
+    const isValid = passwordRegEx.test(formData.password);
+    setErrors((prev) => ({
+      ...prev,
+      password: isValid ? '' : '비밀번호는 대소문자, 숫자를 포함해야합니다.',
+    }));
+    return isValid;
+  }, [formData.password, passwordRegEx]);
 
-    setErrors({ ...errors, password: errorMessage });
-    return !errorMessage;
-  };
-
-  const passwordConfirmValidate = () => {
+  const passwordConfirmValidate = useCallback(() => {
     const isMatch = formData.password === formData.passwordConfirm;
     const errorMessage = isMatch ? '' : '비밀번호가 일치하지 않습니다.';
 
@@ -226,7 +226,7 @@ function SignUpPage() {
       passwordConfirm: errorMessage,
     }));
     return isMatch;
-  };
+  }, [formData.password, formData.passwordConfirm, errors.passwordConfirm]);
 
   const handlePasswordConfirmBlur = () => {
     passwordConfirmValidate();
@@ -336,11 +336,28 @@ function SignUpPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (formData.id) handleIdCheck();
-      if (formData.email) handleEmailCheck();
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [formData.id, handleIdCheck, formData.email, handleEmailCheck]);
+  }, [formData.id, handleIdCheck]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (formData.email) handleEmailCheck();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData.email, handleEmailCheck]);
+
+  useEffect(() => {
+    passwordValidate();
+    passwordConfirmValidate();
+  }, [
+    formData.password,
+    formData.passwordConfirm,
+    passwordValidate,
+    passwordConfirmValidate,
+  ]);
 
   return (
     <div className={S.container}>
