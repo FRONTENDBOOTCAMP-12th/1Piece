@@ -207,23 +207,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             className={S.swiper}
             style={{ width: '83rem' }}
           >
-            {currentPageData.map((item) => (
-              <SwiperSlide key={item.id} className={S.slide}>
-                <Card
-                  count={item.count}
-                  id={item.id}
-                  src={item.src}
-                  userName={item.userName}
-                  tags={item.tags}
-                  checked={item.checked}
-                  description={item.description}
-                >
-                  {item.problemTitle}
-                </Card>
-              </SwiperSlide>
-            ))}
-
-            {isLastPage && (
+            {data.length === 0 && (
               <SwiperSlide className={S.slide}>
                 <button
                   className={S.btnQuestionCreate}
@@ -235,6 +219,40 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   </p>
                 </button>
               </SwiperSlide>
+            )}
+
+            {data.length > 0 && (
+              <>
+                {currentPageData.map((item) => (
+                  <SwiperSlide key={item.id} className={S.slide}>
+                    <Card
+                      count={item.count}
+                      id={item.id}
+                      src={item.src}
+                      userName={item.userName}
+                      tags={item.tags}
+                      checked={item.checked}
+                      description={item.description}
+                    >
+                      {item.problemTitle}
+                    </Card>
+                  </SwiperSlide>
+                ))}
+
+                {isLastPage && (
+                  <SwiperSlide className={S.slide}>
+                    <button
+                      className={S.btnQuestionCreate}
+                      onClick={handleCreateCardClick}
+                      aria-label="카드 만들기"
+                    >
+                      <p className={S.questionCreateMessage}>
+                        클릭해서 카드 만들기
+                      </p>
+                    </button>
+                  </SwiperSlide>
+                )}
+              </>
             )}
           </Swiper>
         </div>
