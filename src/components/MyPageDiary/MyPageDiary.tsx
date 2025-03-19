@@ -1,11 +1,9 @@
+import ProfileImage from '@/components/EditProfile/ProfileImage';
+import useProfileStore from '@/lib/UserProfileState';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Button from '../Button/Button';
-import ProfileImage from '@/components/EditProfile/ProfileImage';
 import S from './MyPageDiary.module.css';
-import { supabase } from '@/lib/SupabaseClient';
-import useProfileStore from '@/lib/UserProfileState';
-import useLoginStore from '@/lib/LoginState';
-import { useEffect, useState } from 'react';
 
 interface MyPageDiaryProps {
   children: React.ReactNode;
@@ -19,32 +17,12 @@ function MyPageDiary({
   activeButton = 1,
 }: MyPageDiaryProps) {
   const navigate = useNavigate();
-  const userInfo = useLoginStore((state) => state.userInfo);
   const userProfile = useProfileStore((state) => state.userProfile);
-  const setUserProfile = useProfileStore((state) => state.setUserProfile);
   const [src] = useState('/dummy/dummy_profile.jpg');
-
-  const fetchUserProfile = async () => {
-    const { data } = await supabase
-      .from('users')
-      .select('*')
-      .eq('auth_uid', userInfo!.id);
-
-    setUserProfile(data![0]);
-    console.log(1);
-  };
 
   const handleProfileChange = (file: File) => {
     console.log('Profile image changed:', file);
   };
-
-  useEffect(() => {
-    if (userProfile) {
-      return;
-    }
-
-    fetchUserProfile();
-  }, []);
 
   return (
     <div className={S.diaryContainer}>

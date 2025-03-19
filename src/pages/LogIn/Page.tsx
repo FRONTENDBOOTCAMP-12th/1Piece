@@ -7,12 +7,14 @@ import S from './Page.module.css';
 import useLoginStore from '@/lib/LoginState';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import useProfileStore from '@/lib/UserProfileState';
 
 function LogInPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
+  const { setUserProfile } = useProfileStore();
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -49,7 +51,15 @@ function LogInPage() {
         return;
       }
 
+      const { data: profileData } = await supabase
+        .from('users')
+        .select('*')
+        .eq('auth_uid', data.user.id);
+
+      console.log(profileData![0]);
+
       setUserInfo(data.user ?? null);
+      setUserProfile(profileData![0]);
 
       await Swal.fire({
         icon: 'success',
