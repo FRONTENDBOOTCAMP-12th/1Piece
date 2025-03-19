@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import S from './EditProfile.module.css';
 import dayjs from 'dayjs';
-import useDebounce from '@/pages/EditProfile/components/useDebounce';
+import useDebounce from '@/lib/useDebounce';
 
 interface EmailAlarmProps {
   initialTime?: string;

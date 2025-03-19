@@ -3,7 +3,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import S from './EditProfileContainer.module.css';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
-import useDebounce from './useDebounce';
+import useDebounce from '../../../lib/useDebounce';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import PasswordVerification from './PasswordVerification';
