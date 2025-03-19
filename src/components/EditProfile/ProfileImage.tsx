@@ -23,6 +23,7 @@ function ProfileImage({
   const [preview, setPreview] = useState(src);
   const userProfile = useProfileStore((state) => state.userProfile);
 
+  // 이미지 변경에 실패 시 띄울 경고창
   const handleAlertUpload = () => {
     try {
       withReactContent(Swal).fire({
@@ -45,6 +46,7 @@ function ProfileImage({
     }
   };
 
+  // 이미지 업로드 성공 시 띄울 알람
   const handleCheckUpload = () => {
     try {
       withReactContent(Swal).fire({
@@ -67,22 +69,27 @@ function ProfileImage({
     }
   };
 
+  // supabase에 파일을 업로드 하는 로직
   const handleFileUpload = async (file: File) => {
     if (!file) {
       return;
     }
 
     try {
+      // 확장자명 분리
       const fileExt = file.name.split('.').pop();
 
+      // 만약 png파일이 아니라면 에러 출력
       if (fileExt !== 'png') {
         console.log(fileExt);
         throw SyntaxError('확장자오류');
       }
 
+      // 파일 경로 재정의
       const newFileName = `${id}.${fileExt}`;
       const filePath = `${newFileName}`;
 
+      // 동일한 이름 있을 시 덮어쓰기
       const { data, error } = await supabase.storage
         .from('profileImg/userProfile')
         .upload(filePath, file, {
@@ -90,22 +97,22 @@ function ProfileImage({
           upsert: true,
         });
 
+      // 통신 성공
       if (data) {
         const imageUrl = URL.createObjectURL(file);
         setPreview(imageUrl);
-      }
-
-      if (data) {
         handleCheckUpload();
       }
 
       if (error) throw error;
     } catch (err) {
+      // 통신 실패
       handleAlertUpload();
       console.log(err);
     }
   };
 
+  // 이미지 감지
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -115,11 +122,13 @@ function ProfileImage({
     onChange?.(file);
   };
 
+  // 이미지 변경
   const handleSetProfile = async () => {
     const nextPreview = await fetchImg(userProfile!.id);
     setPreview(nextPreview);
   };
 
+  // 최초 1회는 사용자의 프로필에 따라 렌더링
   useEffect(() => {
     setPreview(src);
     handleSetProfile();
