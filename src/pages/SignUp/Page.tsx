@@ -46,6 +46,7 @@ function SignUpPage() {
     []
   );
   const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,16}$/;
+  const idRegEx = useMemo(() => /^[a-z0-9]+$/, []);
   const startIsSubmitting = () => setIsSubmitting(true);
   const stopIsSubmitting = () => setIsSubmitting(false);
   const navigate = useNavigate();
@@ -145,9 +146,21 @@ function SignUpPage() {
     }
   };
 
+  const idValidate = useCallback(() => {
+    const isValid = idRegEx.test(formData.id);
+    setErrors((prev) => ({
+      ...prev,
+      id: isValid ? '' : 'ID는 영어와 숫자만 포함해야 합니다.',
+    }));
+    return isValid;
+  }, [formData.id, idRegEx]);
   const handleIdCheck = useCallback(async () => {
     const id = formData.id.trim();
     if (!id) return setIsIdAvailable(false);
+    if (!idValidate()) {
+      setIsIdAvailable(false);
+      return toast.error('ID는 영어와 숫자만 포함해야 합니다.');
+    }
 
     setIdCheckLoading(true);
     const available = await idCheckAvailability(formData.id);
@@ -159,7 +172,7 @@ function SignUpPage() {
     } else {
       toast.error('이미 사용중인 ID입니다.');
     }
-  }, [formData.id]);
+  }, [formData.id, idValidate]);
 
   const emailValidate = useCallback(() => {
     const isValid = emailRegEx.test(formData.email);
@@ -344,6 +357,7 @@ function SignUpPage() {
             onBlur={handleIdCheck}
             className={S.inputBox}
           />
+          {errors.id && <p style={{ color: 'red' }}>{errors.id}</p>}
           {idCheckLoading && <p>중복 확인 중....</p>}
           {isIdAvailable === null && (
             <p>아이디 중복 여부를 확인해주세요.</p>
