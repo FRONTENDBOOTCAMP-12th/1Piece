@@ -1,8 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
+import { useNavigate, useLocation } from 'react-router';
+import useSearchStore from '@/lib/SearchState';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useNavigate } from 'react-router';
+
+import 'swiper/css';
+import 'swiper/css/grid';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 import CardModal from '@/components/CardModal/CardModal';
 import Pagination from '@/components/Pagination/Pagination';
@@ -10,12 +16,6 @@ import Card from '@/components/Card/Card';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 
 import S from './CardListContainer.module.css';
-
-import 'swiper/css';
-import 'swiper/css/grid';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import useSearchStore from '@/lib/SearchState';
 
 export interface CardData {
   id: string;
@@ -44,45 +44,69 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   );
   // 검색 상태를 감지하기 위한 함수
   const searchParam = useSearchStore((state) => state.searchParam);
-
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const sort = searchParams.get('sort') as 'popular' | 'new' | null;
+    if (sort) {
+      setSortStandard(sort);
+    }
+  }, [location.search]);
 
   // 검색된 상태가 있을 시 실행할 함수
-  const searchFetchItems = useCallback(async () => {
-    try {
-      // card테이블에서 카드 제목에 검색어가 포함된 결과만을 출력
-      const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('* , users(*)')
-        .ilike('problemTitle', `%${searchParam}%`);
+  const searchFetchItems = useCallback(
+    async (sortBy: 'popular' | 'new') => {
+      try {
+        let query = supabase.from('card').select('*, users(*)');
 
-      // 통신 실패 시 오류 발생
-      if (error) throw error;
+        if (sortBy === 'popular') {
+          query = query.order('check', { ascending: false });
+        } else if (sortBy === 'new') {
+          query = query.order('created', { ascending: false });
+        }
+        // card테이블에서 카드 제목에 검색어가 포함된 결과만을 출력
 
-      // 통신된 데이터를 저장
-      const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
-        src: supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
-        tags: Object.values(item.tags!),
-        checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
-      }));
+        const { data: fetchedData, error } = await query.ilike(
+          'problemTitle',
+          `%${searchParam}%`
+        );
+        // 통신 실패 시 오류 발생
 
-      // 렌더링 할 데이터 상태 변경
-      setData(newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [searchParam]);
+        if (error) throw error;
+        // 통신된 데이터를 저장
+        const newData = fetchedData.map((item) => ({
+          id: `${item.id}`,
+          src: supabase.storage
+            .from('profileImg/userProfile')
+            .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
+          userName: item.users!.nickname,
+          tags: Object.values(item.tags!),
+          checked: false,
+          problemTitle: item.problemTitle,
+          description: item.desc,
+          count: item.count,
+        }));
+        // 체크된 태그에 따라 렌더링 다르게
+
+        const filteredData = selectedTags.length
+          ? newData.filter((item) =>
+              item.tags.some((tag) => selectedTags.includes(`${tag}`))
+            )
+          : newData;
+        // 렌더링 할 데이터 상태 변경
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [searchParam, selectedTags]
+  );
 
   const fetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
@@ -103,8 +127,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           id: `${item.id}`,
           src: supabase.storage
             .from('profileImg/userProfile')
-            .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-          userName: item.users.nickname,
+            .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
+          userName: item.users!.nickname,
           tags: Object.values(item.tags!),
           checked: false,
           problemTitle: item.problemTitle,
@@ -137,16 +161,16 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const handleCreateCardClick = () => {
     navigate('/card-create');
   };
-
   useEffect(() => {
-    const search = new URL(location.href).searchParams.get('search');
+    const searchParams = new URLSearchParams(location.search);
+    const search = searchParams.get('search');
 
     if (search) {
-      searchFetchItems();
+      searchFetchItems(sortStandard);
     } else {
       fetchItems(sortStandard);
     }
-  }, [sortStandard, fetchItems, searchFetchItems, searchParam]);
+  }, [sortStandard, fetchItems, searchFetchItems, location.search]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -187,24 +211,9 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
             grid={{ rows: 6, fill: 'row' }}
             pagination={{ clickable: true }}
             className={S.swiper}
+            style={{ width: '83rem' }}
           >
-            {currentPageData.map((item) => (
-              <SwiperSlide key={item.id} className={S.slide}>
-                <Card
-                  count={item.count}
-                  id={item.id}
-                  src={item.src}
-                  userName={item.userName}
-                  tags={item.tags}
-                  checked={item.checked}
-                  description={item.description}
-                >
-                  {item.problemTitle}
-                </Card>
-              </SwiperSlide>
-            ))}
-
-            {isLastPage && (
+            {data.length === 0 && (
               <SwiperSlide className={S.slide}>
                 <button
                   className={S.btnQuestionCreate}
@@ -216,6 +225,40 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
                   </p>
                 </button>
               </SwiperSlide>
+            )}
+
+            {data.length > 0 && (
+              <>
+                {currentPageData.map((item) => (
+                  <SwiperSlide key={item.id} className={S.slide}>
+                    <Card
+                      count={item.count}
+                      id={item.id}
+                      src={item.src}
+                      userName={item.userName}
+                      tags={item.tags}
+                      checked={item.checked}
+                      description={item.description}
+                    >
+                      {item.problemTitle}
+                    </Card>
+                  </SwiperSlide>
+                ))}
+
+                {isLastPage && (
+                  <SwiperSlide className={S.slide}>
+                    <button
+                      className={S.btnQuestionCreate}
+                      onClick={handleCreateCardClick}
+                      aria-label="카드 만들기"
+                    >
+                      <p className={S.questionCreateMessage}>
+                        클릭해서 카드 만들기
+                      </p>
+                    </button>
+                  </SwiperSlide>
+                )}
+              </>
             )}
           </Swiper>
         </div>

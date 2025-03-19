@@ -1,11 +1,13 @@
 .inputBox {
   display: flex;
   flex-direction: row;
-  width: 30rem;
+  width: 100%;
+  max-width: 40rem;
   height: var(--space-23, 5.75rem);
   align-items: center;
   gap: var(--space-5, 1.25rem);
   justify-content: space-between;
+  margin-inline: auto;
 }
 
 .inputBoxProblemSet {
@@ -32,7 +34,7 @@
 }
 
 .input {
-  width: 100%;
+  width: 70%;
   height: var(--space-16, 4rem);
   flex-shrink: 0;
   background: var(--white, #fff);
@@ -41,10 +43,10 @@
 }
 
 .inputContent {
+  width: fit-content;
   display: flex;
   flex-direction: column;
   color: var(--Black, #000);
-
   text-align: right;
   font-size: var(--large, 1.25rem);
   font-style: normal;

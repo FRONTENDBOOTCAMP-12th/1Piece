@@ -91,6 +91,7 @@ function LoggedIn({ src }: LoggedInProps) {
           handleLogoutAuth();
           resetLogin();
           handleConfirmLogout();
+          navigation('/');
         }
       });
   };

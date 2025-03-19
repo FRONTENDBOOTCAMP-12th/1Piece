@@ -1,8 +1,6 @@
 :root {
   --img-size: 10rem;
   --icon-size: 1.75rem;
-  --timepicker-width: 9.375rem;
-  --timepicker-height: 3.5rem;
 }
 
 /* 컨테이너 */
@@ -49,48 +47,6 @@
   outline-offset: 2px;
 }
 
-.inputImage {
-  display: none;
-}
-
-.inputId {
-  font-family: inherit;
-  font-size: var(--default);
-  color: var(--black);
-  cursor: not-allowed;
-}
-
-/* 입력 필드 */
-.inputForm {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: 70%;
-}
-
-/* input {
-  width: 100%;
-} */
-
-/* .inputForm label {
-  background-color: darkblue;
-  width: 100px;
-} */
-
-/* 비활성화된 입력 필드 스타일 */
-input:disabled,
-.disabledInput {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
-  cursor: not-allowed;
-  opacity: 1;
-}
-
-input:disabled:focus,
-.disabledInput:focus {
-  outline: none;
-}
-
 /* 아이콘 */
 .icon {
   display: flex;
@@ -114,83 +70,26 @@ input:disabled:focus,
   opacity: 0.8;
 }
 
-/* 이메일 알람 */
-.emailAlarmContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-2);
-  width: 100%;
+/* 인풋 필드 */
+.inputId {
+  font-family: inherit;
+  font-size: var(--default);
+  color: var(--black);
+  cursor: not-allowed;
 }
 
-.emailAlarmLabel {
-  font-size: var(--space-4);
-  font-weight: var(--regular);
+/* 비활성화된 인풋 필드 */
+input:disabled,
+.disabledInput {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  cursor: not-allowed;
+  opacity: 1;
 }
 
-.emailAlarmWrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.emailAlarmTimePicker {
-  width: var(--timepicker-width);
-  height: var(--timepicker-height);
-  /* background-color: var(--white); */
-  /* border-radius: var(--rounded-full); */
-}
-
-/* 스위치 */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 3.125rem;
-  height: 1.75rem;
-  cursor: pointer;
-}
-
-.switch input {
-  position: absolute;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  overflow: hidden;
-  border: 0;
-}
-
-.switchThumb {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--rounded-full);
-  border: 1px solid #c4c4c4;
-  transition: 0.4s;
-  background: linear-gradient(to bottom, #adadad, #ffffff);
-}
-
-.switchThumb::before {
-  content: '';
-  position: absolute;
-  height: 1.5625rem;
-  width: 1.5625rem;
-  left: 1px;
-  bottom: 1px;
-  border-radius: 50%;
-  background: linear-gradient(#e2e2e2, #ffffff);
-  transition: 0.4s;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-}
-
-.switch input:checked + .switchThumb {
-  background: linear-gradient(to bottom, #a3d9a5, #58a55c);
-}
-
-.switch input:checked + .switchThumb::before {
-  transform: translateX(22px);
-}
-
-.switch input:focus-visible + .switchThumb {
-  outline: 2px solid var(--primary-color, #4a90e2);
-  outline-offset: 2px;
+input:disabled:focus,
+.disabledInput:focus {
+  outline: none;
 }
 
 /* 버튼 그룹 */
@@ -199,4 +98,6 @@ input:disabled:focus,
   justify-content: center;
   gap: var(--space-4);
   margin-top: var(--space-6);
+  margin-top: var(--space-13); /* 위쪽 간격 */
+  margin-bottom: var(--space-8); /* 아래쪽 간격 */
 }

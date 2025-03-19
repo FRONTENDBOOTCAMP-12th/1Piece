@@ -28,13 +28,19 @@ function Input({
   onBlur,
   ...restProps
 }: InputProps) {
+  const id = name ?? `input-${Math.random().toString(36).substr(2, 9)}`;
   const isProblemSet = className === S.inputProblemSet;
   return (
     <div
       className={`${S.inputBox} ${isProblemSet ? S.inputBoxProblemSet : ''}`}
     >
-      {!hiddenLabel && <label className={S.inputContent}>{label}</label>}
+      {!hiddenLabel && (
+        <label className={S.inputContent} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
+        id={id}
         className={`${S.input} ${className ?? ''}`}
         name={name}
         type={type}

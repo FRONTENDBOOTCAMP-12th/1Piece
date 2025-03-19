@@ -3,11 +3,11 @@
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "node_modules": false,
     "**/.prettierrc.*": false,
-    "**/node_modules": true
+    "**/CVS": true,
+    "**/node_modules": false
   }
 }

@@ -8,6 +8,7 @@ import useLoginStore from '@/lib/LoginState';
 import useBookMarkStore from '@/lib/BookmarkState';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import useProfileStore from '@/lib/UserProfileState';
 
 function LogInPage() {
   const [id, setId] = useState('');
@@ -15,6 +16,7 @@ function LogInPage() {
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
   const { setBookmarks } = useBookMarkStore();
+  const { setUserProfile } = useProfileStore();
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -51,20 +53,20 @@ function LogInPage() {
         return;
       }
 
-      const { data: userData } = await supabase
+      const { data: profileData } = await supabase
         .from('users')
         .select('*')
         .eq('auth_uid', data.user.id);
-
-      console.log(userData);
+      console.log(profileData);
 
       const { data: bookmarkedData } = await supabase
         .from('bookmark')
         .select('*')
-        .eq('bookmark_user', `${userData[0]!.id}`);
+        .eq('bookmark_user', `${profileData[0].id}`);
 
-      setUserInfo(data.user ?? null);
       setBookmarks(bookmarkedData);
+      setUserInfo(data.user ?? null);
+      setUserProfile(profileData![0]);
 
       await Swal.fire({
         icon: 'success',

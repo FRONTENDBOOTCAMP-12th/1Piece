@@ -1,11 +1,14 @@
-// 브랜치와 상관없는 작업 삭제를 위한 커밋
-import CardSwiper from '@/components/CardSwiper/CardSwiper';
-import S from './MainPage.module.css';
-import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
-import CardModal from '@/components/CardModal/CardModal';
+import { supabase } from '@/lib/SupabaseClient';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import fetchImg from '@/lib/FetchImg';
+import { toast, Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
+import CardSwiper from '@/components/CardSwiper/CardSwiper';
+import CardModal from '@/components/CardModal/CardModal';
+
+import S from './MainPage.module.css';
 
 interface ProblemCardData {
   id: string;
@@ -25,6 +28,7 @@ function MainPage() {
   const [itemCreated, setItemCreated] = useState<ProblemCardData[]>([]);
   // 모달 창에 나타낼 정보를 전달하기 위한 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const navigation = useNavigate();
 
   const fetchItems = async () => {
     try {
@@ -44,30 +48,46 @@ function MainPage() {
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
       const newDataCheck = await Promise.all(
-        dataCheck?.map(async (item) => ({
-          id: `${item.id}`,
-          src: await fetchImg(item.users.id),
-          userName: item.users.nickname,
-          tags: Object.values(item.tags!),
-          checked: false,
-          problemTitle: item.problemTitle,
-          description: item.desc,
-          count: item.count,
-        })) ?? []
+        dataCheck
+          ?.map(async (item) => {
+            if (!item.users) {
+              return null;
+            }
+
+            return {
+              id: `${item.id}`,
+              src: await fetchImg(item.users.id),
+              userName: item.users.nickname,
+              tags: Object.values(item.tags!),
+              checked: false,
+              problemTitle: item.problemTitle,
+              description: item.desc,
+              count: item.count,
+            };
+          })
+          .filter(Boolean) ?? []
       );
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
       const newDataCreated = await Promise.all(
-        dataCreated?.map(async (item) => ({
-          id: `${item.id}`,
-          src: await fetchImg(item.users.id),
-          userName: item.users.nickname,
-          tags: Object.values(item.tags!),
-          checked: false,
-          problemTitle: item.problemTitle,
-          description: item.desc,
-          count: item.count,
-        })) ?? []
+        dataCreated
+          ?.map(async (item) => {
+            if (!item.users) {
+              return null;
+            }
+
+            return {
+              id: `${item.id}`,
+              src: await fetchImg(item.users.id),
+              userName: item.users.nickname,
+              tags: Object.values(item.tags!),
+              checked: false,
+              problemTitle: item.problemTitle,
+              description: item.desc,
+              count: item.count,
+            };
+          })
+          .filter(Boolean) ?? []
       );
 
       // 데이터를 정상적으로 받지 못했다면 ERROR 발생
@@ -84,30 +104,50 @@ function MainPage() {
       setLoading(false);
     }
   };
-
   // 데이터를 가져오는 것은 렌더링과 무관한 일이므로 useEffect 사용
   useEffect(() => {
     fetchItems();
   }, []);
 
+  const handleMiniBannerClick = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session) {
+      toast.error('이미 로그인한 상태입니다.');
+    } else {
+      navigation('/sign-up');
+    }
+  };
+
   return (
-    <>
+    <div>
       {/* 메인 배너 DUMMY 데이터 */}
       <img
-        src="/images/main_banner.jpg"
+        src="/images/main_banner.webp"
         alt="큐젤리란"
         className={S.mainBanner}
       />
       {loading ? (
         // 데이터를 불러오는 중에 사용할 UI
-        <p>로딩 중...</p>
+        <p className={S.loading}>로딩 중...</p>
       ) : (
-        <>
+        <div className={S.mainContainer}>
           {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
-          <CardSwiper data={itemCreated}>지난 주 베스트</CardSwiper>
-          <hr className={S.line} />
-          <CardSwiper data={itemCheck}>지난 주 최다 조회수</CardSwiper>
-        </>
+          <CardSwiper data={itemCreated} sortStandard="popular">
+            카드 Top 7
+          </CardSwiper>
+          <button
+            type="button"
+            className={S.miniBannerButton}
+            onClick={handleMiniBannerClick}
+            aria-label="가입이 5초 안에 가능한 회원가입 페이지로 이동동"
+          />
+          {/* sortStandard="new"를 명시적으로 전달 */}
+          <CardSwiper data={itemCheck} sortStandard="new">
+            추천 최신 카드
+          </CardSwiper>
+        </div>
       )}
       <CardModal
         src={cardInfo.src}
@@ -117,7 +157,8 @@ function MainPage() {
       >
         {cardInfo.title}
       </CardModal>
-    </>
+      <Toaster position="bottom-right" />
+    </div>
   );
 }
 
