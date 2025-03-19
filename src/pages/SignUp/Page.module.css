@@ -10,7 +10,7 @@
   flex-direction: column;
   align-items: center;
   width: 45rem;
-  height: 45.9375rem;
+  height: 55.9375rem;
   padding: 4rem;
   border-radius: 2rem;
   background: var(--gray-g);
@@ -41,4 +41,29 @@
 
 .submitButton:hover {
   background: var(--clicked-dark-g);
+}
+
+.termsContainer {
+  display: flex;
+  height: var(--space-10);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.radioIcon {
+  cursor: pointer;
+  color: var(--line-gray);
+  transition: color 0.2s;
+}
+
+.radioIcon.checked {
+  color: var(--black);
+}
+
+.subTitle {
+  color: #898989;
+  font-size: var(--space-3);
 }
