@@ -12,7 +12,7 @@ const fetchImg = async (src: string) => {
     });
 
   if (!data || data.length === 0) {
-    return '/dummy/dummy_profile.jpg';
+    return '/dummy/dummy_profile.png';
   }
 
   const publicUrl = supabase.storage
