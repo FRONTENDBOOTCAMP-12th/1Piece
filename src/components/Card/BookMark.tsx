@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 import S from './Card.module.css';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
+import useBookmarkStore from '@/lib/BookmarkState';
 
 type BookMarkProps = React.ComponentProps<'button'> & {
-  checked: boolean;
-  onUpdate?: () => void;
+  userId: string;
+  questionId: number;
 };
 
-function BookMark({ checked, onUpdate }: BookMarkProps) {
-  const [isBookMark, setIsBookMark] = useState(checked);
+function BookMark({ userId, questionId }: BookMarkProps) {
+  const { bookmarks, toggleBookmark } = useBookmarkStore();
+  const [isBookMark, setIsBookMark] = useState(false);
 
   useEffect(() => {
-    setIsBookMark(checked);
-  }, [checked]);
+    setIsBookMark(bookmarks.has(questionId));
+  }, [bookmarks, questionId]);
 
   const handleClickBookMark = (e: React.MouseEvent) => {
     // 버블링 방지
     e.stopPropagation();
-    const nextIsBookMark = !isBookMark;
-    setIsBookMark(nextIsBookMark);
-    onUpdate?.();
+    toggleBookmark(userId, questionId);
   };
 
   return (
