@@ -1,13 +1,14 @@
 :root {
   --timepicker-width: 9.375rem;
   --timepicker-height: 3.5rem;
+  --emailAlarmContainer-gap: 2.5rem;
 }
 .emailAlarmContainer {
   display: flex;
   align-items: center;
-  gap: 2.8rem;
+  gap: var(--emailAlarmContainer-gap);
   justify-content: start;
-  width: 92%;
+  width: 74%;
 }
 
 .emailAlarmLabel {
