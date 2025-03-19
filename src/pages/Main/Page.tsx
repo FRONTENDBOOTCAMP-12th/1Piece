@@ -141,6 +141,7 @@ function MainPage() {
             type="button"
             className={S.miniBannerButton}
             onClick={handleMiniBannerClick}
+            aria-label="가입이 5초 안에 가능한 회원가입 페이지로 이동동"
           />
           {/* sortStandard="new"를 명시적으로 전달 */}
           <CardSwiper data={itemCheck} sortStandard="new">
