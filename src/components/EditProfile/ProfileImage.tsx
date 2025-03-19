@@ -4,6 +4,8 @@ import S from './EditProfile.module.css';
 import { supabase } from '@/lib/SupabaseClient';
 import fetchImg from '@/lib/FetchImg';
 import useProfileStore from '@/lib/UserProfileState';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 interface ProfileImageProps {
   src: string;
@@ -21,26 +23,86 @@ function ProfileImage({
   const [preview, setPreview] = useState(src);
   const userProfile = useProfileStore((state) => state.userProfile);
 
+  const handleAlertUpload = () => {
+    try {
+      withReactContent(Swal).fire({
+        title: (
+          <>
+            <p style={{ marginBlock: '16px' }}>
+              확장자명(png)와 파일 크기(2MB)를 확인해주세요
+            </p>
+            <img src="/images/jellyfish.png" alt="" />
+          </>
+        ),
+        confirmButtonText: '확인',
+        customClass: {
+          confirmButton: 'confirmButton',
+          title: 'alertTitle',
+        },
+      });
+    } catch {
+      console.log('비정상적인 접근입니다');
+    }
+  };
+
+  const handleCheckUpload = () => {
+    try {
+      withReactContent(Swal).fire({
+        title: (
+          <>
+            <p style={{ marginBlock: '16px' }}>
+              프로필 이미지가 정상적으로 변경되었습니다!
+            </p>
+            <img src="/images/jellyfish.png" alt="" />
+          </>
+        ),
+        confirmButtonText: '확인',
+        customClass: {
+          confirmButton: 'confirmButton',
+          title: 'alertTitle',
+        },
+      });
+    } catch {
+      console.log('비정상적인 접근입니다');
+    }
+  };
+
   const handleFileUpload = async (file: File) => {
     if (!file) {
       return;
     }
 
-    const fileExt = file.name.split('.').pop();
-    const newFileName = `${id}.${fileExt}`;
-    const filePath = `${newFileName}`;
+    try {
+      const fileExt = file.name.split('.').pop();
 
-    const { data, error } = await supabase.storage
-      .from('profileImg/userProfile')
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: true,
-      });
+      if (fileExt !== 'png') {
+        console.log(fileExt);
+        throw SyntaxError('확장자오류');
+      }
 
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('업로드 성공:', data);
+      const newFileName = `${id}.${fileExt}`;
+      const filePath = `${newFileName}`;
+
+      const { data, error } = await supabase.storage
+        .from('profileImg/userProfile')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (data) {
+        const imageUrl = URL.createObjectURL(file);
+        setPreview(imageUrl);
+      }
+
+      if (data) {
+        handleCheckUpload();
+      }
+
+      if (error) throw error;
+    } catch (err) {
+      handleAlertUpload();
+      console.log(err);
     }
   };
 
@@ -50,8 +112,6 @@ function ProfileImage({
 
     handleFileUpload(file);
 
-    const imageUrl = URL.createObjectURL(file);
-    setPreview(imageUrl);
     onChange?.(file);
   };
 
