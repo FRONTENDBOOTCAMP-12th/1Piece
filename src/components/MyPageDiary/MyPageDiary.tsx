@@ -20,10 +20,6 @@ function MyPageDiary({
   const userProfile = useProfileStore((state) => state.userProfile);
   const [src] = useState('/dummy/dummy_profile.png');
 
-  const handleProfileChange = (file: File) => {
-    console.log('Profile image changed:', file);
-  };
-
   return (
     <div className={S.diaryContainer}>
       <div className={S.leftDiary}>
@@ -36,7 +32,6 @@ function MyPageDiary({
           id={userProfile!.id}
           src={src}
           alt={userProfile?.nickname}
-          onChange={handleProfileChange}
         />
 
         <div className={S.btnNavigate}>

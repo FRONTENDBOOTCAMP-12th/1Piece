@@ -13,12 +13,7 @@ interface ProfileImageProps {
   onChange?: (file: File) => void;
 }
 
-function ProfileImage({
-  src,
-  alt = 'Profile image',
-  id,
-  onChange,
-}: ProfileImageProps) {
+function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
   const [preview, setPreview] = useState(src);
   const setProfileImg = useProfileStore((state) => state.setProfileImg);
   const profileImg = useProfileStore((state) => state.profileImg);
@@ -81,7 +76,6 @@ function ProfileImage({
 
       // 만약 png파일이 아니라면 에러 출력
       if (fileExt !== 'png') {
-        console.log(fileExt);
         throw SyntaxError('확장자오류');
       }
 
@@ -117,10 +111,7 @@ function ProfileImage({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     handleFileUpload(file);
-
-    onChange?.(file);
   };
 
   // 최초 1회는 사용자의 프로필에 따라 렌더링
