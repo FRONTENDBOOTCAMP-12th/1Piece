@@ -1,0 +1,23 @@
+.MyPageContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.inputBox {
+  padding: var(--space-3);
+  border: 1px solid var(--white);
+  border-radius: var(----radius-large);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.inputForm {
+  width: 60%;
+}
