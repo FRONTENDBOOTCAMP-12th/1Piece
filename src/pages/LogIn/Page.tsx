@@ -8,6 +8,19 @@ import useLoginStore from '@/lib/LoginState';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import useProfileStore from '@/lib/UserProfileState';
+import useCalendarStore from '@/lib/CalendarState';
+
+const getDate = () => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = ('0' + (today.getMonth() + 1)).slice(-2);
+  const day = ('0' + today.getDate()).slice(-2);
+
+  return `${year}-${month}-${day}`;
+};
+
+getDate();
 
 function LogInPage() {
   const [id, setId] = useState('');
@@ -15,6 +28,7 @@ function LogInPage() {
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
   const { setUserProfile } = useProfileStore();
+  const setDateList = useCalendarStore((state) => state.setDateList);
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -56,10 +70,25 @@ function LogInPage() {
         .select('*')
         .eq('auth_uid', data.user.id);
 
-      console.log(profileData![0]);
+      console.log(data.user.id);
+
+      await supabase
+        .from('attendance')
+        .insert([{ attendance_date: getDate(), user_id: data.user.id }])
+        .select();
+
+      const { data: calendarData } = await supabase
+        .from('attendance')
+        .select('*')
+        .eq('user_id', data.user.id);
+
+      const newDateList = calendarData?.map((item) => {
+        return item.attendance_date;
+      });
 
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
+      setDateList(newDateList);
 
       await Swal.fire({
         icon: 'success',
