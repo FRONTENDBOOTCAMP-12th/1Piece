@@ -1,14 +1,16 @@
 import React from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
-import S from './CardSwiper.module.css';
-import Card from '@/components/Card/Card';
 import { useNavigate } from 'react-router';
+
+import Card from '@/components/Card/Card';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
+
+import S from './CardSwiper.module.css';
 
 export interface ProblemCardData {
   id: string;

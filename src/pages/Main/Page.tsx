@@ -3,11 +3,11 @@ import { supabase } from '@/lib/SupabaseClient';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import fetchImg from '@/lib/FetchImg';
 import { toast, Toaster } from 'react-hot-toast';
-
 import { useNavigate } from 'react-router';
 
 import CardSwiper from '@/components/CardSwiper/CardSwiper';
 import CardModal from '@/components/CardModal/CardModal';
+
 import S from './MainPage.module.css';
 
 interface ProblemCardData {
