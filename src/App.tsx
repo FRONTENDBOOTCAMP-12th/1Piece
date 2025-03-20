@@ -8,7 +8,6 @@ const BadgePage = lazy(() => import('@/pages/Badge/Page'));
 const BookmarkPage = lazy(() => import('@/pages/Bookmark/Page'));
 const CalendarPage = lazy(() => import('@/pages/Calendar/Page'));
 const CardCreatePage = lazy(() => import('@/pages/CardCreate/Page'));
-const CardEditPage = lazy(() => import('@/pages/CardEdit/Page'));
 const CardListPage = lazy(() => import('@/pages/CardList/Page'));
 const CardWrittenPage = lazy(() => import('@/pages/CardWritten/Page'));
 const EditProfilePage = lazy(() => import('@/pages/EditProfile/Page'));
@@ -34,7 +33,6 @@ function App() {
               <Route path="/bookmark" element={<BookmarkPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/card-create" element={<CardCreatePage />} />
-              <Route path="/card-edit" element={<CardEditPage />} />
               <Route path="/card-list" element={<CardListPage />} />
               <Route path="/card-written" element={<CardWrittenPage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
