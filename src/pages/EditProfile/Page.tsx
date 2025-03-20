@@ -440,7 +440,7 @@ function EditProfilePage() {
           window.location.reload();
         }, 1500);
       } else {
-        console.error('변경된 내용이 없습니다.');
+        toast.error('변경된 내용이 없습니다.');
       }
     } catch (error) {
       console.error('프로필 수정 실패:', error);
