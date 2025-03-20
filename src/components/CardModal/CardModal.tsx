@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import S from './CardModal.module.css';
+import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -26,16 +28,41 @@ function CardModal({
   // 링크 이동을 위한 userInfo의 id만 사용
   const { id } = useModalVisibleStore((state) => state.cardInfo);
   const isLogin = useLoginStore((state) => state.isLogin);
+  const userProfile = useProfileStore((state) => state.userProfile);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
 
   const handleClose = () => {
     setNonVisible();
   };
 
+  // 만약 유저가 문제 풀기 페이지로 이동했다면 recent에 저장
+  // upsert를 사용해서 내부에 존재한다면 update 처리
+  const setRecentView = async () => {
+    const now = new Date().toISOString();
+
+    const { error } = await supabase
+      .from('recent')
+      .upsert(
+        {
+          solved_user: userProfile!.id,
+          solved_question: cardInfo.id,
+          recent_time: now,
+        },
+        { onConflict: ['solved_user', 'solved_question'] }
+      )
+      .eq('solved_user', userProfile!.id)
+      .eq('solved_question', Number(cardInfo.id))
+      .select();
+
+    if (error) console.log(error);
+  };
+
   // 로그인 상태라면 퀴즈 풀기로, 아니라면 로그인 페이지로 이동
   const handleMoveToSolveCard = () => {
     if (isLogin) {
       navigation(`/quiz-play/?problemId=${id}`);
+      setRecentView();
     } else {
       navigation('/login');
     }

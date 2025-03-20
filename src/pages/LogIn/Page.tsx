@@ -56,8 +56,6 @@ function LogInPage() {
         .select('*')
         .eq('auth_uid', data.user.id);
 
-      console.log(profileData![0]);
-
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
 
