@@ -24,7 +24,7 @@ async function fetchUserData() {
     const { data: userData, error } = await supabase
       .from('users')
       .select('id, nickname, level')
-      .eq('auth_uid', user.user.id)
+      .eq('auth_uid', user.user!.id)
       .single();
     if (error) throw error;
     return userData;
@@ -102,15 +102,32 @@ function QuizCompletePage() {
         .eq('bookmark_question', cardInfo.id);
 
       setIsLiked(likeData && likeData.length > 0);
-      setIsBookmarked(bookmarkData && bookmarkData.length > 0);
     } catch (error) {
       console.error('fetchUserPreferences error:', error);
     }
   };
 
+  const handleSetBookmark = async (param: number) => {
+    const { data: bookmarkData } = await supabase
+      .from('bookmark')
+      .select('*')
+      .eq('bookmark_question', param);
+
+    const nextIsBookmarked = bookmarkData.length > 0;
+    setIsBookmarked(nextIsBookmarked);
+  };
+
   useEffect(() => {
-    fetchComments(chunk);
-    fetchUserPreferences();
+    // fetchComments(chunk);
+    // fetchUserPreferences();
+
+    const searchParams = new URL(location.href).searchParams.get('problemId');
+
+    handleSetBookmark(Number(searchParams));
+
+    // return () => {
+
+    // }
   }, [chunk]);
 
   // 댓글 추가
@@ -176,30 +193,32 @@ function QuizCompletePage() {
 
   // 북마크
   const handleBookmark = async () => {
-    const userData = await fetchUserData();
-    if (!userData) return;
+    // const userData = await fetchUserData();
+    // if (!userData) return;
 
-    try {
-      if (isBookmarked) {
-        // 북마크 취소
-        await supabase
-          .from('bookmark')
-          .delete()
-          .eq('bookmark_user', userData.id)
-          .eq('bookmark_question', cardInfo.id);
-      } else {
-        // 북마크 추가
-        await supabase.from('bookmark').insert([
-          {
-            bookmark_user: userData.id,
-            bookmark_question: cardInfo.id,
-          },
-        ]);
-      }
-      setIsBookmarked(!isBookmarked);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   if (isBookmarked) {
+    //     // 북마크 취소
+    //     await supabase
+    //       .from('bookmark')
+    //       .delete()
+    //       .eq('bookmark_user', userData.id)
+    //       .eq('bookmark_question', cardInfo.id);
+    //   } else {
+    //     // 북마크 추가
+    //     await supabase.from('bookmark').insert([
+    //       {
+    //         bookmark_user: userData.id,
+    //         bookmark_question: cardInfo.id,
+    //       },
+    //     ]);
+    //   }
+    //   setIsBookmarked(!isBookmarked);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    setIsBookmarked(!isBookmarked);
   };
 
   return (
@@ -207,6 +226,7 @@ function QuizCompletePage() {
       <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
       <div className={S.rightSection}>
         <InputBox
+          id={cardInfo.id}
           isLiked={isLiked}
           isBookmarked={isBookmarked}
           onLikeUpdate={handleLike}

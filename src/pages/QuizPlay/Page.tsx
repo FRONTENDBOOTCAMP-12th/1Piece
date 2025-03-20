@@ -5,11 +5,20 @@ import Quiz from './components/Quiz';
 import { supabase } from '@/lib/SupabaseClient';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 
+interface QuizProps {
+  id: number;
+  title: string;
+  explanation: string;
+  correct: string;
+  answer: string;
+  card_id: number;
+}
+
 function QuizPlayPage() {
   // 선택된 문제 카드 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   // 퀴즈에 대한 상태(각각)
-  const [quizInfo, setQuizInfo] = useState([]);
+  const [quizInfo, setQuizInfo] = useState<QuizProps[]>([]);
   const visibleIndex = useQuizSolvedStore((state) => state.visibleIndex);
   const setTotalQuiz = useQuizSolvedStore((state) => state.setTotalQuiz);
 
@@ -21,7 +30,7 @@ function QuizPlayPage() {
         .select('*')
         .eq('card_id', Number(cardInfo.id));
 
-      setQuizInfo(data);
+      setQuizInfo(data!);
       setTotalQuiz(cardInfo.count);
 
       if (!data) throw error;
@@ -39,7 +48,7 @@ function QuizPlayPage() {
 
   return (
     <div className={S.problemContainer}>
-      <h3 className={S.solveProblemTitle}>{cardInfo.title}</h3>
+      <h1 className={S.solveProblemTitle}>{cardInfo.title}</h1>
       {/* 퀴즈를 리스트 렌더링으로 렌더링 */}
       {quizInfo.map((item, index) => (
         <Quiz

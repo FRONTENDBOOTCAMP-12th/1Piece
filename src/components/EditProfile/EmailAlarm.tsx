@@ -4,61 +4,64 @@ import { useEffect, useRef, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import S from './EmailAlarm.module.css';
 import dayjs from 'dayjs';
-import useDebounce from '@/lib/useDebounce';
 
 interface EmailAlarmProps {
   initialTime?: string;
   isChecked?: boolean;
-  onSave: (time: string | null, checked: boolean) => void;
+  onChange: (time: string | null, checked: boolean) => void; // 부모에서 Supabase로 저장해야 함
 }
 
 function EmailAlarm({
   initialTime = '09:00',
   isChecked = false,
-  onSave,
+  onChange,
 }: EmailAlarmProps) {
-  const [time, setTime] = useState(dayjs(`2025-01-01T${initialTime}`));
+  const [time, setTime] = useState(() =>
+    isChecked ? dayjs(`2025-01-01T${initialTime}`) : null
+  );
   const [checked, setChecked] = useState(isChecked);
-  const debouncedTime = useDebounce(time.format('HH:mm'), 1000); // 1초 디바운스 적용
   const isMounted = useRef(false); // 첫 렌더링 감지용
 
-  // On 상태에서만 API 호출
+  // 부모에서 전달된 값이 변경될 때만 초기화
+  useEffect(() => {
+    setTime(isChecked ? dayjs(`2025-01-01T${initialTime}`) : null);
+    setChecked(isChecked);
+  }, [initialTime, isChecked]);
+
   useEffect(() => {
     if (!isMounted.current) {
       isMounted.current = true; // 첫 렌더링 방지
       return;
     }
 
-    if (!checked) console.log('[EmailAlarm] 알람 OFF 상태, API 호출 안 함');
-    return; // 알람이 켜진 경우만 실행
+    console.log(
+      `[EmailAlarm] 변경된 값 전달: 시간 ${checked ? time?.format('HH:mm') : '해제됨'}, 체크 상태 ${checked}`
+    );
 
-    console.log(`[EmailAlarm] 디바운스 후 API 호출: ${debouncedTime}`);
-    onSave(debouncedTime, checked);
-  }, [debouncedTime, checked, onSave]);
+    //
+    if (checked) {
+      onChange(time?.format('HH:mm') ?? null, checked);
+    } else {
+      onChange(null, false);
+    }
+  }, [checked, time]);
 
-  // 새로운 시간 설정 (중복 렌더링 방지)
+  // 시간 변경 핸들러
   const handleTimeChange = (newTime: dayjs.Dayjs | null) => {
     if (!newTime) return;
-
-    setTime((prevTime) => {
-      if (prevTime.isSame(newTime, 'minute')) return prevTime; // 같은 값이면 변경 안 함
-      console.log(
-        `[handleTimeChange] 새로운 시간 설정됨: ${newTime.format('HH:mm')}`
-      );
-      return newTime;
-    });
+    setTime(newTime);
   };
 
-  // 알람 ON/OFF 토글
+  // 토글이 변경되면 즉시 저장
   const handleToggle = () => {
     setChecked((prev) => {
       const newChecked = !prev;
-      console.log(`[handleToggle] 알람 토글: ${newChecked}`);
 
+      // 체크 해제 시 time을 null로 설정
       if (!newChecked) {
-        console.log('[handleToggle] 알람 OFF → API 호출');
-        onSave(null, false); // OFF 시 null 저장
+        setTime(null);
       }
+
       return newChecked;
     });
   };
@@ -70,10 +73,12 @@ function EmailAlarm({
       <div className={S.emailAlarmWrapper}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-            value={time}
+            label="알람 시간 설정"
+            value={checked ? time : null} // 토글 해제 시 time을 null로 설정
             onChange={handleTimeChange}
             ampm
             className={S.emailAlarmTimePicker}
+            disabled={!checked} // 체크 해제 시 TimePicker 비활성화
           />
         </LocalizationProvider>
 
@@ -82,14 +87,13 @@ function EmailAlarm({
             type="checkbox"
             checked={checked}
             onChange={handleToggle}
+            role="switch"
+            aria-label="알람 설정"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 handleToggle();
               }
             }}
-            role="switch"
-            aria-checked={checked}
-            aria-labelledby="email-alarm-label"
           />
           <span className={S.switchThumb} />
         </label>

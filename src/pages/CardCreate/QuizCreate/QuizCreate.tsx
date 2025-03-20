@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import { IoCheckmark } from 'react-icons/io5';
+
 import TextArea from '@/components/TextArea/TextArea';
+
 import S from './QuizCreate.module.css';
 
 interface QuizCreateProps {
@@ -39,8 +41,14 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
   return (
     <div className={S.questionContainer}>
       <div className={S.cardHeader}>
-        <span className={S.cardNumber}> {index}</span>{' '}
-        <button className={S.btnDelete} onClick={() => onDelete(id)}>
+        <span className={S.cardNumber} aria-label="문제 번호">
+          {index}
+        </span>{' '}
+        <button
+          className={S.btnDelete}
+          onClick={() => onDelete(id)}
+          aria-label="삭제"
+        >
           <BiTrash size={24} />
         </button>
       </div>
@@ -59,9 +67,7 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
             />
           </div>
           <div className={S.answer}>
-            <label className={S.anwerLabel} htmlFor={`answer-${id}`}>
-              선지
-            </label>
+            <p className={S.anwerLabel}>선지</p>
             <div>
               {options.map((option, idx) => {
                 const isFirstOption = idx === 0;
@@ -71,14 +77,18 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
 
                 return (
                   <div key={`radio-${idx}`} className={S.radioQuestion}>
-                    <div className={S.radioIconLabel}>
+                    <label
+                      className={S.radioIconLabel}
+                      htmlFor={`radio-${idx}-input`}
+                    >
                       {isFirstOption ? (
                         <IoCheckmark size={60} className={S.radioIconCheck} />
                       ) : (
                         <IoCheckmark size={60} className={S.radioIcon} />
                       )}
-                    </div>
+                    </label>
                     <TextArea
+                      name={`radio-${idx}-input`}
                       placeholder={placeholderText}
                       maxLength={30}
                       className={S.textArea}

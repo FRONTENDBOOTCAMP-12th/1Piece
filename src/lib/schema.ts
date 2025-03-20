@@ -309,6 +309,7 @@ export interface Database {
           id: string;
           level: number | null;
           nickname: string;
+          status: string | null;
           user_id: string;
         };
         Insert: {
@@ -319,6 +320,7 @@ export interface Database {
           id?: string;
           level?: number | null;
           nickname: string;
+          status?: string | null;
           user_id: string;
         };
         Update: {
@@ -329,6 +331,7 @@ export interface Database {
           id?: string;
           level?: number | null;
           nickname?: string;
+          status?: string | null;
           user_id?: string;
         };
         Relationships: [];

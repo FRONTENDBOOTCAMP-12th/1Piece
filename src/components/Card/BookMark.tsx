@@ -1,32 +1,80 @@
 import { useEffect, useState } from 'react';
 import S from './Card.module.css';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
+import useBookmarkStore from '@/lib/BookmarkState';
+import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
 
 type BookMarkProps = React.ComponentProps<'button'> & {
-  checked: boolean;
-  onUpdate?: () => void;
+  id: string;
 };
 
-function BookMark({ checked, onUpdate }: BookMarkProps) {
-  const [isBookMark, setIsBookMark] = useState(checked);
+function BookMark({ id }: BookMarkProps) {
+  const bookmarks = useBookmarkStore((state) => state.bookmarks);
+  const userProfile = useProfileStore((state) => state.userProfile);
+  const [isBookMark, setIsBookMark] = useState(false);
+  const setBookmarks = useBookmarkStore((state) => state.setBookmarks);
 
-  useEffect(() => {
-    setIsBookMark(checked);
-  }, [checked]);
+  const handleSetBookmark = async () => {
+    await supabase
+      .from('bookmark')
+      .insert([
+        {
+          bookmark_user: userProfile!.id,
+          bookmark_question: Number(id),
+        },
+      ])
+      .select();
+
+    const { data: fetchedData } = await supabase
+      .from('bookmark')
+      .select('*')
+      .eq('bookmark_user', userProfile!.id);
+
+    setBookmarks(fetchedData!);
+  };
+
+  const handleDeleteBookmark = async () => {
+    await supabase
+      .from('bookmark')
+      .delete()
+      .eq('bookmark_user', userProfile!.id)
+      .eq('bookmark_question', Number(id));
+
+    const { data: fetchedData } = await supabase
+      .from('bookmark')
+      .select('*')
+      .eq('bookmark_user', userProfile!.id);
+
+    setBookmarks(fetchedData!);
+  };
 
   const handleClickBookMark = (e: React.MouseEvent) => {
     // 버블링 방지
     e.stopPropagation();
-    const nextIsBookMark = !isBookMark;
-    setIsBookMark(nextIsBookMark);
-    onUpdate?.();
+    setIsBookMark(!isBookMark);
+
+    if (!isBookMark) {
+      handleSetBookmark();
+    } else {
+      handleDeleteBookmark();
+    }
   };
+
+  useEffect(() => {
+    const nextIsBookMark = bookmarks?.some((item) => {
+      return item.bookmark_question == Number(id);
+    });
+
+    setIsBookMark(nextIsBookMark ?? false);
+  }, []);
 
   return (
     <button
       type="button"
       onClick={handleClickBookMark}
       className={S.bookmarkIcon}
+      aria-label="bookMark"
     >
       {isBookMark ? (
         <IoBookmark

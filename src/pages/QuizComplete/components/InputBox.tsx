@@ -12,14 +12,14 @@ interface InputBoxProps {
   onLikeUpdate: () => void;
   onBookmarkUpdate: () => void;
   onAddComment: (text: string) => void;
+  id: string;
 }
 
 function InputBox({
   isLiked,
   likeCount,
-  isBookmarked,
   onLikeUpdate,
-  onBookmarkUpdate,
+  id,
   onAddComment,
 }: InputBoxProps) {
   const [content, setContent] = useState<string>('');
@@ -63,7 +63,7 @@ function InputBox({
         </button>
 
         {/* 북마크 버튼 */}
-        <BookMark checked={isBookmarked} onUpdate={onBookmarkUpdate} />
+        <BookMark id={id} />
       </div>
 
       {/* 댓글 입력 & 버튼 영역 */}

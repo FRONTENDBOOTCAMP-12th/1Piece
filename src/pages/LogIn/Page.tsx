@@ -5,16 +5,32 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 import useLoginStore from '@/lib/LoginState';
+import useBookMarkStore from '@/lib/BookmarkState';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import useProfileStore from '@/lib/UserProfileState';
+import useCalendarStore from '@/lib/CalendarState';
+
+const getDate = () => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = ('0' + (today.getMonth() + 1)).slice(-2);
+  const day = ('0' + today.getDate()).slice(-2);
+
+  return `${year}-${month}-${day}`;
+};
+
+getDate();
 
 function LogInPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
-  const { setUserProfile } = useProfileStore();
+  const { setBookmarks } = useBookMarkStore();
+  const { setUserProfile, setProfileImg } = useProfileStore();
+  const setDateList = useCalendarStore((state) => state.setDateList);
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -55,9 +71,38 @@ function LogInPage() {
         .from('users')
         .select('*')
         .eq('auth_uid', data.user.id);
+      console.log(profileData);
 
+      const { data: bookmarkedData } = await supabase
+        .from('bookmark')
+        .select('*')
+        .eq('bookmark_user', `${profileData![0].id}`);
+
+      console.log(data.user.id);
+
+      await supabase
+        .from('attendance')
+        .insert([{ attendance_date: getDate(), user_id: data.user.id }])
+        .select();
+
+      const { data: calendarData } = await supabase
+        .from('attendance')
+        .select('*')
+        .eq('user_id', data.user.id);
+
+      const newDateList = calendarData?.map((item) => {
+        return item.attendance_date;
+      });
+
+      const { data: profileImg } = supabase.storage
+        .from('profileImg/userProfile')
+        .getPublicUrl(`${profileData![0].id}.png`);
+
+      setBookmarks(bookmarkedData!);
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
+      setProfileImg(profileImg.publicUrl);
+      setDateList(newDateList!);
 
       await Swal.fire({
         icon: 'success',
@@ -92,9 +137,15 @@ function LogInPage() {
           className={S.loginInputBox}
         />
         <div className={S.findLink}>
-          <a href="/find-id">아이디 찾기</a>
-          &nbsp;|&nbsp;
-          <a href="/find-password">비밀번호 찾기</a>
+          <a href="/find-id" aria-label="아이디 찾기 페이지로 이동">
+            아이디 찾기
+          </a>
+          <span className={S.separator} aria-hidden="true">
+            |
+          </span>
+          <a href="/find-password" aria-label="비밀번호 재설정 페이지로 이동">
+            비밀번호 재설정
+          </a>
         </div>
         <div className={S.buttonContainer}>
           <Button
