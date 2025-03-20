@@ -121,7 +121,7 @@ function MainPage() {
   };
 
   return (
-    <div>
+    <h1>
       {/* 메인 배너 DUMMY 데이터 */}
       <img
         src="/images/main_banner.webp"
@@ -158,7 +158,7 @@ function MainPage() {
         {cardInfo.title}
       </CardModal>
       <Toaster position="bottom-right" />
-    </div>
+    </h1>
   );
 }
 
