@@ -67,9 +67,7 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
             />
           </div>
           <div className={S.answer}>
-            <label className={S.anwerLabel} htmlFor={`answer-${id}`}>
-              선지
-            </label>
+            <p className={S.anwerLabel}>선지</p>
             <div>
               {options.map((option, idx) => {
                 const isFirstOption = idx === 0;

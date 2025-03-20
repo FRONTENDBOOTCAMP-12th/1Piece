@@ -39,6 +39,7 @@ function Footer() {
   return (
     <footer className={S.footerContainer}>
       <section className={S.wrapperBox}>
+        <h2 className="sr-only">푸터 메뉴 내비게이션</h2>
         <div className={S.footerLeft}>
           <a href="/">
             <img src="/icons/logo.svg" alt="자유롭게 상상하라. 큐젤리" />
@@ -57,7 +58,6 @@ function Footer() {
         </div>
 
         <nav className={S.footerRight}>
-          <h2 className="sr-only">푸터 메뉴 내비게이션</h2>
           {Object.values(navigation).map((nav, index) => (
             <FooterNavigation key={`${index}`} element={nav} />
           ))}

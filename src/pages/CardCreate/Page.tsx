@@ -181,9 +181,7 @@ function CardCreatePage() {
           />
         </div>
         <div className={S.tagSelect}>
-          <label className={S.label} htmlFor="tagSelect">
-            태그 선택
-          </label>
+          <p className={S.label}>태그 선택</p>
           <SelectTag onTagSelect={handleTagSelect} maxTags={3} />
         </div>
       </div>
@@ -203,7 +201,6 @@ function CardCreatePage() {
         className={S.btnAdd}
         onClick={addQuestion}
         disabled={questions.length >= 10}
-        aria-label="문제 추가"
       />
       <div className={S.btnContainer}>
         <Button
