@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
+import { CommentData } from '@/components/CommentList/CommentList';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import useProfileStore from '@/lib/UserProfileState';
@@ -7,27 +8,8 @@ import QuizResult from '@/components/QuizResult/QuizResult';
 import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
-import { CommentData } from '@/components/CommentList/CommentList';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
-
-// 사용자 정보 가져오는 함수
-async function fetchUserData() {
-  try {
-    const { data: user } = await supabase.auth.getUser();
-    const { data: userData, error } = await supabase
-      .from('users')
-      .select('id, nickname, level')
-      .eq('auth_uid', user.user!.id)
-      .single();
-
-    console.log(userData);
-    if (error) throw error;
-    return userData;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 function QuizCompletePage() {
   const searchParams = new URL(location.href).searchParams.get('problemId'); // 문제 카드 번호
@@ -107,7 +89,6 @@ function QuizCompletePage() {
 
   useEffect(() => {
     fetchComments(chunk);
-    // fetchUserPreferences();
 
     handleSetLike(Number(searchParams));
     handleSetBookmark(Number(searchParams));
@@ -115,14 +96,11 @@ function QuizCompletePage() {
 
   // 댓글 추가
   const handleAddComment = async (content: string) => {
-    const userData = await fetchUserData();
-    if (!userData) return;
-
     try {
       const newComment = {
         id: crypto.randomUUID(), // 임시 ID 생성
-        userNickname: userData.nickname,
-        userLevel: userData.level,
+        userNickname: userProfile!.nickname,
+        userLevel: userProfile!.level,
         commentedAt: new Date().toISOString(),
         content,
       };
@@ -130,7 +108,7 @@ function QuizCompletePage() {
       // Supabase에 댓글 추가
       await supabase.from('comment').insert([
         {
-          writer_id: userData.id,
+          writer_id: userProfile!.id,
           card_id: Number(searchParams),
           comment: content,
           written_at: newComment.commentedAt,
@@ -148,22 +126,19 @@ function QuizCompletePage() {
 
   // 좋아요
   const handleLike = async () => {
-    const userData = await fetchUserData();
-    if (!userData) return;
-
     try {
       if (isLiked) {
         // 좋아요 취소
         await supabase
           .from('like')
           .delete()
-          .eq('like_user', userData.id)
+          .eq('like_user', userProfile!.id)
           .eq('like_question', Number(searchParams));
       } else {
         // 좋아요 추가
         await supabase.from('like').insert([
           {
-            like_user: userData.id,
+            like_user: userProfile!.id,
             like_question: Number(searchParams),
           },
         ]);
