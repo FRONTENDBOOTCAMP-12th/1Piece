@@ -16,7 +16,7 @@ interface ProfileState {
   uid?: string;
   password?: string;
   alarm?: string | null;
-  status?: string;
+  status?: string | null;
 }
 
 interface DeactivateAccountProps {
@@ -269,31 +269,6 @@ function EditProfilePage() {
         {
           position: 'bottom-right',
         }
-      );
-      return false;
-    }
-  };
-
-  const handleProfileUpdate = async (updates: Partial<ProfileState>) => {
-    if (!profile || Object.keys(updates).length === 0) return false;
-
-    try {
-      const { error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('user_id', profile.user_id);
-
-      if (error) throw new Error('닉네임 변경 실패');
-
-      console.log('닉네임 변경되었습니다.');
-      toast.success('닉네임이 변경되었습니다.', {
-        position: 'bottom-right',
-      });
-      return true;
-    } catch (error) {
-      console.error(
-        '닉네임 저장 중 오류 발생:',
-        error instanceof Error ? error.message : '알 수 없는 오류 발생'
       );
       return false;
     }
