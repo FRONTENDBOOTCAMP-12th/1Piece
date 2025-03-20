@@ -23,7 +23,6 @@ interface EditProfileProps {
   setAlarmTime: (time: string) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges?: (e: React.FormEvent) => void;
-  onSaveAlarm?: (time: string | null, checked: boolean) => void;
   onDeleteAccount: () => void;
 }
 
@@ -41,7 +40,6 @@ function EditProfile({
   onSaveChanges,
   onInputChange,
   onDeleteAccount,
-  onSaveAlarm,
 }: EditProfileProps) {
   return (
     <form className={S.editProfileContainer} onSubmit={onSaveChanges}>
@@ -102,7 +100,7 @@ function EditProfile({
       <EmailAlarm
         initialTime={alarmTime}
         isChecked={Boolean(profile?.alarm)} // profile의 데이터를 직접 활용
-        onChange={(time, checked) => {
+        onChange={(time: string | null) => {
           setAlarmTime(time ?? '09:00'); // 상태 업데이트
         }}
       />

@@ -2,14 +2,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+interface Bookmarks {
+  bookmark_question: number;
+  bookmark_user: string;
+  id: number;
+}
+
 // 상태 변수 타입
 interface State {
-  bookmarks: number[];
+  bookmarks: Bookmarks[] | null;
 }
 
 // 함수 타입
 interface Actions {
-  setBookmarks: (bookmarkedData: number[]) => void;
+  setBookmarks: (bookmarkedData: Bookmarks[]) => void;
 }
 
 type Store = State & Actions;
