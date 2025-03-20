@@ -13,7 +13,7 @@ function ProgressBar({
 
   return (
     <section className={S.progressContainer}>
-      <h2 className="sr-only">문제 풀이 진행률</h2>
+      <h3 className="sr-only">문제 풀이 진행률</h3>
       <div
         className={S.progressNumber}
         aria-label={`${totalQuestions}문제 중 ${currentQuestion}번째 문제`}

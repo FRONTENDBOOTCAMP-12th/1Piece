@@ -48,7 +48,7 @@ function QuizPlayPage() {
 
   return (
     <div className={S.problemContainer}>
-      <h3 className={S.solveProblemTitle}>{cardInfo.title}</h3>
+      <h1 className={S.solveProblemTitle}>{cardInfo.title}</h1>
       {/* 퀴즈를 리스트 렌더링으로 렌더링 */}
       {quizInfo.map((item, index) => (
         <Quiz
