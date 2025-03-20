@@ -16,11 +16,13 @@ interface UserProfileProps {
 // 상태 변수 타입
 interface State {
   userProfile: UserProfileProps | null;
+  profileImg: string;
 }
 
 // 함수 타입
 interface Actions {
   setUserProfile: (userData: UserProfileProps) => void;
+  setProfileImg: (src: string) => void;
   resetUserProfile: () => void;
 }
 
@@ -30,15 +32,22 @@ const useProfileStore = create(
   persist<Store>(
     (set) => ({
       userProfile: null,
+      profileImg: 'dummy/dummy_profile.png',
 
       setUserProfile: (userData) =>
         set(() => ({
           userProfile: userData,
         })),
 
+      setProfileImg: (src) =>
+        set(() => ({
+          profileImg: src,
+        })),
+
       resetUserProfile: () =>
         set(() => ({
           userProfile: null,
+          profileImg: 'dummy/dummy_profile.png',
         })),
     }),
     {
