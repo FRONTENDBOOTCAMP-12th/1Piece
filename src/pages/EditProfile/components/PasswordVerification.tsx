@@ -38,7 +38,7 @@ function PasswordVerification({
   return (
     <form className={S.inputForm} onSubmit={handleVerify}>
       <Input
-        label=""
+        label="현재 비밀번호 입력"
         hiddenLabel={true}
         name="password"
         type="password"
