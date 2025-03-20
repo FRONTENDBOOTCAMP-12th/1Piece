@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import S from './EditProfile.module.css';
 import { supabase } from '@/lib/SupabaseClient';
-import fetchImg from '@/lib/FetchImg';
 import useProfileStore from '@/lib/UserProfileState';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -14,14 +13,10 @@ interface ProfileImageProps {
   onChange?: (file: File) => void;
 }
 
-function ProfileImage({
-  src,
-  alt = 'Profile image',
-  id,
-  onChange,
-}: ProfileImageProps) {
+function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
   const [preview, setPreview] = useState(src);
-  const userProfile = useProfileStore((state) => state.userProfile);
+  const setProfileImg = useProfileStore((state) => state.setProfileImg);
+  const profileImg = useProfileStore((state) => state.profileImg);
 
   // 이미지 변경에 실패 시 띄울 경고창
   const handleAlertUpload = () => {
@@ -81,7 +76,6 @@ function ProfileImage({
 
       // 만약 png파일이 아니라면 에러 출력
       if (fileExt !== 'png') {
-        console.log(fileExt);
         throw SyntaxError('확장자오류');
       }
 
@@ -101,6 +95,7 @@ function ProfileImage({
       if (data) {
         const imageUrl = URL.createObjectURL(file);
         setPreview(imageUrl);
+        setProfileImg(imageUrl);
         handleCheckUpload();
       }
 
@@ -116,22 +111,12 @@ function ProfileImage({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     handleFileUpload(file);
-
-    onChange?.(file);
-  };
-
-  // 이미지 변경
-  const handleSetProfile = async () => {
-    const nextPreview = await fetchImg(userProfile!.id);
-    setPreview(nextPreview);
   };
 
   // 최초 1회는 사용자의 프로필에 따라 렌더링
   useEffect(() => {
-    setPreview(src);
-    handleSetProfile();
+    setPreview(profileImg);
   }, [src]);
 
   return (

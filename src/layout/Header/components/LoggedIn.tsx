@@ -5,6 +5,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import useLoginStore from '@/lib/LoginState';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import useProfileStore from '@/lib/UserProfileState';
 
 interface LoggedInProps {
   src: string;
@@ -16,6 +17,7 @@ function LoggedIn({ src }: LoggedInProps) {
   // 로그아웃 시 초기화
   const resetLogin = useLoginStore((state) => state.resetUser);
   const navigation = useNavigate();
+  const resetUserProfile = useProfileStore((state) => state.resetUserProfile);
 
   // 화면 내부 어떤 영역을 클릭해도 로그아웃 창 숨김 처리
   useEffect(() => {
@@ -91,6 +93,7 @@ function LoggedIn({ src }: LoggedInProps) {
           handleLogoutAuth();
           resetLogin();
           handleConfirmLogout();
+          resetUserProfile();
           navigation('/');
         }
       });

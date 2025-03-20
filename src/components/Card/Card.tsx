@@ -59,7 +59,7 @@ function Card({
         className={S.profileImg}
         //기본 이미지 넣어둠 (목록은 아직 프로필 사진 다 안 가져와져서?)
         onError={(e) => {
-          e.currentTarget.src = '/images/jellyfish.png';
+          e.currentTarget.src = '/dummy/dummy_profile.png';
         }}
       />
       <div className={S.problemInfoContainer}>

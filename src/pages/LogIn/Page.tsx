@@ -27,8 +27,8 @@ function LogInPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
-  const { setUserProfile } = useProfileStore();
   const setDateList = useCalendarStore((state) => state.setDateList);
+  const { setUserProfile, setProfileImg } = useProfileStore();
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -86,8 +86,13 @@ function LogInPage() {
         return item.attendance_date;
       });
 
+      const { data: profileImg } = supabase.storage
+        .from('profileImg/userProfile')
+        .getPublicUrl(`${profileData![0].id}.png`);
+
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
+      setProfileImg(profileImg.publicUrl);
       setDateList(newDateList);
 
       await Swal.fire({
