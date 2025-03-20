@@ -113,7 +113,7 @@ function Quiz({
           <div
             className={`${S.quizContainer} ${isSelectOption ? (correctState ? S.correctBgc : S.inCorrectBgc) : ''}`}
           >
-            <p className={S.quizTitle}>{title}</p>
+            <h2 className={S.quizTitle}>{title}</h2>
             <ProgressBar
               currentQuestion={currentQuizCount}
               totalQuestions={totalQuizCount}
