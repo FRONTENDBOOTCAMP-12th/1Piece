@@ -42,8 +42,8 @@ function BookmarkPage() {
         id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users.id}.png`).data.publicUrl,
-        userName: item.users.nickname,
+          .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
+        userName: item.users!.nickname,
         tags: Object.values(item.tags!),
         checked: false,
         problemTitle: item.problemTitle,
