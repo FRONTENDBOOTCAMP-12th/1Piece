@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 5.75rem;
+  height: 6rem;
   align-items: center;
   box-shadow: 8px 8px 4px 0px var(--line-gray) inset;
   padding: var(--space-5);
@@ -19,18 +19,20 @@
   margin-top: var(--space-2);
   margin-bottom: var(--space-3);
   resize: none;
+  overflow: hidden;
 }
 
 .textArea::placeholder {
   text-align: start;
   font-weight: var(--regular);
   font-family: var(--pretendard);
+  font-size: var(--large-2);
 }
 
 .charCount {
   position: absolute;
-  right: 1.7rem;
-  bottom: 2rem;
+  right: 0.8rem;
+  bottom: 1.6rem;
   font-size: var(--large-2);
   font-family: var(--pretendard);
   color: #898989;

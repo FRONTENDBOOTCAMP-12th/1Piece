@@ -177,6 +177,7 @@ function CardCreatePage() {
             placeholder="문제 세트 상세 설명을 입력하세요"
             value={description}
             onChange={(value) => setDescription(value)}
+            height="8rem"
           />
         </div>
         <div className={S.tagSelect}>
