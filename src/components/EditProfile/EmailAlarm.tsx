@@ -73,6 +73,7 @@ function EmailAlarm({
       <div className={S.emailAlarmWrapper}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
+            label="알람 시간 설정"
             value={checked ? time : null} // 토글 해제 시 time을 null로 설정
             onChange={handleTimeChange}
             ampm
@@ -87,8 +88,7 @@ function EmailAlarm({
             checked={checked}
             onChange={handleToggle}
             role="switch"
-            aria-checked={checked}
-            aria-labelledby="email-alarm-label"
+            aria-label="알람 설정"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 handleToggle();

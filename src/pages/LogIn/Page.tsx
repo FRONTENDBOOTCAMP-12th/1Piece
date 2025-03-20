@@ -137,9 +137,15 @@ function LogInPage() {
           className={S.loginInputBox}
         />
         <div className={S.findLink}>
-          <a href="/find-id">아이디 찾기</a>
-          &nbsp;|&nbsp;
-          <a href="/find-password">비밀번호 찾기</a>
+          <a href="/find-id" aria-label="아이디 찾기 페이지로 이동">
+            아이디 찾기
+          </a>
+          <span className={S.separator} aria-hidden="true">
+            |
+          </span>
+          <a href="/find-password" aria-label="비밀번호 재설정 페이지로 이동">
+            비밀번호 재설정
+          </a>
         </div>
         <div className={S.buttonContainer}>
           <Button

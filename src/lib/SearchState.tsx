@@ -25,7 +25,7 @@ const useSearchStore = create(
         })),
     }),
     {
-      name: 'problemInfoStore',
+      name: '검색 정보 저장소',
     }
   )
 );

@@ -102,7 +102,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
               className={S.btnMoreCard}
               onClick={handleMoveToCardList}
             >
-              <p className={S.MoreCardMessage}>클릭해서 카드 더보기</p>
+              <span className={S.MoreCardMessage}>클릭해서 카드 더보기</span>
             </button>
           </SwiperSlide>
           <CustomNavigationNext />

@@ -40,6 +40,10 @@
     text-decoration: none;
   }
 }
+.separator {
+  margin: 0 8px;
+  color: #888;
+}
 
 .buttonContainer {
   display: flex;
