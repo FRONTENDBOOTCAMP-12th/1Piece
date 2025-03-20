@@ -30,7 +30,7 @@ const useBookMarkStore = create(
         })),
     }),
     {
-      name: '로그인 정보 저장소',
+      name: '북마크 정보 저장소',
     }
   )
 );
