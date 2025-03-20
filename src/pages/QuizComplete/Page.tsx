@@ -8,9 +8,9 @@ import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
 
 interface CommentData {
-  id?: string;
+  id: string;
   userNickname: string;
-  userLevel: number;
+  userLevel: number | null;
   commentedAt: string;
   content: string;
 }
@@ -49,7 +49,7 @@ function QuizCompletePage() {
       const { data, error } = await supabase
         .from('comment')
         .select('*, users(*)')
-        .eq('card_id', cardInfo.id)
+        .eq('card_id', Number(cardInfo.id))
         .order('written_at', { ascending: false })
         .range(
           (chunk - 1) * COMMENTS_PER_CHUNK,
@@ -92,16 +92,16 @@ function QuizCompletePage() {
         .from('like')
         .select('*')
         .eq('like_user', userData.id)
-        .eq('like_question', cardInfo.id);
+        .eq('like_question', Number(cardInfo.id));
 
       // 북마크 데이터 불러오기
       const { data: bookmarkData } = await supabase
         .from('bookmark')
         .select('*')
         .eq('bookmark_user', userData.id)
-        .eq('bookmark_question', cardInfo.id);
+        .eq('bookmark_question', Number(cardInfo.id));
 
-      setIsLiked(likeData && likeData.length > 0);
+      setIsLiked(likeData ? likeData.length > 0 : false);
     } catch (error) {
       console.error('fetchUserPreferences error:', error);
     }
@@ -113,7 +113,7 @@ function QuizCompletePage() {
       .select('*')
       .eq('bookmark_question', param);
 
-    const nextIsBookmarked = bookmarkData.length > 0;
+    const nextIsBookmarked = bookmarkData!.length > 0;
     setIsBookmarked(nextIsBookmarked);
   };
 
@@ -148,7 +148,7 @@ function QuizCompletePage() {
       await supabase.from('comment').insert([
         {
           writer_id: userData.id,
-          card_id: cardInfo.id,
+          card_id: Number(cardInfo.id),
           comment: content,
           written_at: newComment.commentedAt,
         },
@@ -175,13 +175,13 @@ function QuizCompletePage() {
           .from('like')
           .delete()
           .eq('like_user', userData.id)
-          .eq('like_question', cardInfo.id);
+          .eq('like_question', Number(cardInfo.id));
       } else {
         // 좋아요 추가
         await supabase.from('like').insert([
           {
             like_user: userData.id,
-            like_question: cardInfo.id,
+            like_question: Number(cardInfo.id),
           },
         ]);
       }
