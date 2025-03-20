@@ -24,7 +24,7 @@ async function fetchUserData() {
     const { data: userData, error } = await supabase
       .from('users')
       .select('id, nickname, level')
-      .eq('auth_uid', user.user.id)
+      .eq('auth_uid', user.user!.id)
       .single();
     if (error) throw error;
     return userData;

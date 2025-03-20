@@ -31,7 +31,7 @@ function LogInPage() {
   const { setBookmarks } = useBookMarkStore();
   const { setUserProfile, setProfileImg } = useProfileStore();
   const setDateList = useCalendarStore((state) => state.setDateList);
-  
+
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
   };
@@ -76,8 +76,8 @@ function LogInPage() {
       const { data: bookmarkedData } = await supabase
         .from('bookmark')
         .select('*')
-        .eq('bookmark_user', `${profileData[0].id}`);
-      
+        .eq('bookmark_user', `${profileData![0].id}`);
+
       console.log(data.user.id);
 
       await supabase
@@ -98,11 +98,11 @@ function LogInPage() {
         .from('profileImg/userProfile')
         .getPublicUrl(`${profileData![0].id}.png`);
 
-      setBookmarks(bookmarkedData);
+      setBookmarks(bookmarkedData!);
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
       setProfileImg(profileImg.publicUrl);
-      setDateList(newDateList);
+      setDateList(newDateList!);
 
       await Swal.fire({
         icon: 'success',
