@@ -16,34 +16,37 @@ function BookMark({ id }: BookMarkProps) {
   const setBookmarks = useBookmarkStore((state) => state.setBookmarks);
 
   const handleSetBookmark = async () => {
-    const { data } = await supabase.from('bookmark').insert([
-      {
-        bookmark_user: userProfile.id,
-        bookmark_question: id,
-      },
-    ]);
+    await supabase
+      .from('bookmark')
+      .insert([
+        {
+          bookmark_user: userProfile!.id,
+          bookmark_question: Number(id),
+        },
+      ])
+      .select();
 
     const { data: fetchedData } = await supabase
       .from('bookmark')
       .select('*')
-      .eq('bookmark_user', userProfile.id);
+      .eq('bookmark_user', userProfile!.id);
 
-    setBookmarks(fetchedData);
+    setBookmarks(fetchedData!);
   };
 
   const handleDeleteBookmark = async () => {
-    const { data } = await supabase
+    await supabase
       .from('bookmark')
       .delete()
-      .eq('bookmark_user', userProfile.id)
-      .eq('bookmark_question', id);
+      .eq('bookmark_user', userProfile!.id)
+      .eq('bookmark_question', Number(id));
 
     const { data: fetchedData } = await supabase
       .from('bookmark')
       .select('*')
-      .eq('bookmark_user', userProfile.id);
+      .eq('bookmark_user', userProfile!.id);
 
-    setBookmarks(fetchedData);
+    setBookmarks(fetchedData!);
   };
 
   const handleClickBookMark = (e: React.MouseEvent) => {
@@ -59,11 +62,11 @@ function BookMark({ id }: BookMarkProps) {
   };
 
   useEffect(() => {
-    const nextIsBookMark = bookmarks.some((item) => {
-      return item.bookmark_question == id;
+    const nextIsBookMark = bookmarks?.some((item) => {
+      return item.bookmark_question == Number(id);
     });
 
-    setIsBookMark(nextIsBookMark);
+    setIsBookMark(nextIsBookMark!);
   }, []);
 
   return (
