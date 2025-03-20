@@ -74,6 +74,7 @@ function BookMark({ id }: BookMarkProps) {
       type="button"
       onClick={handleClickBookMark}
       className={S.bookmarkIcon}
+      aria-label="bookMark"
     >
       {isBookMark ? (
         <IoBookmark

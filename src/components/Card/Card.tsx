@@ -62,7 +62,7 @@ function Card({
         }}
       />
       <div className={S.problemInfoContainer}>
-        <p className={S.problemTitle}>{children}</p>
+        <h3 className={S.problemTitle}>{children}</h3>
         {/* 더미 텍스트 이후 카드 태그 컴포넌트가 대체 될 예정 */}
         <div className={S.tagContainer}>
           {tags.map((item) => (
