@@ -7,7 +7,6 @@ import RoundedButton from '../../../components/RoundedButton/RoundedButton';
 
 interface InputBoxProps {
   isLiked: boolean;
-  likeCount: number;
   isBookmarked: boolean;
   onLikeUpdate: () => void;
   onBookmarkUpdate: () => void;
@@ -15,13 +14,7 @@ interface InputBoxProps {
   id: string;
 }
 
-function InputBox({
-  isLiked,
-  likeCount,
-  onLikeUpdate,
-  id,
-  onAddComment,
-}: InputBoxProps) {
+function InputBox({ isLiked, onLikeUpdate, id, onAddComment }: InputBoxProps) {
   const [content, setContent] = useState<string>('');
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -59,7 +52,6 @@ function InputBox({
         {/* 좋아요 버튼 */}
         <button type="button" className={S.likeButton} onClick={onLikeUpdate}>
           {isLiked ? <FaHeart size={24} /> : <FaRegHeart size={24} />}
-          <span aria-label={`좋아요 ${likeCount}개`}>{likeCount}</span>
         </button>
 
         {/* 북마크 버튼 */}
