@@ -70,7 +70,7 @@ function Card({
           ))}
         </div>
       </div>
-      <BookMark id={id} />
+      <BookMark id={id!} />
     </div>
   );
 }
