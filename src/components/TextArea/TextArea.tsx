@@ -35,6 +35,7 @@ function TextArea({
     <div className={S.textAreaContainer}>
       <textarea
         name={name}
+        id={name}
         className={`${S.textArea} ${className ?? ''}`}
         placeholder={placeholder}
         style={{ height: height ?? '4rem' }}
