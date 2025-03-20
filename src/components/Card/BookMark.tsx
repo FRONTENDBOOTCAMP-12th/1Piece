@@ -66,7 +66,7 @@ function BookMark({ id }: BookMarkProps) {
       return item.bookmark_question == Number(id);
     });
 
-    setIsBookMark(nextIsBookMark!);
+    setIsBookMark(nextIsBookMark ?? false);
   }, []);
 
   return (
