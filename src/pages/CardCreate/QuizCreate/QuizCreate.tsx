@@ -41,8 +41,14 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
   return (
     <div className={S.questionContainer}>
       <div className={S.cardHeader}>
-        <span className={S.cardNumber}> {index}</span>{' '}
-        <button className={S.btnDelete} onClick={() => onDelete(id)}>
+        <span className={S.cardNumber} aria-label="문제 번호">
+          {index}
+        </span>{' '}
+        <button
+          className={S.btnDelete}
+          onClick={() => onDelete(id)}
+          aria-label="삭제"
+        >
           <BiTrash size={24} />
         </button>
       </div>
@@ -73,14 +79,18 @@ function QuizCreate({ id, index, onDelete, onUpdate }: QuizCreateProps) {
 
                 return (
                   <div key={`radio-${idx}`} className={S.radioQuestion}>
-                    <div className={S.radioIconLabel}>
+                    <label
+                      className={S.radioIconLabel}
+                      htmlFor={`radio-${idx}-input`}
+                    >
                       {isFirstOption ? (
                         <IoCheckmark size={60} className={S.radioIconCheck} />
                       ) : (
                         <IoCheckmark size={60} className={S.radioIcon} />
                       )}
-                    </div>
+                    </label>
                     <TextArea
+                      name={`radio-${idx}-input`}
                       placeholder={placeholderText}
                       maxLength={30}
                       className={S.textArea}

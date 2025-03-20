@@ -203,6 +203,7 @@ function CardCreatePage() {
         className={S.btnAdd}
         onClick={addQuestion}
         disabled={questions.length >= 10}
+        aria-label="문제 추가"
       />
       <div className={S.btnContainer}>
         <Button
