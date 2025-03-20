@@ -5,7 +5,7 @@ import S from './CommentList.module.css';
 export interface CommentData {
   id: string;
   userNickname: string;
-  userLevel: number;
+  userLevel?: number | null;
   commentedAt: string;
   content: string;
 }

@@ -7,14 +7,7 @@ import QuizResult from '@/components/QuizResult/QuizResult';
 import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
-
-interface CommentData {
-  id: string;
-  userNickname: string;
-  userLevel: number | null;
-  commentedAt: string;
-  content: string;
-}
+import { CommentData } from '@/components/CommentList/CommentList';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
 
@@ -87,32 +80,6 @@ function QuizCompletePage() {
       console.log('error: ', error);
     }
   };
-
-  // // 좋아요, 북마크 여부 가져오는 함수
-  // const fetchUserPreferences = async () => {
-  //   const userData = await fetchUserData();
-  //   if (!userData) return;
-
-  //   try {
-  //     // 좋아요 데이터 불러오기
-  //     const { data: likeData } = await supabase
-  //       .from('like')
-  //       .select('*')
-  //       .eq('like_user', userData.id)
-  //       .eq('like_question', Number(searchParams));
-
-  //     // 북마크 데이터 불러오기
-  //     const { data: bookmarkData } = await supabase
-  //       .from('bookmark')
-  //       .select('*')
-  //       .eq('bookmark_user', userData.id)
-  //       .eq('bookmark_question', Number(searchParams));
-
-  //     setIsLiked(likeData ? likeData.length > 0 : false);
-  //   } catch (error) {
-  //     console.error('fetchUserPreferences error:', error);
-  //   }
-  // };
 
   // 사용자가 해당 퀴즈에 좋아요를 눌렀는지 확인
   const handleSetLike = async (param: number) => {
