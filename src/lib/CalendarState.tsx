@@ -24,7 +24,7 @@ const useCalendarStore = create(
         })),
     }),
     {
-      name: '로그인 정보 저장소',
+      name: '달력 정보 저장소',
     }
   )
 );
