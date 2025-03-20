@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 import useLoginStore from '@/lib/LoginState';
+import useBookMarkStore from '@/lib/BookmarkState';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import useProfileStore from '@/lib/UserProfileState';
@@ -27,9 +28,10 @@ function LogInPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setUserInfo } = useLoginStore();
-  const setDateList = useCalendarStore((state) => state.setDateList);
+  const { setBookmarks } = useBookMarkStore();
   const { setUserProfile, setProfileImg } = useProfileStore();
-
+  const setDateList = useCalendarStore((state) => state.setDateList);
+  
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
   };
@@ -69,7 +71,13 @@ function LogInPage() {
         .from('users')
         .select('*')
         .eq('auth_uid', data.user.id);
+      console.log(profileData);
 
+      const { data: bookmarkedData } = await supabase
+        .from('bookmark')
+        .select('*')
+        .eq('bookmark_user', `${profileData[0].id}`);
+      
       console.log(data.user.id);
 
       await supabase
@@ -90,6 +98,7 @@ function LogInPage() {
         .from('profileImg/userProfile')
         .getPublicUrl(`${profileData![0].id}.png`);
 
+      setBookmarks(bookmarkedData);
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
       setProfileImg(profileImg.publicUrl);

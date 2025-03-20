@@ -18,7 +18,6 @@ function Card({
   src,
   tags,
   userName,
-  checked,
   description,
   children,
   count,
@@ -71,7 +70,7 @@ function Card({
           ))}
         </div>
       </div>
-      <BookMark checked={checked} />
+      <BookMark id={id} />
     </div>
   );
 }
