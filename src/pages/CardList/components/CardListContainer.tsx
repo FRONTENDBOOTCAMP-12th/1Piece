@@ -45,7 +45,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   );
   // 검색 상태를 감지하기 위한 함수
   const searchParam = useSearchStore((state) => state.searchParam);
-  const debouncedSearchParam = useDebounce(searchParam, 500); // 디바운스 적용
+  const debouncedSearchParam = useDebounce(searchParam, 500);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const itemsPerPage = 12;
   const navigate = useNavigate();
@@ -170,7 +170,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     if (search) {
       searchFetchItems(sortStandard);
     } else {
-      fetchItems(sortStandard);
+      setData([]);
     }
   }, [
     sortStandard,
