@@ -121,8 +121,9 @@ function MainPage() {
   };
 
   return (
-    <h1>
+    <>
       {/* 메인 배너 DUMMY 데이터 */}
+      <h1 className="sr-only">큐젤리 메인 페이지</h1>
       <img
         src="/images/main_banner.webp"
         alt="큐젤리란"
@@ -158,7 +159,7 @@ function MainPage() {
         {cardInfo.title}
       </CardModal>
       <Toaster position="bottom-right" />
-    </h1>
+    </>
   );
 }
 
