@@ -15,6 +15,7 @@ function LoggedOut() {
       color="secondary"
       font="pretendard"
       onClick={handleMoveToLogin}
+      aria-label="login으로 이동"
     >
       로그인
     </RoundedButton>
