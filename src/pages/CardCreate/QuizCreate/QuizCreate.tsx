@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import { IoCheckmark } from 'react-icons/io5';
+
 import TextArea from '@/components/TextArea/TextArea';
+
 import S from './QuizCreate.module.css';
 
 interface QuizCreateProps {
