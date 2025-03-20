@@ -70,7 +70,7 @@ const useModalVisibleStore = create(
       },
     }),
     {
-      name: 'problemInfoStore',
+      name: '문제 정보 저장소',
     }
   )
 );
