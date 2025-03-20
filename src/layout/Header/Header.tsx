@@ -55,6 +55,7 @@ function Header() {
             font="pretendard"
             size="regular"
             onClick={handleMoveToHome}
+            aria-label="홈으로 이동"
           >
             홈
           </RoundedButton>
@@ -65,6 +66,7 @@ function Header() {
             font="pretendard"
             size="regular"
             onClick={handleMoveToCardList}
+            aria-label="카드목록으로 이동"
           >
             목록
           </RoundedButton>
