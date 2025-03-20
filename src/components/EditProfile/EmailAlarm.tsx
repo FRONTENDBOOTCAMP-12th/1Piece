@@ -88,7 +88,6 @@ function EmailAlarm({
             checked={checked}
             onChange={handleToggle}
             role="switch"
-            aria-checked={checked}
             aria-label="알람 설정"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
