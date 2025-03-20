@@ -71,18 +71,23 @@ function LogInPage() {
         .from('users')
         .select('*')
         .eq('auth_uid', data.user.id);
-      console.log(profileData);
 
       const { data: bookmarkedData } = await supabase
         .from('bookmark')
         .select('*')
         .eq('bookmark_user', `${profileData![0].id}`);
 
-      console.log(data.user.id);
-
       await supabase
         .from('attendance')
-        .insert([{ attendance_date: getDate(), user_id: data.user.id }])
+        .upsert(
+          {
+            attendance_date: getDate(),
+            user_id: data.user.id,
+          },
+          {
+            onConflict: ['attendance_date', 'user_id'],
+          }
+        )
         .select();
 
       const { data: calendarData } = await supabase
