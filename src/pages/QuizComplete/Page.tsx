@@ -17,7 +17,6 @@ interface CommentData {
 }
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
-const searchParams = new URL(location.href).searchParams.get('problemId'); // 문제 카드 번호
 
 // 사용자 정보 가져오는 함수
 async function fetchUserData() {
@@ -38,6 +37,8 @@ async function fetchUserData() {
 }
 
 function QuizCompletePage() {
+  const searchParams = new URL(location.href).searchParams.get('problemId'); // 문제 카드 번호
+
   const [comments, setComments] = useState<CommentData[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false); // 더 불러올 댓글 존재 여부
   const [chunk, setChunk] = useState<number>(1);
