@@ -8,7 +8,7 @@
     "node_modules": false,
     "**/.prettierrc.*": false,
     "**/CVS": true,
-    "**/node_modules": false
+    "**/node_modules": true
   },
   "editor.tokenColorCustomizations": {
     "comments": "",
