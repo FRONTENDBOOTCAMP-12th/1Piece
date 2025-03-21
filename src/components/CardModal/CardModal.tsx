@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import S from './CardModal.module.css';
+import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -26,16 +28,41 @@ function CardModal({
   // 링크 이동을 위한 userInfo의 id만 사용
   const { id } = useModalVisibleStore((state) => state.cardInfo);
   const isLogin = useLoginStore((state) => state.isLogin);
+  const userProfile = useProfileStore((state) => state.userProfile);
+  const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
 
   const handleClose = () => {
     setNonVisible();
   };
 
+  // 만약 유저가 문제 풀기 페이지로 이동했다면 recent에 저장
+  // upsert를 사용해서 내부에 존재한다면 update 처리
+  const setRecentView = async () => {
+    const now = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from('recent')
+      .upsert(
+        {
+          solved_user: userProfile!.id,
+          solved_question: cardInfo.id,
+          recent_time: now,
+        },
+        { onConflict: ['solved_user', 'solved_question'] }
+      )
+      .select();
+
+    console.log(data);
+
+    if (error) console.log(error);
+  };
+
   // 로그인 상태라면 퀴즈 풀기로, 아니라면 로그인 페이지로 이동
   const handleMoveToSolveCard = () => {
     if (isLogin) {
       navigation(`/quiz-play/?problemId=${id}`);
+      setRecentView();
     } else {
       navigation('/login');
     }
@@ -48,7 +75,14 @@ function CardModal({
           <h4 className={S.alert}>문제를 푸시겠습니까?</h4>
         </div>
         <div className={S.content}>
-          <img src={src} alt={userName} className={S.profileImg} />
+          <img
+            src={src}
+            alt={userName}
+            className={S.profileImg}
+            onError={(e) => {
+              e.currentTarget.src = '/dummy/dummy_profile.png';
+            }}
+          />
           <div className={S.info}>
             <h5 className={S.problemTitle}>{children}</h5>
             <div className={S.tagContainer}>
