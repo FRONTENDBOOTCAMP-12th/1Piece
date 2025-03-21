@@ -2,10 +2,10 @@ import Comment from '../Comment/Comment';
 import RoundedButton from '../RoundedButton/RoundedButton';
 import S from './CommentList.module.css';
 
-interface CommentData {
+export interface CommentData {
   id: string;
   userNickname: string;
-  userLevel: number;
+  userLevel?: number | null;
   commentedAt: string;
   content: string;
 }

@@ -1,47 +1,29 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/SupabaseClient';
+import { CommentData } from '@/components/CommentList/CommentList';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
+import useProfileStore from '@/lib/UserProfileState';
 import QuizResult from '@/components/QuizResult/QuizResult';
 import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
 import S from './Page.module.css';
 
-interface CommentData {
-  id?: string;
-  userNickname: string;
-  userLevel: number;
-  commentedAt: string;
-  content: string;
-}
-
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
 
-// 사용자 정보 가져오는 함수
-async function fetchUserData() {
-  try {
-    const { data: user } = await supabase.auth.getUser();
-    const { data: userData, error } = await supabase
-      .from('users')
-      .select('id, nickname, level')
-      .eq('auth_uid', user.user!.id)
-      .single();
-    if (error) throw error;
-    return userData;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 function QuizCompletePage() {
+  const searchParams = new URL(location.href).searchParams.get('problemId'); // 문제 카드 번호
+
   const [comments, setComments] = useState<CommentData[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(false); // 더 불러올 댓글 존재 여부
   const [chunk, setChunk] = useState<number>(1);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
   const correctQuiz = useQuizSolvedStore((state) => state.correctQuiz);
+  const userProfile = useProfileStore((state) => state.userProfile);
 
   // 해당 퀴즈의 댓글 불러오기
   const fetchComments = async (chunk: number) => {
@@ -49,7 +31,7 @@ function QuizCompletePage() {
       const { data, error } = await supabase
         .from('comment')
         .select('*, users(*)')
-        .eq('card_id', cardInfo.id)
+        .eq('card_id', Number(searchParams))
         .order('written_at', { ascending: false })
         .range(
           (chunk - 1) * COMMENTS_PER_CHUNK,
@@ -81,65 +63,44 @@ function QuizCompletePage() {
     }
   };
 
-  // 좋아요, 북마크 여부 가져오는 함수
-  const fetchUserPreferences = async () => {
-    const userData = await fetchUserData();
-    if (!userData) return;
+  // 사용자가 해당 퀴즈에 좋아요를 눌렀는지 확인
+  const handleSetLike = async (param: number) => {
+    const { data: LikeData } = await supabase
+      .from('like')
+      .select('*')
+      .eq('like_question', param)
+      .eq('like_user', userProfile!.id);
 
-    try {
-      // 좋아요 데이터 불러오기
-      const { data: likeData } = await supabase
-        .from('like')
-        .select('*')
-        .eq('like_user', userData.id)
-        .eq('like_question', cardInfo.id);
-
-      // 북마크 데이터 불러오기
-      const { data: bookmarkData } = await supabase
-        .from('bookmark')
-        .select('*')
-        .eq('bookmark_user', userData.id)
-        .eq('bookmark_question', cardInfo.id);
-
-      setIsLiked(likeData && likeData.length > 0);
-    } catch (error) {
-      console.error('fetchUserPreferences error:', error);
-    }
+    const nextIsLiked = LikeData!.length > 0;
+    setIsLiked(nextIsLiked);
   };
 
+  // 사용자가 해당 퀴즈를 북마크 했는지 확인
   const handleSetBookmark = async (param: number) => {
     const { data: bookmarkData } = await supabase
       .from('bookmark')
       .select('*')
-      .eq('bookmark_question', param);
+      .eq('bookmark_question', param)
+      .eq('bookmark_user', userProfile!.id);
 
-    const nextIsBookmarked = bookmarkData.length > 0;
+    const nextIsBookmarked = bookmarkData!.length > 0;
     setIsBookmarked(nextIsBookmarked);
   };
 
   useEffect(() => {
-    // fetchComments(chunk);
-    // fetchUserPreferences();
+    fetchComments(chunk);
 
-    const searchParams = new URL(location.href).searchParams.get('problemId');
-
+    handleSetLike(Number(searchParams));
     handleSetBookmark(Number(searchParams));
-
-    // return () => {
-
-    // }
-  }, [chunk]);
+  }, [chunk, searchParams]);
 
   // 댓글 추가
   const handleAddComment = async (content: string) => {
-    const userData = await fetchUserData();
-    if (!userData) return;
-
     try {
       const newComment = {
         id: crypto.randomUUID(), // 임시 ID 생성
-        userNickname: userData.nickname,
-        userLevel: userData.level,
+        userNickname: userProfile!.nickname,
+        userLevel: userProfile!.level,
         commentedAt: new Date().toISOString(),
         content,
       };
@@ -147,8 +108,8 @@ function QuizCompletePage() {
       // Supabase에 댓글 추가
       await supabase.from('comment').insert([
         {
-          writer_id: userData.id,
-          card_id: cardInfo.id,
+          writer_id: userProfile!.id,
+          card_id: Number(searchParams),
           comment: content,
           written_at: newComment.commentedAt,
         },
@@ -165,23 +126,20 @@ function QuizCompletePage() {
 
   // 좋아요
   const handleLike = async () => {
-    const userData = await fetchUserData();
-    if (!userData) return;
-
     try {
       if (isLiked) {
         // 좋아요 취소
         await supabase
           .from('like')
           .delete()
-          .eq('like_user', userData.id)
-          .eq('like_question', cardInfo.id);
+          .eq('like_user', userProfile!.id)
+          .eq('like_question', Number(searchParams));
       } else {
         // 좋아요 추가
         await supabase.from('like').insert([
           {
-            like_user: userData.id,
-            like_question: cardInfo.id,
+            like_user: userProfile!.id,
+            like_question: Number(searchParams),
           },
         ]);
       }
@@ -192,32 +150,7 @@ function QuizCompletePage() {
   };
 
   // 북마크
-  const handleBookmark = async () => {
-    // const userData = await fetchUserData();
-    // if (!userData) return;
-
-    // try {
-    //   if (isBookmarked) {
-    //     // 북마크 취소
-    //     await supabase
-    //       .from('bookmark')
-    //       .delete()
-    //       .eq('bookmark_user', userData.id)
-    //       .eq('bookmark_question', cardInfo.id);
-    //   } else {
-    //     // 북마크 추가
-    //     await supabase.from('bookmark').insert([
-    //       {
-    //         bookmark_user: userData.id,
-    //         bookmark_question: cardInfo.id,
-    //       },
-    //     ]);
-    //   }
-    //   setIsBookmarked(!isBookmarked);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
+  const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
   };
 

@@ -2,7 +2,7 @@ import S from './Comment.module.css';
 
 interface CommentProps {
   userNickname?: string;
-  userLevel?: number;
+  userLevel?: number | null;
   commentedAt?: string;
   content?: string;
 }
