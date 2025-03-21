@@ -18,9 +18,9 @@ interface ProfileState {
   alarm?: string | null;
   status?: string | null;
 }
-
+// 탈퇴 함수의 타입 정의
 interface DeactivateAccountProps {
-  onDeactivate: () => void; // 탈퇴 함수의 타입 정의
+  onDeactivate: () => void;
 }
 
 function EditProfilePage() {
@@ -41,7 +41,8 @@ function EditProfilePage() {
   // 닉네임 입력 시 디바운스 적용
   const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
   // 알람 시간 상태 추가
-  const [alarmTime, setAlarmTime] = useState(profile?.alarm ?? '09:00');
+  const [alarmTime, setAlarmTime] = useState<string | null>(null);
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
 
   // 프로필 데이터가 바뀌면 알람 시간도 업데이트
   useEffect(() => {
@@ -84,6 +85,10 @@ function EditProfilePage() {
           setInitialProfile((prev) =>
             JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
           );
+
+          // supabase에서 가져온 `alarm` 값이 `null`이면 `disabled`
+          setAlarmTime(data.alarm ?? null);
+          setIsAlarmEnabled(data.alarm !== null);
         }
       } catch (error) {
         toast.error(
@@ -98,6 +103,20 @@ function EditProfilePage() {
     fetchProfile();
   }, []);
 
+  // 알람 토글 핸들러
+  const handleAlarmToggle = () => {
+    setIsAlarmEnabled((prev) => {
+      const newEnabled = !prev;
+      if (!newEnabled) setAlarmTime(null);
+      return newEnabled;
+    });
+  };
+
+  // 알람 시간 변경 핸들러
+  const handleAlarmTimeChange = (time: string) => {
+    setAlarmTime(time);
+  };
+
   // handleLogout 함수 추가
   const handleLogout = async () => {
     const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
@@ -105,7 +124,7 @@ function EditProfilePage() {
     await supabase.auth.signOut(); // Supabase 세션 종료
     localStorage.removeItem('userInfo'); // 로컬스토리지 삭제
     sessionStorage.clear(); // 세션 스토리지 삭제
-    resetUser(); // Zustand 상태 초기화
+    resetUser(); // zustand 상태 초기화
     window.location.href = '/'; // 새로고침 + 홈으로 이동
   };
   useEffect(() => {
@@ -315,7 +334,7 @@ function EditProfilePage() {
 
           console.log('현재 로그인된 사용자 ID:', user.user.id);
 
-          // `users` 테이블에서 `status`를 `inactive`로 업데이트
+          // users 테이블에서 status를 inactive로 업데이트
           const { error } = await supabase
             .from('users')
             .update({ status: 'inactive' })
@@ -325,7 +344,7 @@ function EditProfilePage() {
 
           console.log('사용자 비활성화 성공!');
 
-          // Zustand 상태 초기화
+          // zustand 상태 초기화
           resetUser();
 
           // 탈퇴 완료 SweetAlert 알림
@@ -372,7 +391,7 @@ function EditProfilePage() {
         hasChanges = true;
       }
 
-      // ✅ 알람 변경 감지 (null 값 허용)
+      // 알람 변경 감지 (null 값 허용)
       if (initialProfile.alarm !== alarmTime) {
         updates.alarm = alarmTime ?? null; // null 값도 저장되도록 보장
         hasChanges = true;
@@ -397,6 +416,8 @@ function EditProfilePage() {
         setInitialProfile((prev) =>
           prev ? { ...prev, ...updates, alarm: updates.alarm ?? null } : prev
         );
+        setIsAlarmEnabled(updates.alarm !== null);
+        setAlarmTime(updates.alarm ?? null);
 
         // 알람 설정 변경 메시지 추가
         if (updates.alarm !== undefined) {
@@ -444,7 +465,7 @@ function EditProfilePage() {
             profile={profile!}
             alarmTime={alarmTime}
             nicknameError={errors.nickname}
-            setAlarmTime={setAlarmTime}
+            onAlarmTimeChange={handleAlarmTimeChange}
             confirmPasswordError={errors.confirmPassword}
             confirmPasswordSuccess={''}
             confirmNewPassword={confirmNewPassword}
@@ -454,6 +475,8 @@ function EditProfilePage() {
             onInputChange={handleInputChange}
             onSaveChanges={handleSaveChanges}
             onDeleteAccount={handleDeactivateAccount}
+            isAlarmEnabled={isAlarmEnabled}
+            onAlarmToggle={handleAlarmToggle}
           />
         )}
       </MyPageDiary>

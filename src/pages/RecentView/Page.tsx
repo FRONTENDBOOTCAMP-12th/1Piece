@@ -6,6 +6,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
+import useProfileStore from '@/lib/UserProfileState';
 
 interface CardData {
   id: string;
@@ -28,13 +29,15 @@ function RecentViewPage() {
   const [data, setData] = useState<CardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const userProfile = useProfileStore((state) => state.userProfile);
 
   const fetchItems = async () => {
     try {
       const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('*, users(*)')
-        .order('created', { ascending: false });
+        .from('recent')
+        .select('*,card(*), users(*)')
+        .eq('solved_user', userProfile!.id)
+        .order('recent_time', { ascending: false });
 
       if (error) throw error;
 
@@ -42,13 +45,13 @@ function RecentViewPage() {
         id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
-        userName: item.users!.nickname,
-        tags: Object.values(item.tags!),
+          .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
+        userName: item.users.nickname,
+        tags: Object.values(item.card.tags!),
         checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
+        problemTitle: item.card.problemTitle,
+        description: item.card.desc,
+        count: item.card.count,
       }));
 
       setData(newData);

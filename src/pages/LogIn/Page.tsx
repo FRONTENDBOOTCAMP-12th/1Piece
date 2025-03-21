@@ -43,6 +43,7 @@ function LogInPage() {
     e.preventDefault();
 
     try {
+      // users테이블에서 정보 받아오기
       const { data: users, error: userError } = await supabase
         .from('users')
         .select('email')
@@ -67,24 +68,21 @@ function LogInPage() {
         return;
       }
 
-      const { data: profileData } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_uid', data.user.id);
-      console.log(profileData);
-
-      const { data: bookmarkedData } = await supabase
-        .from('bookmark')
-        .select('*')
-        .eq('bookmark_user', `${profileData![0].id}`);
-
-      console.log(data.user.id);
-
+      // 출석 정보 insert 혹은 update
       await supabase
         .from('attendance')
-        .insert([{ attendance_date: getDate(), user_id: data.user.id }])
+        .upsert(
+          {
+            attendance_date: getDate(),
+            user_id: data.user.id,
+          },
+          {
+            onConflict: 'attendance_date, user_id',
+          }
+        )
         .select();
 
+      // 출석한 모든 일수 가져오기
       const { data: calendarData } = await supabase
         .from('attendance')
         .select('*')
@@ -94,10 +92,30 @@ function LogInPage() {
         return item.attendance_date;
       });
 
+      // level을 출석한 날짜를 바탕으로 업데이트
+      await supabase
+        .from('users')
+        .update({ level: newDateList?.length })
+        .eq('auth_uid', data.user.id);
+
+      // users테이블에서 auth_uid가 같은 row가져오기
+      const { data: profileData } = await supabase
+        .from('users')
+        .select('*')
+        .eq('auth_uid', data.user.id);
+
+      // 북마크한 항목 모두 가져오기
+      const { data: bookmarkedData } = await supabase
+        .from('bookmark')
+        .select('*')
+        .eq('bookmark_user', `${profileData![0].id}`);
+
+      // 유저의 프로필 이미지 저장
       const { data: profileImg } = supabase.storage
         .from('profileImg/userProfile')
         .getPublicUrl(`${profileData![0].id}.png`);
 
+      // 초기 설정 모두 다
       setBookmarks(bookmarkedData!);
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);

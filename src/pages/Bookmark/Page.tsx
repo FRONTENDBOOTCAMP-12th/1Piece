@@ -6,6 +6,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import S from './Page.module.css';
 import CardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import useProfileStore from '@/lib/UserProfileState';
 
 interface CardData {
   id: string;
@@ -28,13 +29,14 @@ function BookmarkPage() {
   const [data, setData] = useState<CardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const userProfile = useProfileStore((state) => state.userProfile);
 
   const fetchItems = async () => {
     try {
       const { data: fetchedData, error } = await supabase
-        .from('card')
-        .select('*, users(*)')
-        .order('created', { ascending: false });
+        .from('bookmark')
+        .select('*,card(*), users(*)')
+        .eq('bookmark_user', userProfile!.id);
 
       if (error) throw error;
 
@@ -42,13 +44,13 @@ function BookmarkPage() {
         id: `${item.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
-          .getPublicUrl(`${item.users!.id}.png`).data.publicUrl,
-        userName: item.users!.nickname,
-        tags: Object.values(item.tags!),
+          .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
+        userName: item.users.nickname,
+        tags: Object.values(item.card.tags!),
         checked: false,
-        problemTitle: item.problemTitle,
-        description: item.desc,
-        count: item.count,
+        problemTitle: item.card.problemTitle,
+        description: item.card.desc,
+        count: item.card.count,
       }));
 
       setData(newData);
