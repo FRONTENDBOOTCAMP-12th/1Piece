@@ -93,7 +93,7 @@
     background: var(--gray-g);
     border: 1px solid #adadad;
     border-radius: var(--rounded-full);
-    height: calc(90%-10px);
+    height: calc(90% - 10px);
   }
 
   &.problemDescription::-webkit-scrollbar-button:vertical:start:decrement,
