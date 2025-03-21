@@ -2,16 +2,6 @@ import S from './Footer.module.css';
 import FooterNavigation from './FooterNav';
 
 const navigation = {
-  about: {
-    title: 'About',
-    menu: [
-      { text: 'How it works', path: '/' },
-      { text: 'Featured', path: '/' },
-      { text: 'Partnership', path: '/' },
-      { text: 'Business Relation', path: '/' },
-    ],
-  },
-
   community: {
     title: 'Community',
     menu: [
