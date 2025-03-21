@@ -111,15 +111,27 @@ function LogInPage() {
         .eq('bookmark_user', `${profileData![0].id}`);
 
       // 유저의 프로필 이미지 저장
-      const { data: profileImg } = supabase.storage
-        .from('profileImg/userProfile')
-        .getPublicUrl(`${profileData![0].id}.png`);
+      const { data: profileImg } =
+        supabase.storage
+          .from('profileImg/userProfile')
+          .getPublicUrl(`${profileData![0].id}.png`) ??
+        'dummy/dummy_profile.png';
+      let newProfileImg = profileImg.publicUrl;
+      try {
+        const response = await fetch(profileImg.publicUrl, { method: 'HEAD' });
+
+        if (!response.ok) {
+          newProfileImg = 'dummy/dummy_profile.png';
+        }
+      } catch (error) {
+        console.log(error);
+      }
 
       // 초기 설정 모두 다
       setBookmarks(bookmarkedData!);
       setUserInfo(data.user ?? null);
       setUserProfile(profileData![0]);
-      setProfileImg(profileImg.publicUrl);
+      setProfileImg(newProfileImg);
       setDateList(newDateList!);
 
       await Swal.fire({
