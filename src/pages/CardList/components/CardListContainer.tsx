@@ -1,22 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/SupabaseClient';
 import { Grid, Pagination as SwiperPagination } from 'swiper/modules';
+import Pagination from '@/components/Pagination/Pagination';
+import useModalVisibleStore from '@/lib/ProblemModalState';
+import { useState, useEffect, useCallback } from 'react';
+import CardModal from '@/components/CardModal/CardModal';
 import { useNavigate, useLocation } from 'react-router';
-import useSearchStore from '@/lib/SearchState';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { supabase } from '@/lib/SupabaseClient';
+import S from './CardListContainer.module.css';
+import useSearchStore from '@/lib/SearchState';
 import useDebounce from '@/lib/useDebounce';
+import Card from '@/components/Card/Card';
 
+// 스와이퍼 관련 CSS 속성 import
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-import CardModal from '@/components/CardModal/CardModal';
-import Pagination from '@/components/Pagination/Pagination';
-import Card from '@/components/Card/Card';
-import useModalVisibleStore from '@/lib/ProblemModalState';
-
-import S from './CardListContainer.module.css';
 
 export interface CardData {
   id: string;

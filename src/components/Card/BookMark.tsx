@@ -1,9 +1,9 @@
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
+import useProfileStore from '@/lib/UserProfileState';
+import useBookmarkStore from '@/lib/BookmarkState';
+import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Card.module.css';
-import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import useBookmarkStore from '@/lib/BookmarkState';
-import useProfileStore from '@/lib/UserProfileState';
-import { supabase } from '@/lib/SupabaseClient';
 
 type BookMarkProps = React.ComponentProps<'button'> & {
   id: string;

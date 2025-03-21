@@ -1,7 +1,7 @@
-import { useLocation } from 'react-router';
 import useModalVisibleStore from './ProblemModalState';
-import { useEffect } from 'react';
 import useQuizSolvedStore from './QuizSolvedState';
+import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 const ResetState = () => {
   // 페이지가 이동하는지 관찰하기 위한 location

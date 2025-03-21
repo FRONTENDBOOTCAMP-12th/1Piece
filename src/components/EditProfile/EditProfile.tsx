@@ -1,7 +1,7 @@
 import S from './EditProfile.module.css';
-import Input from '../Input/Input';
-import Button from '../Button/Button';
 import EmailAlarm from './EmailAlarm';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 interface ProfileState {
   user_id: string;

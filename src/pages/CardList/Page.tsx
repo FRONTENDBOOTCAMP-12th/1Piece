@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import SelectTag from '@/components/SelectTag/SelectTag';
 import CardListContainer from './components/CardListContainer';
+import SelectTag from '@/components/SelectTag/SelectTag';
 import S from './Page.module.css';
+import { useState } from 'react';
 
 function CardListPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);

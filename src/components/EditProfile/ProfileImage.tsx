@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { AiFillCamera } from 'react-icons/ai';
-import S from './EditProfile.module.css';
-import { supabase } from '@/lib/SupabaseClient';
-import useProfileStore from '@/lib/UserProfileState';
 import withReactContent from 'sweetalert2-react-content';
+import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
+import { AiFillCamera } from 'react-icons/ai';
+import { useEffect, useState } from 'react';
+import S from './EditProfile.module.css';
 import Swal from 'sweetalert2';
 
 interface ProfileImageProps {

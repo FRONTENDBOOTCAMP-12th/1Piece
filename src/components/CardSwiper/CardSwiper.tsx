@@ -1,7 +1,7 @@
-import React from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
 import { useNavigate } from 'react-router';
+import React from 'react';
 
 import Card from '@/components/Card/Card';
 

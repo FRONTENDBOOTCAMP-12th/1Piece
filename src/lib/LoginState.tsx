@@ -1,6 +1,6 @@
 import { User } from '@supabase/supabase-js';
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { create } from 'zustand';
 
 // 상태 변수 타입
 interface State {

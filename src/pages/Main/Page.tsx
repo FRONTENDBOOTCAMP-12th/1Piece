@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/SupabaseClient';
-import useModalVisibleStore from '@/lib/ProblemModalState';
-import fetchImg from '@/lib/FetchImg';
-import { toast, Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router';
 import CardSwiper from '@/components/CardSwiper/CardSwiper';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 import CardModal from '@/components/CardModal/CardModal';
-
+import { toast, Toaster } from 'react-hot-toast';
+import { supabase } from '@/lib/SupabaseClient';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import fetchImg from '@/lib/FetchImg';
 import S from './MainPage.module.css';
 
 interface ProblemCardData {
