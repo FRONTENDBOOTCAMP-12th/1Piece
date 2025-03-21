@@ -41,19 +41,17 @@ function CardModal({
   const setRecentView = async () => {
     const now = new Date().toISOString();
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('recent')
       .upsert(
         {
           solved_user: userProfile!.id,
-          solved_question: cardInfo.id,
+          solved_question: Number(cardInfo.id),
           recent_time: now,
         },
-        { onConflict: ['solved_user', 'solved_question'] }
+        { onConflict: 'solved_user, solved_question' }
       )
       .select();
-
-    console.log(data);
 
     if (error) console.log(error);
   };

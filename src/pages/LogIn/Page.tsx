@@ -77,7 +77,7 @@ function LogInPage() {
             user_id: data.user.id,
           },
           {
-            onConflict: ['attendance_date', 'user_id'],
+            onConflict: 'attendance_date, user_id',
           }
         )
         .select();

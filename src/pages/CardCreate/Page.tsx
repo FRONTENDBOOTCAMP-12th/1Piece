@@ -6,7 +6,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import TextArea from '@/components/TextArea/TextArea';
 import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
 import Button from '@/components/Button/Button';
-import QuizCreate from './QuizCreate/QuizCreate';
+import QuizCreate from './components/QuizCreate';
 
 import S from './Page.module.css';
 
