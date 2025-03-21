@@ -7,6 +7,7 @@ import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import S from './Page.module.css';
 import Swal from 'sweetalert2';
+import useDebounce from '@/lib/useDebounce';
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -39,6 +40,8 @@ function SignUpPage() {
     null
   );
   const [emailCheckLoading, setEmailCheckLoading] = useState(false);
+  const debouncedId = useDebounce(formData.id);
+  const debouncedEmail = useDebounce(formData.email);
 
   const emailRegEx = useMemo(
     () =>
@@ -334,30 +337,27 @@ function SignUpPage() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.id) handleIdCheck();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.id, handleIdCheck]);
+    if (debouncedId) handleIdCheck();
+  }, [debouncedId, handleIdCheck]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.email) handleEmailCheck();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.email, handleEmailCheck]);
+    if (debouncedEmail) handleEmailCheck();
+  }, [debouncedEmail, handleEmailCheck]);
 
   useEffect(() => {
-    passwordValidate();
-    passwordConfirmValidate();
-  }, [
-    formData.password,
-    formData.passwordConfirm,
-    passwordValidate,
-    passwordConfirmValidate,
-  ]);
+    if (formData.password) {
+      passwordValidate();
+    } else {
+      setErrors((prev) => ({ ...prev, password: '' }));
+    }
+  }, [formData.password, passwordValidate]);
+  useEffect(() => {
+    if (formData.passwordConfirm) {
+      passwordConfirmValidate();
+    } else {
+      setErrors((prev) => ({ ...prev, passwordConfirm: '' }));
+    }
+  }, [formData.passwordConfirm, passwordConfirmValidate]);
 
   return (
     <div className={S.container}>
