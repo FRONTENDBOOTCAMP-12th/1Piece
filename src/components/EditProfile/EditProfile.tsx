@@ -7,12 +7,12 @@ interface ProfileState {
   user_id: string;
   nickname: string;
   email: string;
-  alarm?: string | null;
 }
 
 interface EditProfileProps {
   profile: ProfileState;
-  alarmTime: string;
+  alarmTime: string | null;
+  isAlarmEnabled: boolean;
   newPassword: string;
   confirmNewPassword: string;
   nicknameError: string;
@@ -20,7 +20,8 @@ interface EditProfileProps {
   passwordSuccess?: string;
   confirmPasswordError?: string;
   confirmPasswordSuccess: string;
-  setAlarmTime: (time: string) => void;
+  onAlarmToggle: () => void;
+  onAlarmTimeChange: (time: string) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSaveChanges?: (e: React.FormEvent) => void;
   onDeleteAccount: () => void;
@@ -29,6 +30,7 @@ interface EditProfileProps {
 function EditProfile({
   profile,
   alarmTime,
+  isAlarmEnabled,
   newPassword,
   confirmNewPassword,
   nicknameError,
@@ -36,7 +38,8 @@ function EditProfile({
   passwordSuccess,
   confirmPasswordError,
   confirmPasswordSuccess,
-  setAlarmTime,
+  onAlarmToggle,
+  onAlarmTimeChange,
   onSaveChanges,
   onInputChange,
   onDeleteAccount,
@@ -98,11 +101,10 @@ function EditProfile({
       ) : null}
       {/* 알림 설정 */}
       <EmailAlarm
-        initialTime={alarmTime}
-        isChecked={Boolean(profile?.alarm)} // profile의 데이터를 직접 활용
-        onChange={(time: string | null) => {
-          setAlarmTime(time ?? '09:00'); // 상태 업데이트
-        }}
+        time={alarmTime ?? '09:00'}
+        isChecked={isAlarmEnabled}
+        onToggle={onAlarmToggle}
+        onTimeChange={onAlarmTimeChange}
       />
       {/* 수정 버튼 */}
       <div className={S.buttonGroup}>
