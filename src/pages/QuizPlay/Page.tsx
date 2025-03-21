@@ -48,6 +48,7 @@ function QuizPlayPage() {
 
   return (
     <div className={S.problemContainer}>
+      <title>Quzelly | 문제 풀이 페이지</title>
       <h1 className={S.solveProblemTitle}>{cardInfo.title}</h1>
       {/* 퀴즈를 리스트 렌더링으로 렌더링 */}
       {quizInfo.map((item, index) => (

@@ -156,6 +156,7 @@ function QuizCompletePage() {
 
   return (
     <div className={S.pageContainer}>
+      <title>Quzelly | 풀이 결과 페이지</title>
       <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
       <div className={S.rightSection}>
         <InputBox

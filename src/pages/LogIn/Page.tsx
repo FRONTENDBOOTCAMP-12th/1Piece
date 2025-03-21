@@ -2,7 +2,7 @@ import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { supabase } from '@/lib/SupabaseClient';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import S from './Page.module.css';
 import useLoginStore from '@/lib/LoginState';
 import useBookMarkStore from '@/lib/BookmarkState';
@@ -150,6 +150,21 @@ function LogInPage() {
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 로그인</title>
+      <meta name="description" content="Quzelly 로그인 페이지입니다" />
+      <meta property="og:title" content="Quzelly" />
+      <meta
+        property="og:description"
+        content="어디든 자유롭게! Quzelly에서 퀴즈를 풀고 탐험하세요."
+      />
+      <meta
+        property="og:image"
+        content="https://quzelly.vercel.app/images/main_banner.webp"
+      />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://quzelly.vercel.app/login" />
       <form onSubmit={handleLogin} className={S.loginForm}>
         <h1 className={S.title}>로그인</h1>
         <Input
@@ -167,15 +182,18 @@ function LogInPage() {
           className={S.loginInputBox}
         />
         <div className={S.findLink}>
-          <a href="/find-id" aria-label="아이디 찾기 페이지로 이동">
+          <NavLink to="/find-id" aria-label="아이디 찾기 페이지로 이동">
             아이디 찾기
-          </a>
+          </NavLink>
           <span className={S.separator} aria-hidden="true">
             |
           </span>
-          <a href="/find-password" aria-label="비밀번호 재설정 페이지로 이동">
+          <NavLink
+            to="/find-password"
+            aria-label="비밀번호 재설정 페이지로 이동"
+          >
             비밀번호 재설정
-          </a>
+          </NavLink>
         </div>
         <div className={S.buttonContainer}>
           <Button

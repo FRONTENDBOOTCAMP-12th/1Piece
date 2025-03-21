@@ -68,6 +68,7 @@ function RecentViewPage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 열람기록</title>
       <MyPageDiary title="R E C E N T V I E W">
         <CardGrid data={data} loading={loading} />
       </MyPageDiary>

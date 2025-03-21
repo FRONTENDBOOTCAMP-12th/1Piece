@@ -45,6 +45,7 @@ function FindIdPage() {
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 아이디 찾기</title>
       <form className={S.findIdForm} onSubmit={handleFindId}>
         <h1 className={S.title}>아이디찾기</h1>
         <Input

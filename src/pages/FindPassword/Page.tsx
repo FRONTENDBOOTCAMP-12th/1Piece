@@ -50,6 +50,7 @@ function FindPwPage() {
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 비밀번호 변경</title>
       <form className={S.findPwForm} onSubmit={handleResetPw}>
         <h1 className={S.title}>비밀번호 찾기</h1>
         <Input

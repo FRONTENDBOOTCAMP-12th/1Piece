@@ -67,6 +67,7 @@ function BookmarkPage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 북마크</title>
       <MyPageDiary title="B O O K M A R K">
         <CardGrid data={data} loading={loading} />
       </MyPageDiary>
