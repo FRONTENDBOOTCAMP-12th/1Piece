@@ -68,6 +68,7 @@ function CardWrittenPage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 작성한 문제</title>
       <MyPageDiary title="M Y C A R D">
         <CardGrid data={data} loading={loading} />
       </MyPageDiary>

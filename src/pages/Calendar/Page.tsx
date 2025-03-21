@@ -32,6 +32,7 @@ function CalendarPage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 캘린더</title>
       <MyPageDiary title="C A L E N D A R" activeButton={2}>
         <Calendar markedDates={attendance} />
       </MyPageDiary>

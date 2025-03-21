@@ -361,6 +361,7 @@ function SignUpPage() {
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 회원가입</title>
       <form onSubmit={handleSubmit} className={S.signUpForm}>
         <h1 className={S.title}>회원가입</h1>
         <Input

@@ -453,6 +453,7 @@ function EditProfilePage() {
 
   return (
     <div>
+      <title>Quzelly | 개인정보관리</title>
       <Toaster position="bottom-right" reverseOrder={false} />
       <MyPageDiary title="P r o f i l e">
         {!isPasswordVerified ? (

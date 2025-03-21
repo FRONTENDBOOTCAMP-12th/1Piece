@@ -70,7 +70,7 @@ function CardModal({
     <div className={`${S.backdrop} ${!isVisible ? S.close : ''}`}>
       <div className={S.modalContainer}>
         <div className={S.header}>
-          <h4 className={S.alert}>문제를 푸시겠습니까?</h4>
+          <span className={S.alert}>문제를 푸시겠습니까?</span>
         </div>
         <div className={S.content}>
           <img
@@ -82,13 +82,13 @@ function CardModal({
             }}
           />
           <div className={S.info}>
-            <h5 className={S.problemTitle}>{children}</h5>
+            <span className={S.problemTitle}>{children}</span>
             <div className={S.tagContainer}>
               {tags.map((item) => (
                 <CardTag key={item}>{item}</CardTag>
               ))}
             </div>{' '}
-            <h6 className={S.description}>{description}</h6>
+            <span className={S.description}>{description}</span>
           </div>
         </div>
         <div className={S.btns}>
