@@ -118,7 +118,7 @@ function LogInPage() {
         'dummy/dummy_profile.png';
       let newProfileImg = profileImg.publicUrl;
       try {
-        const response = await fetch(profileImg.publicUrl, { method: 'HEAD' });
+        const response = await fetch(profileImg.publicUrl, { method: 'GET' });
 
         if (!response.ok) {
           newProfileImg = 'dummy/dummy_profile.png';
