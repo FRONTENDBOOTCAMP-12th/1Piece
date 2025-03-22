@@ -18,13 +18,14 @@
   justify-content: center;
   align-items: center;
   gap: var(--space-4);
-  top: 6rem;
-  right: 10%;
+  top: 3.5rem;
+  right: 17.5%;
   background: var(--dark-gray-g);
   border-radius: var(--radius-large);
   border: 1px solid var(--black);
   font-size: var(--medium);
   padding: var(--space-4);
+  z-index: 999;
 
   .settingLoginInfoList {
     cursor: pointer;
