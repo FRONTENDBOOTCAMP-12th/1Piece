@@ -20,6 +20,11 @@
 }
 
 .gridName15 {
+  display: grid;
+  grid-template-columns: 640px;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-6);
+  margin-block-end: var(--space-6);
 }
 
 .gridName26 {
