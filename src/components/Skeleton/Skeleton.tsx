@@ -25,17 +25,6 @@ function Skeleton({ row, col }: SkeletonProps) {
           </div>
         );
       })}
-      <div className={S.skeletonContainer}>
-        <div className={S.skeletonImg} />
-        <div className={S.skeletonInfoContainer}>
-          <div className={S.skeletonTitle} />
-          <div className={S.skeletonTagContainer}>
-            <div className={S.skeletonTag} />
-            <div className={S.skeletonTag} />
-            <div className={S.skeletonTag} />
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
