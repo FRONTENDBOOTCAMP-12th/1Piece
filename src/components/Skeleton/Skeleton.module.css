@@ -28,6 +28,11 @@
 }
 
 .gridName26 {
+  display: grid;
+  grid-template-columns: 640px 640px;
+  grid-template-rows: repeat(1fr, 6);
+  gap: var(--space-6);
+  margin-block-end: var(--space-6);
 }
 
 .skeletonContainer {

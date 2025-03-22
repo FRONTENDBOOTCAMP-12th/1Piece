@@ -28,11 +28,7 @@ function MainPage() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
 
-  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-
   const fetchItems = async () => {
-    await sleep(5000);
-
     try {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
