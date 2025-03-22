@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
-import Card from '@/components/Card/Card';
 import Pagination from '@/components/Pagination/Pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Card from '@/components/Card/Card';
+import React, { useState } from 'react';
 import S from './CardGrid.module.css';
 
 import 'swiper/css';

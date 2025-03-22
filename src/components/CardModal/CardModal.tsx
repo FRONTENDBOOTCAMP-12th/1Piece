@@ -1,11 +1,11 @@
-import useLoginStore from '@/lib/LoginState';
 import useModalVisibleStore from '@/lib/ProblemModalState';
-import { useNavigate } from 'react-router';
-import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
-import S from './CardModal.module.css';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
+import useLoginStore from '@/lib/LoginState';
+import { useNavigate } from 'react-router';
+import CardTag from '../CardTag/CardTag';
+import S from './CardModal.module.css';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {

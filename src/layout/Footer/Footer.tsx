@@ -1,5 +1,5 @@
-import S from './Footer.module.css';
 import FooterNavigation from './FooterNav';
+import S from './Footer.module.css';
 
 const navigation = {
   community: {

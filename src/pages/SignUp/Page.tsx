@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
+import Button from '@/components/Button/Button';
 import { supabase } from '@/lib/SupabaseClient';
 import { IoCheckmark } from 'react-icons/io5';
-import { useNavigate } from 'react-router';
-import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import useDebounce from '@/lib/useDebounce';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 import Swal from 'sweetalert2';
-import useDebounce from '@/lib/useDebounce';
 
 function SignUpPage() {
   const [formData, setFormData] = useState({

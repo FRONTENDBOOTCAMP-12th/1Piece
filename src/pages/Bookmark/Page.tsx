@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import CardGrid from '@/components/CardGrid/CardGrid';
-import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import { supabase } from '@/lib/SupabaseClient';
-import S from './Page.module.css';
-import CardModal from '@/components/CardModal/CardModal';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import MyPageTab from '@/components/MyPageTab/MyPageTab';
+import CardModal from '@/components/CardModal/CardModal';
+import CardGrid from '@/components/CardGrid/CardGrid';
 import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
+import { useState, useEffect } from 'react';
+import S from './Page.module.css';
 
 interface CardData {
   id: string;

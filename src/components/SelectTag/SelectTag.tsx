@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import S from './SelectTag.module.css';
+import { useState } from 'react';
 import Tag from './Tag';
+
 // 태그 명은 고정된 string값만 사용되므로 type을 다음과 같이 지정
 export type DummyKey =
   | '국어'

@@ -1,9 +1,9 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
-import { useEffect, useState } from 'react';
-import S from './Page.module.css';
-import Quiz from './components/Quiz';
-import { supabase } from '@/lib/SupabaseClient';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
+import { supabase } from '@/lib/SupabaseClient';
+import { useEffect, useState } from 'react';
+import Quiz from './components/Quiz';
+import S from './Page.module.css';
 
 interface QuizProps {
   id: number;

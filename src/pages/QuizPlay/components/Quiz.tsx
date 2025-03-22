@@ -1,12 +1,12 @@
-import ProgressBar from '@/components/ProgressBar/ProgressBar';
-import Option from '@/components/Option/Option';
-import S from './Quiz.module.css';
 import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { FaArrowRight } from 'react-icons/fa6';
-import { useRef, useState } from 'react';
-import useQuizSolvedStore from '@/lib/QuizSolvedState';
-import { useNavigate } from 'react-router';
+import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import useQuizSolvedStore from '@/lib/QuizSolvedState';
+import Option from '@/components/Option/Option';
+import { FaArrowRight } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
+import { useRef, useState } from 'react';
+import S from './Quiz.module.css';
 
 interface QuizProps {
   totalQuizCount: number;

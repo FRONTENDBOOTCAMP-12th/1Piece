@@ -1,9 +1,9 @@
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import Calendar from '@/components/Calendar/Calendar';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
-import S from './Page.module.css';
-import { useEffect, useState } from 'react';
+import Calendar from '@/components/Calendar/Calendar';
 import useCalendarStore from '@/lib/CalendarState';
+import { useEffect, useState } from 'react';
+import S from './Page.module.css';
 
 function CalendarPage() {
   const dateList = useCalendarStore((state) => state.dateList);

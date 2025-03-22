@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import S from './TextArea.module.css';
+import { useState } from 'react';
 
 interface TextAreaProps {
   name?: string;

@@ -1,5 +1,5 @@
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { create } from 'zustand';
 
 // 카드 정보를 나타내기 위한 타입 지정
 export interface CardInfo {

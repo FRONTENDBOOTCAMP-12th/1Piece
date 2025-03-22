@@ -4,21 +4,21 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Common from '@/layout/Common';
 import ResetState from './lib/ResetState';
 
-const BadgePage = lazy(() => import('@/pages/Badge/Page'));
-const BookmarkPage = lazy(() => import('@/pages/Bookmark/Page'));
-const CalendarPage = lazy(() => import('@/pages/Calendar/Page'));
-const CardCreatePage = lazy(() => import('@/pages/CardCreate/Page'));
-const CardListPage = lazy(() => import('@/pages/CardList/Page'));
+const QuizCompletePage = lazy(() => import('@/pages/QuizComplete/Page'));
+const FindPasswordPage = lazy(() => import('@/pages/FindPassword/Page'));
 const CardWrittenPage = lazy(() => import('@/pages/CardWritten/Page'));
 const EditProfilePage = lazy(() => import('@/pages/EditProfile/Page'));
+const CardCreatePage = lazy(() => import('@/pages/CardCreate/Page'));
+const RecentViewPage = lazy(() => import('@/pages/RecentView/Page'));
+const BookmarkPage = lazy(() => import('@/pages/Bookmark/Page'));
+const CalendarPage = lazy(() => import('@/pages/Calendar/Page'));
+const CardListPage = lazy(() => import('@/pages/CardList/Page'));
+const QuizPlayPage = lazy(() => import('@/pages/QuizPlay/Page'));
 const FindIdPage = lazy(() => import('@/pages/FindId/Page'));
-const FindPasswordPage = lazy(() => import('@/pages/FindPassword/Page'));
+const SignUpPage = lazy(() => import('@/pages/SignUp/Page'));
+const BadgePage = lazy(() => import('@/pages/Badge/Page'));
 const LogInPage = lazy(() => import('@/pages/LogIn/Page'));
 const MainPage = lazy(() => import('@/pages/Main/Page'));
-const QuizCompletePage = lazy(() => import('@/pages/QuizComplete/Page'));
-const QuizPlayPage = lazy(() => import('@/pages/QuizPlay/Page'));
-const RecentViewPage = lazy(() => import('@/pages/RecentView/Page'));
-const SignUpPage = lazy(() => import('@/pages/SignUp/Page'));
 
 function App() {
   return (
@@ -28,21 +28,21 @@ function App() {
           <ResetState />
           <Routes>
             <Route element={<Common />}>
-              <Route index element={<MainPage />} />
-              <Route path="/badge" element={<BadgePage />} />
-              <Route path="/bookmark" element={<BookmarkPage />} />
-              <Route path="/calendar" element={<CalendarPage />} />
-              <Route path="/card-create" element={<CardCreatePage />} />
-              <Route path="/card-list" element={<CardListPage />} />
+              <Route path="/quiz-complete" element={<QuizCompletePage />} />
+              <Route path="/find-password" element={<FindPasswordPage />} />
               <Route path="/card-written" element={<CardWrittenPage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
-              <Route path="/find-id" element={<FindIdPage />} />
-              <Route path="/find-password" element={<FindPasswordPage />} />
-              <Route path="/login" element={<LogInPage />} />
-              <Route path="/quiz-complete" element={<QuizCompletePage />} />
-              <Route path="/quiz-play" element={<QuizPlayPage />} />
+              <Route path="/card-create" element={<CardCreatePage />} />
               <Route path="/recent-view" element={<RecentViewPage />} />
+              <Route path="/bookmark" element={<BookmarkPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/card-list" element={<CardListPage />} />
+              <Route path="/quiz-play" element={<QuizPlayPage />} />
+              <Route path="/find-id" element={<FindIdPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
+              <Route path="/badge" element={<BadgePage />} />
+              <Route path="/login" element={<LogInPage />} />
+              <Route index element={<MainPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/SupabaseClient';
 import { CommentData } from '@/components/CommentList/CommentList';
+import CommentList from '@/components/CommentList/CommentList';
+import QuizResult from '@/components/QuizResult/QuizResult';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import useProfileStore from '@/lib/UserProfileState';
-import QuizResult from '@/components/QuizResult/QuizResult';
+import { supabase } from '@/lib/SupabaseClient';
 import InputBox from './components/InputBox';
-import CommentList from '@/components/CommentList/CommentList';
+import { useState, useEffect } from 'react';
 import S from './Page.module.css';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
