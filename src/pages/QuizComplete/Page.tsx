@@ -156,7 +156,11 @@ function QuizCompletePage() {
 
   return (
     <div className={S.pageContainer}>
-      <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
+      <QuizResult
+        quizTitle={cardInfo.title}
+        correct={correctQuiz}
+        totalQuestions={totalQuiz}
+      />
       <div className={S.rightSection}>
         <InputBox
           id={cardInfo.id}
