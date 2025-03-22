@@ -14,8 +14,9 @@
 
 .gridName22 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 640px 640px;
   grid-template-rows: 1fr 1fr;
+  gap: 20px;
 }
 
 .gridName15 {
