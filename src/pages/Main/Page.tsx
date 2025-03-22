@@ -28,7 +28,11 @@ function MainPage() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
 
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
   const fetchItems = async () => {
+    await sleep(5000);
+
     try {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
@@ -143,27 +147,22 @@ function MainPage() {
         alt="큐젤리란"
         className={S.mainBanner}
       />
-      {loading ? (
-        // 데이터를 불러오는 중에 사용할 UI
-        <p className={S.loading}>로딩 중...</p>
-      ) : (
-        <div className={S.mainContainer}>
-          {/* 데이터 fetching이 완료됐다면 나타낼 UI */}
-          <CardSwiper data={itemCreated} sortStandard="popular">
-            카드 Top 7
-          </CardSwiper>
-          <button
-            type="button"
-            className={S.miniBannerButton}
-            onClick={handleMiniBannerClick}
-            aria-label="가입이 5초 안에 가능한 회원가입 페이지로 이동동"
-          />
-          {/* sortStandard="new"를 명시적으로 전달 */}
-          <CardSwiper data={itemCheck} sortStandard="new">
-            추천 최신 카드
-          </CardSwiper>
-        </div>
-      )}
+
+      <div className={S.mainContainer}>
+        <CardSwiper data={itemCreated} sortStandard="popular" loading={loading}>
+          카드 Top 7
+        </CardSwiper>
+        <button
+          type="button"
+          className={S.miniBannerButton}
+          onClick={handleMiniBannerClick}
+          aria-label="가입이 5초 안에 가능한 회원가입 페이지로 이동동"
+        />
+        {/* sortStandard="new"를 명시적으로 전달 */}
+        <CardSwiper data={itemCheck} sortStandard="new" loading={loading}>
+          추천 최신 카드
+        </CardSwiper>
+      </div>
       <CardModal
         src={cardInfo.src}
         tags={cardInfo.tags}
