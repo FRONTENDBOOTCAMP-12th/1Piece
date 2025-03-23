@@ -52,9 +52,8 @@
   display: flex;
   position: absolute;
   flex-flow: column;
-  left: 21.4rem;
-  top: 20rem;
-  gap: 25rem;
+  left: 25%;
+  top: 20%;
 
   .topSpringContainer {
     display: flex;
@@ -68,18 +67,21 @@
       border-radius: var(--rounded-full);
     }
   }
+}
 
-  .bottomSpringContainer {
-    display: flex;
-    flex-flow: column;
-    gap: 3rem;
+.bottomSpringContainer {
+  display: flex;
+  flex-flow: column;
+  gap: 3rem;
+  position: absolute;
+  left: 25%;
+  bottom: 20%;
 
-    & div {
-      height: var(--space-4);
-      width: var(--space-10);
-      background: var(--dark-gray-g);
-      border-radius: var(--rounded-full);
-    }
+  & div {
+    height: var(--space-4);
+    width: var(--space-10);
+    background: var(--dark-gray-g);
+    border-radius: var(--rounded-full);
   }
 }
 
