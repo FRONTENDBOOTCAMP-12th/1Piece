@@ -5,7 +5,6 @@ import { toast, Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import fetchImg from '@/lib/FetchImg';
 import S from './MainPage.module.css';
 
 interface ProblemCardData {
@@ -45,16 +44,18 @@ function MainPage() {
         .range(0, 6);
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCheck = await Promise.all(
+      const newDataCheck =
         dataCheck
-          ?.map(async (item) => {
+          ?.map((item) => {
             if (!item.users) {
               return null;
             }
 
             return {
               id: `${item.id}`,
-              src: await fetchImg(item.users.id),
+              src: supabase.storage
+                .from('profileImg/userProfile')
+                .getPublicUrl(`${item.writer}.png`).data.publicUrl,
               userName: item.users.nickname,
               tags: Object.values(item.tags!),
               checked: false,
@@ -63,20 +64,21 @@ function MainPage() {
               count: item.count,
             };
           })
-          .filter(Boolean) ?? []
-      );
+          .filter(Boolean) ?? [];
 
       // ProblemCard에 사용되는 데이터 형식에 맞춰서 데이터 가공
-      const newDataCreated = await Promise.all(
+      const newDataCreated =
         dataCreated
-          ?.map(async (item) => {
+          ?.map((item) => {
             if (!item.users) {
               return null;
             }
 
             return {
               id: `${item.id}`,
-              src: await fetchImg(item.users.id),
+              src: supabase.storage
+                .from('profileImg/userProfile')
+                .getPublicUrl(`${item.writer}.png`).data.publicUrl,
               userName: item.users.nickname,
               tags: Object.values(item.tags!),
               checked: false,
@@ -85,8 +87,7 @@ function MainPage() {
               count: item.count,
             };
           })
-          .filter(Boolean) ?? []
-      );
+          .filter(Boolean) ?? [];
 
       // 데이터를 정상적으로 받지 못했다면 ERROR 발생
       if (errorCreated) throw errorCreated;

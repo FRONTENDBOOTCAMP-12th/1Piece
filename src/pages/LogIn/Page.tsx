@@ -111,12 +111,12 @@ function LogInPage() {
         .eq('bookmark_user', `${profileData![0].id}`);
 
       // 유저의 프로필 이미지 저장
-      const { data: profileImg } =
-        supabase.storage
-          .from('profileImg/userProfile')
-          .getPublicUrl(`${profileData![0].id}.png`) ??
-        'dummy/dummy_profile.png';
+      const { data: profileImg } = supabase.storage
+        .from('profileImg/userProfile')
+        .getPublicUrl(`${profileData![0].id}.png`);
+
       let newProfileImg = profileImg.publicUrl;
+
       try {
         const response = await fetch(profileImg.publicUrl, { method: 'GET' });
 

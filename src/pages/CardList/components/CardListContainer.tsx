@@ -170,7 +170,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     if (search) {
       searchFetchItems(sortStandard);
     } else {
-      setData([]);
+      fetchItems(sortStandard);
     }
   }, [
     sortStandard,
