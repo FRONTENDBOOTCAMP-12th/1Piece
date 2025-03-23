@@ -37,6 +37,27 @@ const viteConfig = defineConfig((env) => {
         '@': resolve(__dirname, 'src'),
       },
     },
+
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: [
+              'react',
+              'react-dom',
+              'react-router',
+              'react-calendar',
+              'react-icons',
+              'react-error-boundary',
+              'react-hot-toast',
+            ],
+            ecosystem: ['swiper', 'zustand', 'dayjs'],
+            mui: ['@mui/material', '@mui/x-date-pickers'],
+            supabse: ['@supabase/supabase-js'],
+          },
+        },
+      },
+    },
   };
 });
 
