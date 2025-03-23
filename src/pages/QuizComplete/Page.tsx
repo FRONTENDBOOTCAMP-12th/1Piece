@@ -92,14 +92,16 @@ function QuizCompletePage() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    fetchComments(chunk);
-
     handleSetLike(Number(searchParams));
     handleSetBookmark(Number(searchParams));
 
     setIsExploding(true);
     setTimeout(() => setIsExploding(false), 3000);
-  }, [chunk, searchParams]);
+  }, [searchParams]);
+
+  useEffect(() => {
+    fetchComments(chunk);
+  }, [chunk]);
 
   // 댓글 추가
   const handleAddComment = async (content: string) => {
