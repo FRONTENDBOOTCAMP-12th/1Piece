@@ -7,6 +7,7 @@ import useProfileStore from '@/lib/UserProfileState';
 import QuizResult from '@/components/QuizResult/QuizResult';
 import InputBox from './components/InputBox';
 import CommentList from '@/components/CommentList/CommentList';
+import ConfettiExplosion from 'react-confetti-explosion';
 import S from './Page.module.css';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
@@ -19,6 +20,7 @@ function QuizCompletePage() {
   const [chunk, setChunk] = useState<number>(1);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [isExploding, setIsExploding] = useState(false);
 
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
@@ -88,10 +90,15 @@ function QuizCompletePage() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     fetchComments(chunk);
 
     handleSetLike(Number(searchParams));
     handleSetBookmark(Number(searchParams));
+
+    setIsExploding(true);
+    setTimeout(() => setIsExploding(false), 3000);
   }, [chunk, searchParams]);
 
   // 댓글 추가
@@ -156,6 +163,14 @@ function QuizCompletePage() {
 
   return (
     <div className={S.pageContainer}>
+      {isExploding && (
+        <ConfettiExplosion
+          className={S.confetti}
+          duration={3000}
+          particleCount={250}
+          width={1600}
+        />
+      )}
       <QuizResult
         quizTitle={cardInfo.title}
         correct={correctQuiz}
