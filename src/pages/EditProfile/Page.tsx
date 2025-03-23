@@ -24,6 +24,11 @@ interface DeactivateAccountProps {
   onDeactivate: () => void;
 }
 
+type DeleteUserResult = {
+  success: boolean;
+  message?: string;
+};
+
 function EditProfilePage() {
   const [profile, setProfile] = useState<ProfileState | null>(null);
   const [loading, setLoading] = useState(true);
@@ -294,13 +299,11 @@ function EditProfilePage() {
     }
   };
 
-  // 탈퇴로 가장한 로그아웃 함수
+  // 탈퇴 함수
   const customSwal = withReactContent(Swal);
 
   const handleDeactivateAccount: DeactivateAccountProps['onDeactivate'] =
     async () => {
-      const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
-
       const result = await customSwal.fire({
         title: (
           <>
@@ -319,61 +322,60 @@ function EditProfilePage() {
         },
       });
 
-      if (result.isConfirmed) {
-        try {
-          // 현재 로그인된 사용자 정보 가져오기
-          const { data: user, error: userError } =
-            await supabase.auth.getUser();
-          if (userError || !user?.user) {
-            await Swal.fire({
-              title: '오류 발생',
-              text: '사용자 정보를 가져올 수 없습니다.',
-              icon: 'error',
-            });
-            return;
-          }
+      if (!result.isConfirmed) return;
 
-          console.log('현재 로그인된 사용자 ID:', user.user.id);
+      try {
+        // 세션에서 토큰 + 유저 정보 가져오기
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
+        if (sessionError || !sessionData.session) throw new Error('세션 없음');
 
-          // users 테이블에서 status를 inactive로 업데이트
-          const { error } = await supabase
-            .from('users')
-            .update({ status: 'inactive' })
-            .eq('auth_uid', user.user.id); // auth_uid 필드 기준
+        const accessToken = sessionData.session.access_token;
+        const userId = sessionData.session.user.id;
 
-          if (error) throw error;
-
-          console.log('사용자 비활성화 성공!');
-
-          // zustand 상태 초기화
-          resetUser();
-
-          // 탈퇴 완료 SweetAlert 알림
-          await customSwal.fire({
-            title: (
-              <>
-                <p style={{ marginBlock: '16px' }}>이용해주셔서 감사합니다</p>
-                <img src="/images/jellyfish.png" alt="탈퇴 완료 이미지" />
-              </>
-            ),
-            confirmButtonText: '확인',
-            customClass: {
-              confirmButton: 'confirmButton',
+        // Edge Function 호출
+        const response = await fetch(
+          'https://vlaqppdfcbvhxtaqngam.functions.supabase.co/delete-user',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`,
             },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        console.log({ userId });
 
-            allowOutsideClick: false, // 바깥 클릭 방지
-            allowEscapeKey: false, // ESC 키 방지
-          });
-          // 로그아웃 실행 (handleLogout 호출)
-          await handleLogout();
-        } catch (error) {
-          console.error('탈퇴 실패:', error);
-          await Swal.fire({
-            title: '탈퇴 실패',
-            text: '탈퇴 처리 중 오류가 발생했습니다.',
-            icon: 'error',
-          });
+        const result: DeleteUserResult = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message ?? '탈퇴 실패');
         }
+
+        // 상태 초기화 + 알림 + 로그아웃
+        await customSwal.fire({
+          title: (
+            <>
+              <p style={{ marginBlock: '16px' }}>이용해주셔서 감사합니다</p>
+              <img src="/images/jellyfish.png" alt="탈퇴 완료 이미지" />
+            </>
+          ),
+          confirmButtonText: '확인',
+          customClass: { confirmButton: 'confirmButton' },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        await handleLogout();
+      } catch (error) {
+        console.error('탈퇴 실패:', error);
+        await Swal.fire({
+          title: '탈퇴 실패',
+          text:
+            error instanceof Error ? error.message : '탈퇴 처리 중 오류 발생',
+          icon: 'error',
+        });
       }
     };
 
