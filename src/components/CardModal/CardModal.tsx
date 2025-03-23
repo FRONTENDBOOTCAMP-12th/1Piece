@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import CardTag from '../CardTag/CardTag';
 import S from './CardModal.module.css';
 import Swal from 'sweetalert2';
+import useReloadStore from '@/lib/ReloadState';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -34,6 +35,7 @@ function CardModal({
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
   const isWriter = useModalVisibleStore((state) => state.isWriter);
+  const setReload = useReloadStore((state) => state.setReload);
 
   const handleClose = () => {
     setNonVisible();
@@ -86,7 +88,7 @@ function CardModal({
       })
       .then(() => {
         setNonVisible();
-        window.location.reload();
+        setReload();
       });
   };
 
