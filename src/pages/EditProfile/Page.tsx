@@ -456,7 +456,7 @@ function EditProfilePage() {
     <div>
       <title>Quzelly | 개인정보관리</title>
       <Toaster position="bottom-right" reverseOrder={false} />
-      <MyPageDiary title="P r o f i l e">
+      <MyPageDiary title="P r o f i l e" activeButton={3}>
         {!isPasswordVerified ? (
           <PasswordVerification
             onVerify={handlePasswordVerification} // 현재 비밀번호 검증 함수

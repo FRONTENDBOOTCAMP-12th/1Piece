@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: var(--space-4);
   margin-top: var(--space-24);
+  position: absolute;
+  right: -7.5rem;
 }
 
 .tab {
