@@ -4,6 +4,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import { useState, useEffect, useCallback } from 'react';
 import CardModal from '@/components/CardModal/CardModal';
 import { useNavigate, useLocation } from 'react-router';
+import Skeleton from '@/components/Skeleton/Skeleton';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { supabase } from '@/lib/SupabaseClient';
 import S from './CardListContainer.module.css';
@@ -208,7 +209,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
       </div>
       {children && <div className={S.header}>{children}</div>}
       {loading ? (
-        <p>로딩 중...</p>
+        <Skeleton row={2} col={6} />
       ) : (
         <div className={S.swiperContainer}>
           <Swiper

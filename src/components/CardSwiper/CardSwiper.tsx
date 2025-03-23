@@ -1,16 +1,15 @@
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Pagination, Grid } from 'swiper/modules';
+import Skeleton from '../Skeleton/Skeleton';
 import { useNavigate } from 'react-router';
-import React from 'react';
-
 import Card from '@/components/Card/Card';
+import S from './CardSwiper.module.css';
+import React from 'react';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
-
-import S from './CardSwiper.module.css';
 
 export interface ProblemCardData {
   id: string;
@@ -26,6 +25,7 @@ export interface ProblemCardData {
 type CardSwiperProps = React.ComponentProps<'h2'> & {
   data: ProblemCardData[];
   sortStandard?: 'popular' | 'new';
+  loading: boolean;
 };
 
 const CustomNavigationNext = () => {
@@ -52,6 +52,7 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
   data,
   children,
   sortStandard = 'popular',
+  loading,
 }) => {
   const navigation = useNavigate();
 
@@ -72,43 +73,47 @@ const CardSwiper: React.FC<CardSwiperProps> = ({
           <span>더보기</span>
         </button>
       </div>
-      <div className={S.swiperContainer}>
-        <Swiper
-          modules={[Pagination, Grid]}
-          spaceBetween={20}
-          slidesPerView={2}
-          grid={{ rows: 2, fill: 'row' }}
-          pagination={{ enabled: false }}
-          className={S.swiper}
-        >
-          {data.map((item) => (
-            <SwiperSlide key={item.id} className={S.slide}>
-              <Card
-                src={item.src}
-                userName={item.userName}
-                tags={item.tags}
-                checked={item.checked}
-                id={item.id}
-                description={item.description}
-                count={item.count}
+      {loading ? (
+        <Skeleton row={2} col={2} />
+      ) : (
+        <div className={S.swiperContainer}>
+          <Swiper
+            modules={[Pagination, Grid]}
+            spaceBetween={20}
+            slidesPerView={2}
+            grid={{ rows: 2, fill: 'row' }}
+            pagination={{ enabled: false }}
+            className={S.swiper}
+          >
+            {data.map((item) => (
+              <SwiperSlide key={item.id} className={S.slide}>
+                <Card
+                  src={item.src}
+                  userName={item.userName}
+                  tags={item.tags}
+                  checked={item.checked}
+                  id={item.id}
+                  description={item.description}
+                  count={item.count}
+                >
+                  {item.problemTitle}
+                </Card>
+              </SwiperSlide>
+            ))}
+            <SwiperSlide>
+              <button
+                type="button"
+                className={S.btnMoreCard}
+                onClick={handleMoveToCardList}
               >
-                {item.problemTitle}
-              </Card>
+                <span className={S.MoreCardMessage}>클릭해서 카드 더보기</span>
+              </button>
             </SwiperSlide>
-          ))}
-          <SwiperSlide>
-            <button
-              type="button"
-              className={S.btnMoreCard}
-              onClick={handleMoveToCardList}
-            >
-              <span className={S.MoreCardMessage}>클릭해서 카드 더보기</span>
-            </button>
-          </SwiperSlide>
-          <CustomNavigationNext />
-          <CustomNavigationPrev />
-        </Swiper>
-      </div>
+            <CustomNavigationNext />
+            <CustomNavigationPrev />
+          </Swiper>
+        </div>
+      )}
     </div>
   );
 };
