@@ -29,8 +29,6 @@ function MainPage() {
 
   const fetchItems = async () => {
     try {
-      console.log(1);
-
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
         .from('card')
