@@ -64,10 +64,10 @@ function MyPageDiary({
           <div />
           <div />
         </div>
-        <div className={S.bottomSpringContainer}>
-          <div />
-          <div />
-        </div>
+      </div>
+      <div className={S.bottomSpringContainer}>
+        <div />
+        <div />
       </div>
     </div>
   );
