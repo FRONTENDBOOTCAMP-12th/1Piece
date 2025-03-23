@@ -42,7 +42,7 @@ function RecentViewPage() {
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
+        id: `${item.card.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
