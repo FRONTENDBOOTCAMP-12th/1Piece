@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import S from './LoggedIn.module.css';
-import { useNavigate } from 'react-router';
-import { supabase } from '@/lib/SupabaseClient';
-import useLoginStore from '@/lib/LoginState';
-import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useProfileStore from '@/lib/UserProfileState';
+import { supabase } from '@/lib/SupabaseClient';
+import useLoginStore from '@/lib/LoginState';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import S from './LoggedIn.module.css';
+import Swal from 'sweetalert2';
 
 interface LoggedInProps {
   src: string;
