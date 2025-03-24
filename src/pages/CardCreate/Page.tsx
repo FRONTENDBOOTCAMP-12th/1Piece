@@ -153,8 +153,8 @@ function CardCreatePage() {
 
   return (
     <div className={S.questionCreateContainer}>
-      <title>Quzelly | 문제 생성 페이지</title>
-      <h1 className={S.title}>문제 생성</h1>
+      <title>Quzelly | 카드 생성 페이지</title>
+      <h1 className={S.title}>카드 생성</h1>
       <div className={S.settings}>
         <div className={S.questionTitle}>
           <label className={S.label} htmlFor="title">
