@@ -2,15 +2,15 @@ import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
 import { useNavigate } from 'react-router';
 import S from './Page.module.css';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
-
 
 function FindPwPage() {
   const [email, setEmail] = useState('');
   const [newPw, setNewPw] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleResetPw = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +45,13 @@ function FindPwPage() {
 
       setMessage(result.message || '비밀번호가 성공적으로 업데이트되었습니다.');
       await Swal.fire({
-              icon: 'success',
-              title: '비밀번호 변경 성공!',
-              text: '메인 페이지로 이동합니다.',
-              confirmButtonText: '확인',
-            }).then(() => {
-              navigate('/login');
-            });
-
+        icon: 'success',
+        title: '비밀번호 변경 성공!',
+        text: '메인 페이지로 이동합니다.',
+        confirmButtonText: '확인',
+      }).then(() => {
+        navigate('/login');
+      });
     } catch (err) {
       console.log('VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
       console.error('서버 오류:', err);
