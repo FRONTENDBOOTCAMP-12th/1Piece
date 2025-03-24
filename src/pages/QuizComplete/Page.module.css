@@ -1,7 +1,8 @@
 .pageContainer {
   padding: var(--space-11);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: var(--space-11);
 }
 
 .rightSection {
