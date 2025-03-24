@@ -13,6 +13,7 @@ export interface CommentData {
 interface CommentListProps {
   comments: CommentData[];
   hasMore: boolean;
+  onDelete?: (commentId: string) => void;
   onLoadMore: () => void;
 }
 
@@ -56,6 +57,7 @@ function CommentList({
     },
   ],
   hasMore = true,
+  onDelete,
   onLoadMore,
 }: CommentListProps) {
   return (
@@ -64,7 +66,13 @@ function CommentList({
       <div className={S.commentList}>
         {/* 댓글이 1개 이상일 경우 렌더링, 그렇지 않을 경우 문구만 표시 */}
         {comments.length > 0 ? (
-          comments.map((comment) => <Comment key={comment.id} {...comment} />)
+          comments.map((comment) => (
+            <Comment
+              key={comment.id}
+              onDelete={() => onDelete?.(comment.id)}
+              {...comment}
+            />
+          ))
         ) : (
           <p className={S.noComments}>
             아직 댓글이 없습니다. 첫 댓글을 남겨보세요! 😎

@@ -119,6 +119,19 @@ function QuizCompletePage() {
     }
   };
 
+  // 댓글 삭제
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await supabase.from('comment').delete().eq('id', Number(commentId));
+
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
+      );
+    } catch (error) {
+      console.log('댓글 삭제 오류:', error);
+    }
+  };
+
   // 좋아요
   const handleLike = async () => {
     try {
@@ -196,6 +209,7 @@ function QuizCompletePage() {
         <CommentList
           comments={comments}
           hasMore={hasMore}
+          onDelete={handleDeleteComment}
           onLoadMore={() => {
             if (hasMore) {
               setChunk((prevChunk) => prevChunk + 1);
