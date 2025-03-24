@@ -7,6 +7,7 @@ import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
+import delay from '@/lib/Delay';
 
 interface CardData {
   id: string;
@@ -32,6 +33,8 @@ function RecentViewPage() {
   const userProfile = useProfileStore((state) => state.userProfile);
 
   const fetchItems = async () => {
+    await delay(2000);
+
     try {
       const { data: fetchedData, error } = await supabase
         .from('recent')

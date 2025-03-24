@@ -8,6 +8,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import useReloadStore from '@/lib/ReloadState';
 import { useState, useEffect } from 'react';
 import S from './Page.module.css';
+import delay from '@/lib/Delay';
 
 interface CardData {
   id: string;
@@ -34,6 +35,8 @@ function BookmarkPage() {
   const reload = useReloadStore((state) => state.reload);
 
   const fetchItems = async () => {
+    await delay(2000);
+
     try {
       const { data: fetchedData, error } = await supabase
         .from('bookmark')
