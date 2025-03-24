@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
+import Button from '@/components/Button/Button';
 import { supabase } from '@/lib/SupabaseClient';
 import { IoCheckmark } from 'react-icons/io5';
-import { useNavigate } from 'react-router';
-import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import useDebounce from '@/lib/useDebounce';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
 import Swal from 'sweetalert2';
 
@@ -39,6 +40,8 @@ function SignUpPage() {
     null
   );
   const [emailCheckLoading, setEmailCheckLoading] = useState(false);
+  const debouncedId = useDebounce(formData.id);
+  const debouncedEmail = useDebounce(formData.email);
 
   const emailRegEx = useMemo(
     () =>
@@ -334,33 +337,31 @@ function SignUpPage() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.id) handleIdCheck();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.id, handleIdCheck]);
+    if (debouncedId) handleIdCheck();
+  }, [debouncedId, handleIdCheck]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.email) handleEmailCheck();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.email, handleEmailCheck]);
+    if (debouncedEmail) handleEmailCheck();
+  }, [debouncedEmail, handleEmailCheck]);
 
   useEffect(() => {
-    passwordValidate();
-    passwordConfirmValidate();
-  }, [
-    formData.password,
-    formData.passwordConfirm,
-    passwordValidate,
-    passwordConfirmValidate,
-  ]);
+    if (formData.password) {
+      passwordValidate();
+    } else {
+      setErrors((prev) => ({ ...prev, password: '' }));
+    }
+  }, [formData.password, passwordValidate]);
+  useEffect(() => {
+    if (formData.passwordConfirm) {
+      passwordConfirmValidate();
+    } else {
+      setErrors((prev) => ({ ...prev, passwordConfirm: '' }));
+    }
+  }, [formData.passwordConfirm, passwordConfirmValidate]);
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 회원가입</title>
       <form onSubmit={handleSubmit} className={S.signUpForm}>
         <h1 className={S.title}>회원가입</h1>
         <Input

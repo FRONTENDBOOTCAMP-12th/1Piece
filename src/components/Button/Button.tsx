@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import S from './Button.module.css';
+import { useState } from 'react';
 
 type ButtonProps = React.ComponentProps<'button'> & {
   label?: string;

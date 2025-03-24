@@ -1,10 +1,10 @@
+import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
-import { useNavigate } from 'react-router';
-import { useState } from 'react';
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
-import toast, { Toaster } from 'react-hot-toast';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 function FindIdPage() {
@@ -45,6 +45,7 @@ function FindIdPage() {
 
   return (
     <div className={S.container}>
+      <title>Quzelly | 아이디 찾기</title>
       <form className={S.findIdForm} onSubmit={handleFindId}>
         <h1 className={S.title}>아이디찾기</h1>
         <Input

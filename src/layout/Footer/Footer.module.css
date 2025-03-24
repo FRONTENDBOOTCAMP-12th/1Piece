@@ -4,7 +4,7 @@
 }
 
 .footerContainer {
-  min-width: 1024px;
+  min-width: 1440px;
   display: flex;
   background: var(
     --dark-gray-g,
@@ -58,13 +58,12 @@
 
 .footerRight {
   flex: 2;
-  gap: 9.375rem;
   display: flex;
   flex-wrap: wrap;
   width: 100vw;
   flex-direction: row;
   text-decoration: none;
-  justify-content: start;
+  justify-content: space-around;
 }
 
 .footerBottom {

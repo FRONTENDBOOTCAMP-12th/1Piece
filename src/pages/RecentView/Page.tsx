@@ -1,12 +1,12 @@
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
+import useModalVisibleStore from '@/lib/ProblemModalState';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import CardModal from '@/components/CardModal/CardModal';
 import CardGrid from '@/components/CardGrid/CardGrid';
-import useModalVisibleStore from '@/lib/ProblemModalState';
+import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
-import useProfileStore from '@/lib/UserProfileState';
 
 interface CardData {
   id: string;
@@ -42,7 +42,7 @@ function RecentViewPage() {
       if (error) throw error;
 
       const newData = fetchedData.map((item) => ({
-        id: `${item.id}`,
+        id: `${item.card.id}`,
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
@@ -68,6 +68,7 @@ function RecentViewPage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 열람기록</title>
       <MyPageDiary title="R E C E N T V I E W">
         <CardGrid data={data} loading={loading} />
       </MyPageDiary>

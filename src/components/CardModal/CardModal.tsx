@@ -1,11 +1,14 @@
-import useLoginStore from '@/lib/LoginState';
 import useModalVisibleStore from '@/lib/ProblemModalState';
-import { useNavigate } from 'react-router';
-import CardTag from '../CardTag/CardTag';
 import RoundedButton from '../RoundedButton/RoundedButton';
-import S from './CardModal.module.css';
+import withReactContent from 'sweetalert2-react-content';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
+import useReloadStore from '@/lib/ReloadState';
+import useLoginStore from '@/lib/LoginState';
+import { useNavigate } from 'react-router';
+import CardTag from '../CardTag/CardTag';
+import S from './CardModal.module.css';
+import Swal from 'sweetalert2';
 
 type CardModalProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {
@@ -31,6 +34,8 @@ function CardModal({
   const userProfile = useProfileStore((state) => state.userProfile);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const navigation = useNavigate();
+  const isWriter = useModalVisibleStore((state) => state.isWriter);
+  const setReload = useReloadStore((state) => state.setReload);
 
   const handleClose = () => {
     setNonVisible();
@@ -41,19 +46,17 @@ function CardModal({
   const setRecentView = async () => {
     const now = new Date().toISOString();
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('recent')
       .upsert(
         {
           solved_user: userProfile!.id,
-          solved_question: cardInfo.id,
+          solved_question: Number(cardInfo.id),
           recent_time: now,
         },
-        { onConflict: ['solved_user', 'solved_question'] }
+        { onConflict: 'solved_user, solved_question' }
       )
       .select();
-
-    console.log(data);
 
     if (error) console.log(error);
   };
@@ -68,11 +71,34 @@ function CardModal({
     }
   };
 
+  const handleDeleteCard = async () => {
+    await supabase.from('card').delete().eq('id', Number(cardInfo.id));
+
+    withReactContent(Swal)
+      .fire({
+        title: (
+          <>
+            <p style={{ marginBlock: '16px' }}>정상적으로 삭제되었습니다!</p>
+            <img src="/images/jellyfish.png" alt="" />
+          </>
+        ),
+        customClass: {
+          confirmButton: 'confirmButton',
+        },
+      })
+      .then(() => {
+        setNonVisible();
+        setReload();
+      });
+  };
+
   return (
     <div className={`${S.backdrop} ${!isVisible ? S.close : ''}`}>
       <div className={S.modalContainer}>
         <div className={S.header}>
-          <h4 className={S.alert}>문제를 푸시겠습니까?</h4>
+          <span className={S.alert}>
+            {isWriter ? '문제를 삭제하시겠습니까?' : '문제를 푸시겠습니까?'}
+          </span>
         </div>
         <div className={S.content}>
           <img
@@ -84,13 +110,13 @@ function CardModal({
             }}
           />
           <div className={S.info}>
-            <h5 className={S.problemTitle}>{children}</h5>
+            <span className={S.problemTitle}>{children}</span>
             <div className={S.tagContainer}>
               {tags.map((item) => (
                 <CardTag key={item}>{item}</CardTag>
               ))}
             </div>{' '}
-            <h6 className={S.description}>{description}</h6>
+            <span className={S.description}>{description}</span>
           </div>
         </div>
         <div className={S.btns}>
@@ -102,15 +128,25 @@ function CardModal({
           >
             취소
           </RoundedButton>
-          {/* 현재 렌더링 시 a태그 내부에 버튼 태그가 발생하여 이후 수정해야함  */}
-          <RoundedButton
-            color="primary"
-            size="large"
-            font="neo"
-            onClick={handleMoveToSolveCard}
-          >
-            풀기
-          </RoundedButton>
+          {isWriter ? (
+            <RoundedButton
+              color="secondary"
+              size="large"
+              font="neo"
+              onClick={handleDeleteCard}
+            >
+              삭제
+            </RoundedButton>
+          ) : (
+            <RoundedButton
+              color="primary"
+              size="large"
+              font="neo"
+              onClick={handleMoveToSolveCard}
+            >
+              풀기
+            </RoundedButton>
+          )}
         </div>
       </div>
     </div>

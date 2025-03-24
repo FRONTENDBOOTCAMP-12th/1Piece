@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { BiTrash } from 'react-icons/bi';
 import { IoCheckmark } from 'react-icons/io5';
+import { BiTrash } from 'react-icons/bi';
+import { useState } from 'react';
 
 import TextArea from '@/components/TextArea/TextArea';
 

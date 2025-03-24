@@ -67,9 +67,11 @@
 }
 
 .info {
+  display: flex;
   width: 29.375rem;
-  height: 16.875rem;
+  height: 14rem;
   flex-direction: column;
+  justify-content: space-between;
   padding-top: var(--space-5);
 }
 

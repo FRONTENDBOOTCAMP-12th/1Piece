@@ -65,6 +65,41 @@ app.post('/reset-pw', async (req, res) => {
   }
 });
 
+app.delete('/delete-user', async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ success: false, message: '유저 ID가 필요합니다.' });
+  }
+
+  try {
+    const { error: dbError } = await supabaseAdmin
+      .from('users')
+      .delete()
+      .eq('auth_uid', userId);
+    if (dbError) {
+      console.error('DB 삭제 실패:', dbError);
+      return res.status(500).json({ success: false, message: 'DB 삭제 실패' });
+    }
+
+    const { error: authError } =
+      await supabaseAdmin.auth.admin.deleteUser(userId);
+    if (authError) {
+      console.error('Auth 삭제 실패:', authError);
+      return res
+        .status(500)
+        .json({ success: false, message: 'Auth 삭제 실패' });
+    }
+
+    return res.json({ success: true, message: '회원 탈퇴 완료' });
+  } catch (error) {
+    console.error('회원 탈퇴 중 오류 발생:', error);
+    return res.status(500).json({ success: false, message: '서버 오류 발생' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`서버를 가동합니다. http://localhost:${port}`);
 });

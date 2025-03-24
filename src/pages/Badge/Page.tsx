@@ -10,6 +10,8 @@ function BadgePage() {
 
   return (
     <div className={S.MyPageContainer}>
+      <title>Quzelly | 뱃지</title>
+
       <MyPageDiary title="B A D G E" activeButton={2}>
         뱃지 공간
       </MyPageDiary>
