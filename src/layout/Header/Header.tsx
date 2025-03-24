@@ -1,14 +1,14 @@
-import { NavLink, useLocation, useNavigate } from 'react-router';
-import { BiPlus } from 'react-icons/bi';
-import { RiInbox2Line } from 'react-icons/ri';
-import S from './Header.module.css';
-import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
+import RoundedButton from '@/components/RoundedButton/RoundedButton';
+import { NavLink, useLocation, useNavigate } from 'react-router';
+import useProfileStore from '@/lib/UserProfileState';
 import LoggedOut from './components/LoggedOut';
+import { RiInbox2Line } from 'react-icons/ri';
 import LoggedIn from './components/LoggedIn';
 import useLoginStore from '@/lib/LoginState';
 import { useEffect, useState } from 'react';
-import useProfileStore from '@/lib/UserProfileState';
+import { BiPlus } from 'react-icons/bi';
+import S from './Header.module.css';
 
 function Header() {
   // 로그인 상태
