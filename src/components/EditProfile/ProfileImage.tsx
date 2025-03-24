@@ -37,7 +37,7 @@ function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
         },
       });
     } catch {
-      console.log('비정상적인 접근입니다');
+      alert('비정상적인 접근입니다');
     }
   };
 
@@ -60,7 +60,7 @@ function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
         },
       });
     } catch {
-      console.log('비정상적인 접근입니다');
+      alert('비정상적인 접근입니다');
     }
   };
 
@@ -100,10 +100,10 @@ function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
       }
 
       if (error) throw error;
-    } catch (err) {
+    } catch {
       // 통신 실패
       handleAlertUpload();
-      console.log(err);
+      alert('비정상적인 접근입니다');
     }
   };
 

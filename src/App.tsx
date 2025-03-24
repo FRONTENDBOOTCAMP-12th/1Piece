@@ -16,7 +16,6 @@ const CardListPage = lazy(() => import('@/pages/CardList/Page'));
 const QuizPlayPage = lazy(() => import('@/pages/QuizPlay/Page'));
 const FindIdPage = lazy(() => import('@/pages/FindId/Page'));
 const SignUpPage = lazy(() => import('@/pages/SignUp/Page'));
-const BadgePage = lazy(() => import('@/pages/Badge/Page'));
 const LogInPage = lazy(() => import('@/pages/LogIn/Page'));
 const MainPage = lazy(() => import('@/pages/Main/Page'));
 
@@ -40,7 +39,6 @@ function App() {
               <Route path="/quiz-play" element={<QuizPlayPage />} />
               <Route path="/find-id" element={<FindIdPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
-              <Route path="/badge" element={<BadgePage />} />
               <Route path="/login" element={<LogInPage />} />
               <Route index element={<MainPage />} />
             </Route>

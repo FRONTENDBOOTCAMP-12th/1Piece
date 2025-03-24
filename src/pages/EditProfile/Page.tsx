@@ -24,10 +24,10 @@ interface DeactivateAccountProps {
   onDeactivate: () => void;
 }
 
-type DeleteUserResult = {
+interface DeleteUserResult {
   success: boolean;
   message?: string;
-};
+}
 
 function EditProfilePage() {
   const [profile, setProfile] = useState<ProfileState | null>(null);
@@ -71,8 +71,6 @@ function EditProfilePage() {
           .eq('auth_uid', userId)
           .single();
 
-        console.log('[Supabase] 업데이트 후 데이터:', data);
-
         if (error) {
           toast.error('프로필 데이터를 가져오는 중 오류가 발생했습니다.', {
             position: 'bottom-right',
@@ -81,7 +79,6 @@ function EditProfilePage() {
         }
 
         if (data) {
-          console.log('가져온 프로필 데이터:', data);
           // 기존 데이터와 다를 때만 상태 업데이트
           setProfile((prev) =>
             JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
@@ -216,8 +213,7 @@ function EditProfilePage() {
         return;
       }
       setIsPasswordVerified(true); //  인증 성공 시 개인정보관리 페이지로 이동
-    } catch (error) {
-      console.error('비밀번호 확인 중 오류 발생:', error);
+    } catch {
       toast.error('비밀번호 확인 중 오류가 발생했습니다.', {
         position: 'bottom-right',
       });
@@ -250,13 +246,12 @@ function EditProfilePage() {
     }
 
     try {
-      console.log('비밀번호 변경 요청 시작');
-      const { data, error } = await supabase.auth.updateUser({
+      const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
 
       if (error) {
-        console.error('비밀번호 변경 실패:', error);
+        alert('비밀번호 변경 실패');
 
         // 새 비밀번호가 기존 비밀번호와 같을 경우 에러 메시지 표시
         if (
@@ -277,7 +272,6 @@ function EditProfilePage() {
         throw new Error('비밀번호 변경 실패');
       }
 
-      console.log('비밀번호 변경 성공:', data);
       setErrors({ password: '', confirmPassword: '', nickname: '', email: '' });
 
       toast.success('비밀번호가 성공적으로 변경되었습니다.', {
@@ -339,8 +333,6 @@ function EditProfilePage() {
           }
         );
 
-        console.log({ userId });
-
         const result: DeleteUserResult = await response.json();
 
         if (!response.ok || !result.success) {
@@ -362,7 +354,6 @@ function EditProfilePage() {
 
         await handleLogout();
       } catch (error) {
-        console.error('탈퇴 실패:', error);
         await Swal.fire({
           title: '탈퇴 실패',
           text:
@@ -437,8 +428,8 @@ function EditProfilePage() {
       } else {
         toast.error('변경된 내용이 없습니다.');
       }
-    } catch (error) {
-      console.error('프로필 수정 실패:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
     }
   };
 

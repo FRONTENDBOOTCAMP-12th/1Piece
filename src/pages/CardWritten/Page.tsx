@@ -8,6 +8,7 @@ import { supabase } from '@/lib/SupabaseClient';
 import useReloadStore from '@/lib/ReloadState';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
+import delay from '@/lib/Delay';
 
 interface CardData {
   id: string;
@@ -34,6 +35,8 @@ function CardWrittenPage() {
   const reload = useReloadStore((state) => state.reload);
 
   const fetchItems = async () => {
+    await delay(2000);
+
     try {
       const { data: fetchedData, error } = await supabase
         .from('card')
@@ -57,8 +60,8 @@ function CardWrittenPage() {
       }));
 
       setData(newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
     } finally {
       setLoading(false);
     }
