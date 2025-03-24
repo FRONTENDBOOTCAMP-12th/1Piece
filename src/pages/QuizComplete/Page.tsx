@@ -179,6 +179,7 @@ function QuizCompletePage() {
   return (
     <div className={S.pageContainer}>
       <title>Quzelly | 풀이 결과 페이지</title>
+      <h1 className="sr-only">퀴즈 풀이 결과</h1>
       {isExploding && (
         <Confetti
           tweenDuration={3000}
