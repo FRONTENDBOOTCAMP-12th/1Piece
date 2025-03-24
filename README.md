@@ -96,7 +96,7 @@
 
 ### [메인화면]
 
-![Image](https://github.com/user-attachments/assets/62b33cad-bb65-4cbe-8afa-c4cc9fe460da)
+![Image](https://github.com/user-attachments/assets/8bd5de1c-daf4-4cbe-b5d7-29a54064ce8f)
 
 - 사용자가 접속하면 가장 먼저 보게 되는 초기 화면으로, 퀴즈는 ‘Top 7’과 ‘추천 최신’ 순으로 표시된다.
 
@@ -115,6 +115,8 @@
 - 회원가입 버튼을 클릭했을 때 모든 항목을 올바르게 작성하고 필수 약관 동의에 체크하면 회원가입이 완료되며, 로그인 화면으로 이동된다.
 
 ### [로그인]
+
+![Image](https://github.com/user-attachments/assets/cba3c4b4-adb9-4af0-84d0-d274cbb02479)
 
 - 아이디와 비밀번호를 입력하면 각 입력창에서 실시간으로 유효성 검사가 이루어지며, 조건을 만족하지 않을 경우 입력창 하단에 경고 문구가 표시된다.
 
@@ -175,6 +177,8 @@
 ### [마이페이지]
 
 #### 1. 내 프로필
+
+![Image](https://github.com/user-attachments/assets/542933e9-10b9-4c80-8855-68250e6d3c86)
 
 - 사용자가 프로필 사진을 클릭하면, 자신의 PC에서 이미지를 업로드할 수 있다.
 
