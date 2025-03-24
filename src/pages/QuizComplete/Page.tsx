@@ -4,11 +4,10 @@ import QuizResult from '@/components/QuizResult/QuizResult';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import useProfileStore from '@/lib/UserProfileState';
-import Confetti from 'react-confetti';
-import QuizResult from '@/components/QuizResult/QuizResult';
 import { supabase } from '@/lib/SupabaseClient';
 import InputBox from './components/InputBox';
 import { useState, useEffect } from 'react';
+import Confetti from 'react-confetti';
 import S from './Page.module.css';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
