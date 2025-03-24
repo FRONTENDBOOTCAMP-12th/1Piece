@@ -36,6 +36,7 @@
 .profileImage {
   width: var(--img-size);
   height: var(--img-size);
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: var(--rounded-full);
 }
