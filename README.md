@@ -86,6 +86,8 @@
 | **Version Control Systems** |                 | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)                |
 
 </div>
+<br />
+<br />
 
 ## 🗺️ SiteMap
 
@@ -98,6 +100,7 @@
 
 ## 🧭 UserFlow
 
+<br />
 <div align="center">
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/a101e50e-07d1-455f-8570-1368ed4a076d"/>
 
@@ -170,7 +173,7 @@
 
 - 아이디를 잃어버렸을 경우, 가입한 이메일을 입력하면 아이디를 찾을 수 있다. 아이디는 알림창에 표시되며, 이후 로그인 화면으로 이동된다.
 
-- 비밀번호를 잃어버렸을 경우, 가입한 이메일 주소와 새 비밀번호를 입력하면 비밀번호를 변경할 수 있다..
+- 비밀번호를 잃어버렸을 경우, 가입한 이메일 주소와 새 비밀번호를 입력하면 비밀번호를 변경할 수 있다.
   <br />
   <br />
   <br />
@@ -230,7 +233,7 @@
 <br />
 <br />
 
-- 마지막 문제 풀이 후 ‘다음’ 버튼을 누르면 문제 풀이 완료 페이지로 이동된다. 이동 즉시 화면에 폭죽 애니메이션이 나타난다.
+- 마지막 문제 풀이 후 ‘다음’ 버튼을 누르면 문제 풀이 완료 페이지로 이동하며, 이동과 동시에 화면에 폭죽 애니메이션이 나타난다.
 
 - 좌측에는 사용자가 풀이한 퀴즈의 이름과 점수(맞은 문제 개수/전체 문제 개수)가 출력된다.
 
@@ -244,7 +247,7 @@
 
 - ‘좋아요’(하트) 버튼을 클릭하면 해당 퀴즈에 좋아요를 표시할 수 있다.
 
-- ‘북마크’ 버튼을 클릭하면 해당 퀴즈를 북마크할 수 있으며, 북마크한 퀴즈는 마이페이지 > 라이브러리의 ‘북마크’ 탭에서 확인할 수 있다..
+- ‘북마크’ 버튼을 클릭하면 해당 퀴즈를 북마크할 수 있으며, 북마크한 퀴즈는 마이페이지 > 라이브러리의 ‘북마크’ 탭에서 확인할 수 있다.
   <br />
   <br />
   <br />
@@ -314,8 +317,6 @@
 
 ## 🧾 기타 문서
 
-### [✍️ 백로그 바로가기](https://github.com/orgs/FRONTENDBOOTCAMP-12th/projects/253)
+### [✍️ 백로그 바로가기](https://github.com/orgs/FRONTENDBOOTCAMP-12th/projects/25)
 
 ### [📖 위키 바로가기](https://github.com/FRONTENDBOOTCAMP-12th/1Piece/wiki)
-
-### [📝 회고 바로가기](https://github.com/FRONTENDBOOTCAMP-12th/1Piece/wiki/%F0%9F%9B%A0-%ED%9A%8C%EA%B3%A0)
