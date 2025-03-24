@@ -98,8 +98,8 @@ function MainPage() {
       // 데이터 fetching이 완료됐다면 상태 업데이트를 통해 리렌더링
       if (dataCreated) setItemCreated(newDataCreated as ProblemCardData[]);
       if (dataCheck) setItemCheck(newDataCheck as ProblemCardData[]);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      alert('비정상적인 접근입니다');
     } finally {
       // 로딩 상태를 완료로 변경
       setLoading(false);

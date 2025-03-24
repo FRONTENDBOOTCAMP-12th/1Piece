@@ -46,19 +46,21 @@ function CardModal({
   const setRecentView = async () => {
     const now = new Date().toISOString();
 
-    const { error } = await supabase
-      .from('recent')
-      .upsert(
-        {
-          solved_user: userProfile!.id,
-          solved_question: Number(cardInfo.id),
-          recent_time: now,
-        },
-        { onConflict: 'solved_user, solved_question' }
-      )
-      .select();
-
-    if (error) console.log(error);
+    try {
+      await supabase
+        .from('recent')
+        .upsert(
+          {
+            solved_user: userProfile!.id,
+            solved_question: Number(cardInfo.id),
+            recent_time: now,
+          },
+          { onConflict: 'solved_user, solved_question' }
+        )
+        .select();
+    } catch {
+      alert('데이터를 가져오는 중 문제가 발생했습니다!');
+    }
   };
 
   // 로그인 상태라면 퀴즈 풀기로, 아니라면 로그인 페이지로 이동

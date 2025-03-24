@@ -56,8 +56,8 @@ function BookmarkPage() {
       }));
 
       setData(newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
     } finally {
       setLoading(false);
     }
