@@ -63,7 +63,6 @@ function Card({
         />
         <span className={S.problemInfoContainer}>
           <span className={S.problemTitle}>{children}</span>
-          {/* 더미 텍스트 이후 카드 태그 컴포넌트가 대체 될 예정 */}
           <span className={S.tagContainer}>
             {tags.map((item) => (
               <CardTag key={item}>{item}</CardTag>

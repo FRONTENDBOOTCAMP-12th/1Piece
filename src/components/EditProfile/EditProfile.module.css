@@ -3,7 +3,6 @@
   --icon-size: 1.75rem;
 }
 
-/* 컨테이너 */
 .editProfileContainer {
   display: flex;
   flex-direction: column;
@@ -13,7 +12,6 @@
   width: 100%;
 }
 
-/* 프로필 이미지 */
 .profileImageContainer {
   display: flex;
   justify-content: center;
@@ -38,6 +36,7 @@
 .profileImage {
   width: var(--img-size);
   height: var(--img-size);
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: var(--rounded-full);
 }
@@ -61,7 +60,6 @@
   cursor: not-allowed;
 }
 
-/* 입력 필드 */
 .inputForm {
   display: flex;
   flex-direction: column;
@@ -78,7 +76,6 @@ input {
   width: 100px;
 }
 
-/* 비활성화된 입력 필드 스타일 */
 input:disabled,
 .disabledInput {
   background-color: rgba(0, 0, 0, 0.1);
@@ -92,7 +89,6 @@ input:disabled:focus,
   outline: none;
 }
 
-/* 아이콘 */
 .icon {
   display: flex;
   align-items: center;
@@ -114,7 +110,6 @@ input:disabled:focus,
   opacity: 0.8;
 }
 
-/* 인풋 필드 */
 .inputId {
   font-family: inherit;
   font-size: var(--default);
@@ -122,7 +117,6 @@ input:disabled:focus,
   cursor: not-allowed;
 }
 
-/* 비활성화된 인풋 필드 */
 input:disabled,
 .disabledInput {
   background-color: rgba(0, 0, 0, 0.1);
@@ -136,12 +130,11 @@ input:disabled:focus,
   outline: none;
 }
 
-/* 버튼 그룹 */
 .buttonGroup {
   display: flex;
   justify-content: center;
   gap: var(--space-4);
   margin-top: var(--space-6);
-  margin-top: var(--space-13); /* 위쪽 간격 */
-  margin-bottom: var(--space-8); /* 아래쪽 간격 */
+  margin-top: var(--space-13);
+  margin-bottom: var(--space-8);
 }

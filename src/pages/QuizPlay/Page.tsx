@@ -34,8 +34,8 @@ function QuizPlayPage() {
       setTotalQuiz(cardInfo.count);
 
       if (!data) throw error;
-    } catch (error) {
-      console.log(error);
+    } catch {
+      alert('비정상적인 접근입니다');
     }
   };
 

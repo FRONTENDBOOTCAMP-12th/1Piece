@@ -14,7 +14,6 @@
 }
 
 .commentList {
-  /* font-family: var(--pretendard); */
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

@@ -102,8 +102,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           : newData;
         // 렌더링 할 데이터 상태 변경
         setData(filteredData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch {
+        alert('비정상적인 접근입니다');
       } finally {
         setLoading(false);
       }
@@ -146,8 +146,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
           : newData;
 
         setData(filteredData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch {
+        alert('비정상적인 접근입니다');
       } finally {
         setLoading(false);
       }

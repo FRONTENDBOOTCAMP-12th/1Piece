@@ -17,7 +17,6 @@ app.use(
 app.use(express.json());
 
 app.post('/reset-pw', async (req, res) => {
-  console.log(req.body);
   const { email, newPw } = req.body;
 
   if (!email || !newPw) {
@@ -33,19 +32,15 @@ app.post('/reset-pw', async (req, res) => {
       .single();
 
     if (userError) {
-      console.error('사용자에러:', userError);
       return res.status(400).json({ error: '사용자를 찾을 수 없습니다.' });
     }
-    console.log(user);
 
     const { data: authUser, error: authError } =
       await supabaseAdmin.auth.admin.getUserById(user.auth_uid);
 
     if (authError || !authUser) {
-      console.error('Authentication 에러:', authError);
       return res.status(400).json({ error: '사용자 인증을 찾을 수 없습니다.' });
     }
-    console.log('인증된 사용자:', authUser);
 
     const { error: passwordError } =
       await supabaseAdmin.auth.admin.updateUserById(user.auth_uid, {
@@ -53,14 +48,12 @@ app.post('/reset-pw', async (req, res) => {
       });
 
     if (passwordError) {
-      console.error('비밀번호 업데이트 에러:', passwordError);
       return res.status(400).json({ error: '비밀번호 업데이트 실패' });
     }
     res
       .status(200)
       .json({ message: '비밀번호가 성공적으로 업데이트되었습니다.' });
   } catch (error) {
-    console.error('Error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -80,14 +73,12 @@ app.delete('/delete-user', async (req, res) => {
       .delete()
       .eq('auth_uid', userId);
     if (dbError) {
-      console.error('DB 삭제 실패:', dbError);
       return res.status(500).json({ success: false, message: 'DB 삭제 실패' });
     }
 
     const { error: authError } =
       await supabaseAdmin.auth.admin.deleteUser(userId);
     if (authError) {
-      console.error('Auth 삭제 실패:', authError);
       return res
         .status(500)
         .json({ success: false, message: 'Auth 삭제 실패' });
@@ -95,7 +86,6 @@ app.delete('/delete-user', async (req, res) => {
 
     return res.json({ success: true, message: '회원 탈퇴 완료' });
   } catch (error) {
-    console.error('회원 탈퇴 중 오류 발생:', error);
     return res.status(500).json({ success: false, message: '서버 오류 발생' });
   }
 });

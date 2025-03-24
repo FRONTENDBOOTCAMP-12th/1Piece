@@ -29,7 +29,6 @@
   border-radius: var(--rounded-xl);
 }
 
-/* 스위치 */
 .switch {
   position: relative;
   display: inline-block;

@@ -18,44 +18,7 @@ interface CommentListProps {
 }
 
 function CommentList({
-  comments = [
-    // 댓글 더미 데이터
-    {
-      id: '1',
-      userNickname: '루피',
-      userLevel: 5,
-      commentedAt: '2025-03-12T12:30:00Z',
-      content: '쉬운데?',
-    },
-    {
-      id: '2',
-      userNickname: '조로',
-      userLevel: 3,
-      commentedAt: '2025-03-12T13:15:00Z',
-      content: '아 3번 틀림',
-    },
-    {
-      id: '3',
-      userNickname: '상디',
-      userLevel: 1,
-      commentedAt: '2025-03-12T14:00:00Z',
-      content: '나만 어려움?',
-    },
-    {
-      id: '4',
-      userNickname: '나미',
-      userLevel: 1,
-      commentedAt: '2025-03-12T14:00:00Z',
-      content: '5번 풀이 이해안됨 설명좀',
-    },
-    {
-      id: '5',
-      userNickname: '쵸파',
-      userLevel: 1,
-      commentedAt: '2025-03-12T14:00:00Z',
-      content: '재밌당~~',
-    },
-  ],
+  comments,
   hasMore = true,
   onDelete,
   onLoadMore,

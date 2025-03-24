@@ -7,6 +7,7 @@ import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
 import { useEffect, useState } from 'react';
 import S from './Page.module.css';
+import delay from '@/lib/Delay';
 
 interface CardData {
   id: string;
@@ -32,10 +33,12 @@ function RecentViewPage() {
   const userProfile = useProfileStore((state) => state.userProfile);
 
   const fetchItems = async () => {
+    await delay(2000);
+
     try {
       const { data: fetchedData, error } = await supabase
         .from('recent')
-        .select('*,card(*), users(*)')
+        .select('*,card(*,users(*)), users(*)')
         .eq('solved_user', userProfile!.id)
         .order('recent_time', { ascending: false });
 
@@ -46,7 +49,7 @@ function RecentViewPage() {
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
-        userName: item.users.nickname,
+        userName: item.card.users!.nickname,
         tags: Object.values(item.card.tags!),
         checked: false,
         problemTitle: item.card.problemTitle,
@@ -55,8 +58,8 @@ function RecentViewPage() {
       }));
 
       setData(newData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
     } finally {
       setLoading(false);
     }

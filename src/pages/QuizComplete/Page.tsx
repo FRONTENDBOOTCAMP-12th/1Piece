@@ -60,8 +60,8 @@ function QuizCompletePage() {
         ),
         ...newData,
       ]);
-    } catch (error) {
-      console.log('error: ', error);
+    } catch {
+      alert('비정상적인 접근입니다');
     }
   };
 
@@ -122,8 +122,8 @@ function QuizCompletePage() {
       setComments((prevComments) =>
         prevComments.filter((comment) => comment.id !== commentId)
       );
-    } catch (error) {
-      console.log('댓글 삭제 오류:', error);
+    } catch {
+      alert('비정상적인 접근입니다.');
     }
   };
 
@@ -147,8 +147,8 @@ function QuizCompletePage() {
         ]);
       }
       setIsLiked(!isLiked);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      alert('비정상적인 접근입니다');
     }
   };
 

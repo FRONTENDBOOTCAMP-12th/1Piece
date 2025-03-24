@@ -31,8 +31,7 @@ function InputBox({ isLiked, onLikeUpdate, id, onAddComment }: InputBoxProps) {
     try {
       await navigator.clipboard.writeText(window.location.href);
       alert('주소가 복사되었습니다! 🎉');
-    } catch (error) {
-      console.error('URL 복사 실패:', error);
+    } catch {
       alert('주소 복사에 실패했습니다. 😢');
     }
   };
