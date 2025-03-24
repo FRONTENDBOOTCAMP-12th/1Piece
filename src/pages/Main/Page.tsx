@@ -142,7 +142,6 @@ function MainPage() {
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://quzelly.vercel.app/" />
 
-      {/* 메인 배너 DUMMY 데이터 */}
       <h1 className="sr-only">큐젤리 메인 페이지</h1>
       <img
         src="/images/main_banner.webp"
