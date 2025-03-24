@@ -3,6 +3,7 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import CardModal from '@/components/CardModal/CardModal';
 import { toast, Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
+import useReloadStore from '@/lib/ReloadState';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './MainPage.module.css';
@@ -25,6 +26,7 @@ function MainPage() {
   const [itemCreated, setItemCreated] = useState<ProblemCardData[]>([]);
   // 모달 창에 나타낼 정보를 전달하기 위한 상태
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const reload = useReloadStore((state) => state.reload);
   const navigation = useNavigate();
 
   const fetchItems = async () => {
@@ -103,21 +105,24 @@ function MainPage() {
       setLoading(false);
     }
   };
-  // 데이터를 가져오는 것은 렌더링과 무관한 일이므로 useEffect 사용
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
+  // 중간 배너 클릭 시 회원가입 페이지로 이동 유도
   const handleMiniBannerClick = async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession();
     if (session) {
+      // 만약 로그인한 상태라면 핫-토스트로 알려주기
       toast.error('이미 로그인한 상태입니다.');
     } else {
       navigation('/sign-up');
     }
   };
+
+  // 데이터를 가져오는 것은 렌더링과 무관한 일이므로 useEffect 사용
+  useEffect(() => {
+    fetchItems();
+  }, [reload]);
 
   return (
     <>

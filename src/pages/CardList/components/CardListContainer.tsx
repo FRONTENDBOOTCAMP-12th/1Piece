@@ -17,6 +17,7 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import useReloadStore from '@/lib/ReloadState';
 
 export interface CardData {
   id: string;
@@ -47,6 +48,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
   const searchParam = useSearchStore((state) => state.searchParam);
   const debouncedSearchParam = useDebounce(searchParam, 500);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
+  const reload = useReloadStore((state) => state.reload);
   const itemsPerPage = 12;
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,8 +60,8 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
       setSortStandard(sort);
     }
   }, [location.search]);
-  // 검색된 상태가 있을 시 실행할 함수
 
+  // 검색된 상태가 있을 시 실행할 함수
   const searchFetchItems = useCallback(
     async (sortBy: 'popular' | 'new') => {
       try {
@@ -178,6 +180,7 @@ const CardListContainer: React.FC<CardSwiperProps> = ({
     searchFetchItems,
     location.search,
     debouncedSearchParam,
+    reload,
   ]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;

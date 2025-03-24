@@ -1,5 +1,6 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import { type CardInfo } from '@/lib/ProblemModalState';
+import useProfileStore from '@/lib/UserProfileState';
 import CardTag from '../CardTag/CardTag';
 import BookMark from './BookMark';
 import S from './Card.module.css';
@@ -26,6 +27,8 @@ function Card({
   const setVisible = useModalVisibleStore((state) => state.setVisible);
   // 선택한 카드의 정보를 저장하기 위한 함수
   const setCardInfo = useModalVisibleStore((state) => state.setCardInfo);
+  const setIsWriter = useModalVisibleStore((state) => state.setIsWriter);
+  const userProfile = useProfileStore((state) => state.userProfile);
 
   // props로 전달받은 값으로 구성한 새로운 userInfo
   const userCardInfo = {
@@ -42,6 +45,7 @@ function Card({
   const handleOpenModal = () => {
     setCardInfo(userCardInfo as CardInfo);
     setVisible();
+    setIsWriter(userName === userProfile?.nickname);
   };
 
   return (

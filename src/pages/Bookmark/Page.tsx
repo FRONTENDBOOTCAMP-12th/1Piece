@@ -5,6 +5,7 @@ import CardModal from '@/components/CardModal/CardModal';
 import CardGrid from '@/components/CardGrid/CardGrid';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
+import useReloadStore from '@/lib/ReloadState';
 import { useState, useEffect } from 'react';
 import S from './Page.module.css';
 
@@ -30,6 +31,7 @@ function BookmarkPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const userProfile = useProfileStore((state) => state.userProfile);
+  const reload = useReloadStore((state) => state.reload);
 
   const fetchItems = async () => {
     try {
@@ -63,7 +65,7 @@ function BookmarkPage() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [reload]);
 
   return (
     <div className={S.MyPageContainer}>
