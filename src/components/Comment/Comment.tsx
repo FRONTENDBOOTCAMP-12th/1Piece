@@ -1,6 +1,7 @@
 import { BiTrash } from 'react-icons/bi';
-import S from './Comment.module.css';
 import useProfileStore from '@/lib/UserProfileState';
+import FormatDateToKST from '../FormatDate/FormatDate';
+import S from './Comment.module.css';
 
 interface CommentProps {
   id?: string;
@@ -37,7 +38,7 @@ function Comment({
             aria-hidden="true"
           >{`LV.${userLevel}`}</span>
         </div>
-        <time className={S.time}>{commentedAt}</time>
+        <time className={S.time}>{FormatDateToKST(commentedAt)}</time>
       </div>
       {isWriter && (
         <button
