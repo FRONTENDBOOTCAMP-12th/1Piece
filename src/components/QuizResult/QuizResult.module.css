@@ -10,6 +10,10 @@
   align-items: center;
 }
 
+.quizTitle {
+  font-size: 4rem;
+}
+
 .scoreContainer {
   width: 22.25rem;
   height: 15.75rem;
@@ -34,15 +38,15 @@
   -webkit-text-stroke-color: var(--black);
 }
 
-.badgeSection {
+/* .badgeSection {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 2.75rem;
-}
+} */
 
 /* 레이아웃 확인을 위한 임시 디자인 */
-.badge {
+/* .badge {
   width: 12.5rem;
   height: 12.5rem;
   border-radius: 50%;
@@ -64,4 +68,4 @@
   color: var(--bookmark);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: var(--black);
-}
+} */

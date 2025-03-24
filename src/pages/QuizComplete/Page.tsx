@@ -4,6 +4,8 @@ import QuizResult from '@/components/QuizResult/QuizResult';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import useProfileStore from '@/lib/UserProfileState';
+import Confetti from 'react-confetti';
+import QuizResult from '@/components/QuizResult/QuizResult';
 import { supabase } from '@/lib/SupabaseClient';
 import InputBox from './components/InputBox';
 import { useState, useEffect } from 'react';
@@ -19,6 +21,7 @@ function QuizCompletePage() {
   const [chunk, setChunk] = useState<number>(1);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [isExploding, setIsExploding] = useState(false);
 
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
@@ -87,13 +90,6 @@ function QuizCompletePage() {
     setIsBookmarked(nextIsBookmarked);
   };
 
-  useEffect(() => {
-    fetchComments(chunk);
-
-    handleSetLike(Number(searchParams));
-    handleSetBookmark(Number(searchParams));
-  }, [chunk, searchParams]);
-
   // 댓글 추가
   const handleAddComment = async (content: string) => {
     try {
@@ -154,10 +150,41 @@ function QuizCompletePage() {
     setIsBookmarked(!isBookmarked);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    handleSetLike(Number(searchParams));
+    handleSetBookmark(Number(searchParams));
+
+    setIsExploding(true);
+
+    const clearId = setTimeout(() => setIsExploding(false), 6000);
+
+    return () => {
+      clearTimeout(clearId);
+    };
+  }, [searchParams]);
+
+  useEffect(() => {
+    fetchComments(chunk);
+  }, [chunk]);
+
   return (
     <div className={S.pageContainer}>
       <title>Quzelly | 풀이 결과 페이지</title>
-      <QuizResult correct={correctQuiz} totalQuestions={totalQuiz} />
+      {isExploding && (
+        <Confetti
+          tweenDuration={3000}
+          numberOfPieces={250}
+          width={1600}
+          height={900}
+        />
+      )}
+      <QuizResult
+        quizTitle={cardInfo.title}
+        correct={correctQuiz}
+        totalQuestions={totalQuiz}
+      />
       <div className={S.rightSection}>
         <InputBox
           id={cardInfo.id}

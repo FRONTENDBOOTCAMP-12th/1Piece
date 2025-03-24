@@ -46,6 +46,7 @@
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
     "react-hot-toast": "^2.5.2",
