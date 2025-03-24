@@ -130,8 +130,8 @@ function SignUpPage() {
         .eq('user_id', id.trim())
         .maybeSingle();
       return !data;
-    } catch (error) {
-      console.error('ID 중복 체크 오류:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
       return false;
     }
   };
@@ -146,8 +146,8 @@ function SignUpPage() {
         .eq('email', email.trim())
         .maybeSingle();
       return !data;
-    } catch (error) {
-      console.error('Email 중복 체크 오류:', error);
+    } catch {
+      alert('비정상적인 접근입니다');
       return false;
     }
   };

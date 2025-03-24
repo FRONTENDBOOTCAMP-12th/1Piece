@@ -123,8 +123,8 @@ function LogInPage() {
         if (!response.ok) {
           newProfileImg = 'dummy/dummy_profile.png';
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        alert('비정상적인 접근입니다');
       }
 
       // 초기 설정 모두 다
@@ -142,8 +142,7 @@ function LogInPage() {
       }).then(() => {
         navigate('/');
       });
-    } catch (error) {
-      console.error(`로그인 오류:`, error);
+    } catch {
       toast.error('로그인 중 오류가 발생했습니다.');
     }
   };

@@ -7,6 +7,7 @@ import useReloadStore from '@/lib/ReloadState';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './MainPage.module.css';
+import delay from '@/lib/Delay';
 
 interface ProblemCardData {
   id: string;
@@ -30,6 +31,8 @@ function MainPage() {
   const navigation = useNavigate();
 
   const fetchItems = async () => {
+    await delay(2000);
+
     try {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
@@ -98,8 +101,8 @@ function MainPage() {
       // 데이터 fetching이 완료됐다면 상태 업데이트를 통해 리렌더링
       if (dataCreated) setItemCreated(newDataCreated as ProblemCardData[]);
       if (dataCheck) setItemCheck(newDataCheck as ProblemCardData[]);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      alert('비정상적인 접근입니다');
     } finally {
       // 로딩 상태를 완료로 변경
       setLoading(false);
@@ -142,7 +145,6 @@ function MainPage() {
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://quzelly.vercel.app/" />
 
-      {/* 메인 배너 DUMMY 데이터 */}
       <h1 className="sr-only">큐젤리 메인 페이지</h1>
       <img
         src="/images/main_banner.webp"

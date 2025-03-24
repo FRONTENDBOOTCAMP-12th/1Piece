@@ -115,7 +115,6 @@ function CardCreatePage() {
 
       if (cardError) {
         toast.error('카드 저장에 실패했습니다.');
-        console.error('카드 저장 오류:', cardError.message);
         return;
       }
 
@@ -133,7 +132,6 @@ function CardCreatePage() {
 
       if (questionsError) {
         toast.error('퀴즈 저장에 실패했습니다.');
-        console.error('퀴즈 저장 오류:', questionsError.message);
         return;
       }
 
@@ -141,9 +139,8 @@ function CardCreatePage() {
       setTimeout(() => {
         navigate('/card-list');
       }, 1000);
-    } catch (error) {
+    } catch {
       toast.error('카드 저장 중 오류가 발생했습니다.');
-      console.error('카드 저장 중 오류:', error);
     }
   };
 
