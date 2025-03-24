@@ -6,11 +6,12 @@
   flex-shrink: 0;
   border-radius: 3.125rem;
   padding: var(--space-7);
-  border: 0.125rem solid var(--black);
+  border: 2px solid var(--black);
   background: var(--gray-g);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  position: relative;
 }
 
 .commentInfo {
@@ -34,4 +35,24 @@
 
 .time {
   color: var(--line-gray);
+}
+
+.deleteButton {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-2);
+  background: var(--dark-gray-g);
+  border-radius: var(--rounded-full);
+  border: 1px solid var(--black);
+  height: var(--space-10);
+  width: var(--space-10);
+  cursor: pointer;
+  position: absolute;
+  right: 5%;
+
+  &:active {
+    background: var(--clicked-dark-gray-g);
+  }
 }

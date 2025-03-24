@@ -109,10 +109,18 @@ function QuizCompletePage() {
           written_at: newComment.commentedAt,
         },
       ]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      // 상태 업데이트: 화면에 즉시 렌더링 + 새 댓글을 포함한 10개만 유지
+  // 댓글 삭제
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await supabase.from('comment').delete().eq('id', Number(commentId));
+
       setComments((prevComments) =>
-        [newComment, ...prevComments].slice(0, COMMENTS_PER_CHUNK)
+        prevComments.filter((comment) => comment.id !== commentId)
       );
     } catch {
       alert('비정상적인 접근입니다.');
@@ -166,7 +174,7 @@ function QuizCompletePage() {
 
   useEffect(() => {
     fetchComments(chunk);
-  }, [chunk]);
+  }, [handleAddComment, chunk]);
 
   return (
     <div className={S.pageContainer}>
@@ -196,6 +204,7 @@ function QuizCompletePage() {
         <CommentList
           comments={comments}
           hasMore={hasMore}
+          onDelete={handleDeleteComment}
           onLoadMore={() => {
             if (hasMore) {
               setChunk((prevChunk) => prevChunk + 1);
