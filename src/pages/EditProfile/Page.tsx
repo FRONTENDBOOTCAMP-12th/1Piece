@@ -332,13 +332,16 @@ function EditProfilePage() {
 
         const userId = sessionData.session.user.id;
 
-        const response = await fetch('http://localhost:4000/delete-user', {
-          method: 'Delete',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        });
+        const response = await fetch(
+          'https://quzelly-backend.vercel.app/delete-user',
+          {
+            method: 'Delete',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
 
         console.log({ userId });
 
