@@ -5,9 +5,9 @@ import CardModal from '@/components/CardModal/CardModal';
 import CardGrid from '@/components/CardGrid/CardGrid';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
+import useReloadStore from '@/lib/ReloadState';
 import { useState, useEffect } from 'react';
 import S from './Page.module.css';
-import useReloadStore from '@/lib/ReloadState';
 
 interface CardData {
   id: string;

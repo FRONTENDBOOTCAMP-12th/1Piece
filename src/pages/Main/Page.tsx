@@ -3,10 +3,10 @@ import useModalVisibleStore from '@/lib/ProblemModalState';
 import CardModal from '@/components/CardModal/CardModal';
 import { toast, Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/SupabaseClient';
+import useReloadStore from '@/lib/ReloadState';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './MainPage.module.css';
-import useReloadStore from '@/lib/ReloadState';
 
 interface ProblemCardData {
   id: string;
