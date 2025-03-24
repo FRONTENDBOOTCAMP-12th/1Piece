@@ -150,7 +150,7 @@ function Quiz({
               </div>
             ) : (
               <div className={`${S.solveInCorrect} `}>
-                <img src="/images/jellyfish.png" alt="해파리오답요정" />
+                <img src="/images/jellyfish_cry.png" alt="해파리오답요정" />
                 <p>오답입니다ㅜㅜ..</p>
               </div>
             )
