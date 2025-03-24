@@ -16,6 +16,8 @@ const ResetState = () => {
       return;
     }
 
+    window.scrollTo(0, 0);
+
     resetIsVisible();
     setReset();
   }, [location.pathname, resetIsVisible, setReset]);
