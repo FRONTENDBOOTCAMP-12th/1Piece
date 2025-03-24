@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import { CiSearch } from 'react-icons/ci';
 import { useNavigate, useLocation } from 'react-router';
 import useSearchStore from '@/lib/SearchState';
-
 import S from './HeaderSearchBar.module.css';
+import { CiSearch } from 'react-icons/ci';
+import { useEffect } from 'react';
 
 function HeaderSearchBar() {
   const navigation = useNavigate();
