@@ -20,25 +20,21 @@ function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
 
   // 이미지 변경에 실패 시 띄울 경고창
   const handleAlertUpload = () => {
-    try {
-      withReactContent(Swal).fire({
-        title: (
-          <>
-            <p style={{ marginBlock: '16px' }}>
-              확장자명(png)와 파일 크기(2MB)를 확인해주세요
-            </p>
-            <img src="/images/jellyfish.png" alt="" />
-          </>
-        ),
-        confirmButtonText: '확인',
-        customClass: {
-          confirmButton: 'confirmButton',
-          title: 'alertTitle',
-        },
-      });
-    } catch {
-      alert('비정상적인 접근입니다');
-    }
+    withReactContent(Swal).fire({
+      title: (
+        <>
+          <p style={{ marginBlock: '16px' }}>
+            확장자명(png)와 파일 크기(2MB)를 확인해주세요
+          </p>
+          <img src="/images/jellyfish.png" alt="" />
+        </>
+      ),
+      confirmButtonText: '확인',
+      customClass: {
+        confirmButton: 'confirmButton',
+        title: 'alertTitle',
+      },
+    });
   };
 
   // 이미지 업로드 성공 시 띄울 알람

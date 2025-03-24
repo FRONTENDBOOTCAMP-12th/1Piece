@@ -49,7 +49,12 @@ function InputBox({ isLiked, onLikeUpdate, id, onAddComment }: InputBoxProps) {
         </button>
 
         {/* 좋아요 버튼 */}
-        <button type="button" className={S.likeButton} onClick={onLikeUpdate}>
+        <button
+          type="button"
+          className={S.likeButton}
+          onClick={onLikeUpdate}
+          aria-label="좋아요"
+        >
           {isLiked ? <FaHeart size={24} /> : <FaRegHeart size={24} />}
         </button>
 

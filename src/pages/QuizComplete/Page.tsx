@@ -109,6 +109,10 @@ function QuizCompletePage() {
           written_at: newComment.commentedAt,
         },
       ]);
+
+      fetchComments(chunk);
+
+      // 상태 업데이트: 화면에 즉시 렌더링 + 새 댓글을 포함한 10개만 유지
     } catch (error) {
       console.log(error);
     }
@@ -174,11 +178,12 @@ function QuizCompletePage() {
 
   useEffect(() => {
     fetchComments(chunk);
-  }, [handleAddComment, chunk]);
+  }, [chunk]);
 
   return (
     <div className={S.pageContainer}>
       <title>Quzelly | 풀이 결과 페이지</title>
+      <h1 className="sr-only">퀴즈 풀이 결과</h1>
       {isExploding && (
         <Confetti
           tweenDuration={3000}
