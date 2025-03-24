@@ -5,8 +5,8 @@ import withReactContent from 'sweetalert2-react-content';
 import { supabase } from '@/lib/SupabaseClient';
 import useLoginStore from '@/lib/LoginState';
 import useDebounce from '@/lib/useDebounce';
-import { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
