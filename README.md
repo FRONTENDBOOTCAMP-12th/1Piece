@@ -26,25 +26,25 @@
     - [3. 출석과 보상](#3-출석과-보상)
     - [4. 개인정보 관리](#4-개인정보-관리)
 
-## 프로젝트 소개
+## 📄 프로젝트 소개
 
 - 큐알 들어갈 자리
 
 - 배포 URL : https://quzelly.vercel.app/
 
-- Test ID : testyk
+- Test ID : likelion12
 
-- Test PW : test1234
+- Test PW : likelion1212
 
 - 큐젤리(QJelly)는 퀴즈(Quiz)와 젤리피쉬(Jellyfish)의 합성어로, 해파리처럼 자유롭게 지식을 떠다니며 나누는 웹 기반 퀴즈 플랫폼입니다.
   누구나 직접 퀴즈를 만들어 공유할 수 있고, 다양한 주제의 퀴즈를 검색해 풀어보며 지식을 쌓을 수 있습니다.
   마음에 드는 퀴즈에는 좋아요를 누르거나 댓글을 남기며 다른 사용자와 소통할 수 있어, 재미와 배움을 함께 경험할 수 있습니다.
 
-## 개발 기간
+## 🗓️ 개발 기간
 
 - 전체 개발 기간 : 2025.02.24 ~ 03.24
 
-## 팀원 구성
+## 👥 팀원 구성
 
 <br />
 <div align="center">
@@ -56,7 +56,7 @@
 
 </div>
 
-## 기술 스택
+## 🛠️ 기술 스택
 
 <div align="center">
 
@@ -78,7 +78,7 @@
 
 </div>
 
-## SiteMap
+## 🗺️ SiteMap
 
 <br />
 <div align="center">
@@ -87,7 +87,7 @@
 <br />
 <br />
 
-## UserFlow
+## 🧭 UserFlow
 
 <div align="center">
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/a101e50e-07d1-455f-8570-1368ed4a076d"/>
@@ -96,7 +96,7 @@
 <br />
 <br />
 
-## ERD
+## 🗃️ ERD
 
 <br />
 <div align="center">
@@ -263,3 +263,13 @@
 - 접속한 사용자의 아이디, 이메일, 닉네임을 확인할 수 있으며, 유효성 검사를 거쳐 닉네임과 비밀번호를 변경할 수 있다.
 
 - 탈퇴 버튼을 클릭하면 알림창에서 한 번 더 탈퇴 여부를 묻고, 확인을 누르면 탈퇴가 진행된다.
+  <br />
+  <br />
+
+## 🧾 기타 문서
+
+### [✍️ 백로그 바로가기](https://github.com/orgs/FRONTENDBOOTCAMP-12th/projects/253)
+
+### [📖 위키 바로가기](https://github.com/FRONTENDBOOTCAMP-12th/1Piece/wiki)
+
+### [📝 회고 바로가기](https://github.com/FRONTENDBOOTCAMP-12th/1Piece/wiki/%F0%9F%9B%A0-%ED%9A%8C%EA%B3%A0)
