@@ -1,14 +1,15 @@
-import { Toaster } from 'react-hot-toast';
-import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
-import toast from 'react-hot-toast';
-import useDebounce from '@/lib/useDebounce';
+import PasswordVerification from './components/PasswordVerification';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import useLoginStore from '@/lib/LoginState';
-import PasswordVerification from './components/PasswordVerification';
 import withReactContent from 'sweetalert2-react-content';
+import { supabase } from '@/lib/SupabaseClient';
+import useLoginStore from '@/lib/LoginState';
+import useDebounce from '@/lib/useDebounce';
+import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
+
 interface ProfileState {
   user_id: string;
   email: string;
@@ -18,14 +19,18 @@ interface ProfileState {
   alarm?: string | null;
   status?: string | null;
 }
-
+// 탈퇴 함수의 타입 정의
 interface DeactivateAccountProps {
-  onDeactivate: () => void; // 탈퇴 함수의 타입 정의
+  onDeactivate: () => void;
 }
+
+type DeleteUserResult = {
+  success: boolean;
+  message?: string;
+};
 
 function EditProfilePage() {
   const [profile, setProfile] = useState<ProfileState | null>(null);
-  const [loading, setLoading] = useState(true);
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
   const [errors, setErrors] = useState({
     password: '',
@@ -41,7 +46,8 @@ function EditProfilePage() {
   // 닉네임 입력 시 디바운스 적용
   const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
   // 알람 시간 상태 추가
-  const [alarmTime, setAlarmTime] = useState(profile?.alarm ?? '09:00');
+  const [alarmTime, setAlarmTime] = useState<string | null>(null);
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
 
   // 프로필 데이터가 바뀌면 알람 시간도 업데이트
   useEffect(() => {
@@ -55,7 +61,6 @@ function EditProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        setLoading(true);
         const { data: sessionData } = await supabase.auth.getSession();
         if (!sessionData.session) return;
 
@@ -84,19 +89,35 @@ function EditProfilePage() {
           setInitialProfile((prev) =>
             JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
           );
+
+          // supabase에서 가져온 `alarm` 값이 `null`이면 `disabled`
+          setAlarmTime(data.alarm ?? null);
+          setIsAlarmEnabled(data.alarm !== null);
         }
       } catch (error) {
         toast.error(
           `프로필 불러오기 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
           { position: 'bottom-right' }
         );
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchProfile();
   }, []);
+
+  // 알람 토글 핸들러
+  const handleAlarmToggle = () => {
+    setIsAlarmEnabled((prev) => {
+      const newEnabled = !prev;
+      if (!newEnabled) setAlarmTime(null);
+      return newEnabled;
+    });
+  };
+
+  // 알람 시간 변경 핸들러
+  const handleAlarmTimeChange = (time: string) => {
+    setAlarmTime(time);
+  };
 
   // handleLogout 함수 추가
   const handleLogout = async () => {
@@ -105,7 +126,7 @@ function EditProfilePage() {
     await supabase.auth.signOut(); // Supabase 세션 종료
     localStorage.removeItem('userInfo'); // 로컬스토리지 삭제
     sessionStorage.clear(); // 세션 스토리지 삭제
-    resetUser(); // Zustand 상태 초기화
+    resetUser(); // zustand 상태 초기화
     window.location.href = '/'; // 새로고침 + 홈으로 이동
   };
   useEffect(() => {
@@ -274,13 +295,11 @@ function EditProfilePage() {
     }
   };
 
-  // 탈퇴로 가장한 로그아웃 함수
+  // 탈퇴 함수
   const customSwal = withReactContent(Swal);
 
   const handleDeactivateAccount: DeactivateAccountProps['onDeactivate'] =
     async () => {
-      const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
-
       const result = await customSwal.fire({
         title: (
           <>
@@ -299,67 +318,62 @@ function EditProfilePage() {
         },
       });
 
-      if (result.isConfirmed) {
-        try {
-          // 현재 로그인된 사용자 정보 가져오기
-          const { data: user, error: userError } =
-            await supabase.auth.getUser();
-          if (userError || !user?.user) {
-            await Swal.fire({
-              title: '오류 발생',
-              text: '사용자 정보를 가져올 수 없습니다.',
-              icon: 'error',
-            });
-            return;
-          }
+      if (!result.isConfirmed) return;
 
-          console.log('현재 로그인된 사용자 ID:', user.user.id);
+      try {
+        // 세션에서 토큰 + 유저 정보 가져오기
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
+        if (sessionError || !sessionData.session) throw new Error('세션 없음');
 
-          // `users` 테이블에서 `status`를 `inactive`로 업데이트
-          const { error } = await supabase
-            .from('users')
-            .update({ status: 'inactive' })
-            .eq('auth_uid', user.user.id); // auth_uid 필드 기준
+        const userId = sessionData.session.user.id;
 
-          if (error) throw error;
-
-          console.log('사용자 비활성화 성공!');
-
-          // Zustand 상태 초기화
-          resetUser();
-
-          // 탈퇴 완료 SweetAlert 알림
-          await customSwal.fire({
-            title: (
-              <>
-                <p style={{ marginBlock: '16px' }}>이용해주셔서 감사합니다</p>
-                <img src="/images/jellyfish.png" alt="탈퇴 완료 이미지" />
-              </>
-            ),
-            confirmButtonText: '확인',
-            customClass: {
-              confirmButton: 'confirmButton',
+        const response = await fetch(
+          'https://quzelly-backend.vercel.app/delete-user',
+          {
+            method: 'Delete',
+            headers: {
+              'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ userId }),
+          }
+        );
 
-            allowOutsideClick: false, // 바깥 클릭 방지
-            allowEscapeKey: false, // ESC 키 방지
-          });
-          // 로그아웃 실행 (handleLogout 호출)
-          await handleLogout();
-        } catch (error) {
-          console.error('탈퇴 실패:', error);
-          await Swal.fire({
-            title: '탈퇴 실패',
-            text: '탈퇴 처리 중 오류가 발생했습니다.',
-            icon: 'error',
-          });
+        console.log({ userId });
+
+        const result: DeleteUserResult = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message ?? '탈퇴 실패');
         }
+
+        await customSwal.fire({
+          title: (
+            <>
+              <p style={{ marginBlock: '16px' }}>이용해주셔서 감사합니다</p>
+              <img src="/images/jellyfish.png" alt="탈퇴 완료 이미지" />
+            </>
+          ),
+          confirmButtonText: '확인',
+          customClass: { confirmButton: 'confirmButton' },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
+        await handleLogout();
+      } catch (error) {
+        console.error('탈퇴 실패:', error);
+        await Swal.fire({
+          title: '탈퇴 실패',
+          text:
+            error instanceof Error ? error.message : '탈퇴 처리 중 오류 발생',
+          icon: 'error',
+        });
       }
     };
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       if (!profile || !initialProfile) return;
@@ -372,7 +386,7 @@ function EditProfilePage() {
         hasChanges = true;
       }
 
-      // ✅ 알람 변경 감지 (null 값 허용)
+      // 알람 변경 감지 (null 값 허용)
       if (initialProfile.alarm !== alarmTime) {
         updates.alarm = alarmTime ?? null; // null 값도 저장되도록 보장
         hasChanges = true;
@@ -397,6 +411,8 @@ function EditProfilePage() {
         setInitialProfile((prev) =>
           prev ? { ...prev, ...updates, alarm: updates.alarm ?? null } : prev
         );
+        setIsAlarmEnabled(updates.alarm !== null);
+        setAlarmTime(updates.alarm ?? null);
 
         // 알람 설정 변경 메시지 추가
         if (updates.alarm !== undefined) {
@@ -423,17 +439,14 @@ function EditProfilePage() {
       }
     } catch (error) {
       console.error('프로필 수정 실패:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  if (loading) return <p>로딩 중... 🚀</p>;
-
   return (
     <div>
+      <title>Quzelly | 개인정보관리</title>
       <Toaster position="bottom-right" reverseOrder={false} />
-      <MyPageDiary title="P r o f i l e">
+      <MyPageDiary title="P r o f i l e" activeButton={3}>
         {!isPasswordVerified ? (
           <PasswordVerification
             onVerify={handlePasswordVerification} // 현재 비밀번호 검증 함수
@@ -444,7 +457,7 @@ function EditProfilePage() {
             profile={profile!}
             alarmTime={alarmTime}
             nicknameError={errors.nickname}
-            setAlarmTime={setAlarmTime}
+            onAlarmTimeChange={handleAlarmTimeChange}
             confirmPasswordError={errors.confirmPassword}
             confirmPasswordSuccess={''}
             confirmNewPassword={confirmNewPassword}
@@ -454,6 +467,8 @@ function EditProfilePage() {
             onInputChange={handleInputChange}
             onSaveChanges={handleSaveChanges}
             onDeleteAccount={handleDeactivateAccount}
+            isAlarmEnabled={isAlarmEnabled}
+            onAlarmToggle={handleAlarmToggle}
           />
         )}
       </MyPageDiary>

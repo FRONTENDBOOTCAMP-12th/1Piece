@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination as SwiperPagination, Grid } from 'swiper/modules';
-import Card from '@/components/Card/Card';
 import Pagination from '@/components/Pagination/Pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Card from '@/components/Card/Card';
+import React, { useState } from 'react';
 import S from './CardGrid.module.css';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/grid';
+import Skeleton from '../Skeleton/Skeleton';
 
 export interface CardData {
   id: string;
@@ -45,7 +46,15 @@ const CardGrid: React.FC<CardSwiperProps> = ({
       </div>
       {children && <div className={S.header}>{children}</div>}
       {loading ? (
-        <p>로딩 중...</p>
+        <>
+          <Skeleton row={1} col={5} />
+          <Pagination
+            totalItems={data.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </>
       ) : data.length === 0 ? ( // 데이터가 없을 때 메시지 표시
         <p>표시할 데이터가 없습니다.</p>
       ) : (

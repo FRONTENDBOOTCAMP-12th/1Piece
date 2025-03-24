@@ -1,12 +1,12 @@
 .header {
   background: var(--primary-2-g);
-  min-width: 1024px;
   border-block-end: 1px solid var(--black);
   position: relative;
+  min-width: 1440px;
 }
 
 .headerContainer {
-  width: 80%;
+  width: 65%;
   margin-inline: auto;
   display: flex;
   align-items: center;
@@ -22,7 +22,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding-block: var(--space-7);
 }
 
 .userInfoContainer {

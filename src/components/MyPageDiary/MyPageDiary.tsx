@@ -1,9 +1,9 @@
 import ProfileImage from '@/components/EditProfile/ProfileImage';
 import useProfileStore from '@/lib/UserProfileState';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Button from '../Button/Button';
 import S from './MyPageDiary.module.css';
+import Button from '../Button/Button';
+import { useState } from 'react';
 
 interface MyPageDiaryProps {
   children: React.ReactNode;
@@ -64,10 +64,10 @@ function MyPageDiary({
           <div />
           <div />
         </div>
-        <div className={S.bottomSpringContainer}>
-          <div />
-          <div />
-        </div>
+      </div>
+      <div className={S.bottomSpringContainer}>
+        <div />
+        <div />
       </div>
     </div>
   );

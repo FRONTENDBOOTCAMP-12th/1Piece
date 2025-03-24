@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import S from './Option.module.css';
+import { useState } from 'react';
 
 type OptionProps = React.ComponentProps<'button'> & {
   content?: string;

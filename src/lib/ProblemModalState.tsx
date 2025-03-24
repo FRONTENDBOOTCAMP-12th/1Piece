@@ -1,5 +1,5 @@
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { create } from 'zustand';
 
 // 카드 정보를 나타내기 위한 타입 지정
 export interface CardInfo {
@@ -16,6 +16,7 @@ export interface CardInfo {
 interface State {
   isVisible: boolean;
   cardInfo: CardInfo;
+  isWriter: boolean;
 }
 
 // 함수 타입
@@ -23,6 +24,7 @@ interface Actions {
   setVisible: () => void;
   setNonVisible: () => void;
   setCardInfo: (value: CardInfo) => void;
+  setIsWriter: (isTrue: boolean) => void;
   resetIsVisible: () => void;
 }
 
@@ -33,6 +35,7 @@ const useModalVisibleStore = create(
   persist<Store>(
     (set) => ({
       isVisible: false,
+      isWriter: false,
       cardInfo: {
         id: '',
         title: '',
@@ -59,6 +62,13 @@ const useModalVisibleStore = create(
       setNonVisible: () => {
         set((state) => ({
           isVisible: !state.isVisible,
+        }));
+      },
+
+      // 작성자인지 체크
+      setIsWriter: (isTrue) => {
+        set(() => ({
+          isWriter: isTrue,
         }));
       },
 

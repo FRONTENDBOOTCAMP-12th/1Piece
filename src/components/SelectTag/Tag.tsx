@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import S from './SelectTag.module.css';
 import { DummyKey } from './SelectTag';
+import S from './SelectTag.module.css';
+import { useState } from 'react';
 
 // button태그와 상태와 id 비교와 이벤트를 속성으로 부모로부터 넘겨받기
 type TagProps = React.ComponentProps<'button'> & {

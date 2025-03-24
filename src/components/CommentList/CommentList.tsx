@@ -1,5 +1,5 @@
-import Comment from '../Comment/Comment';
 import RoundedButton from '../RoundedButton/RoundedButton';
+import Comment from '../Comment/Comment';
 import S from './CommentList.module.css';
 
 export interface CommentData {
