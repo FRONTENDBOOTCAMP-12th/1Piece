@@ -9,6 +9,7 @@ import InputBox from './components/InputBox';
 import { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import S from './Page.module.css';
+import useReloadStore from '@/lib/ReloadState';
 
 const COMMENTS_PER_CHUNK = 10; // 한 번에 표시할 댓글 수
 
@@ -26,6 +27,8 @@ function QuizCompletePage() {
   const totalQuiz = useQuizSolvedStore((state) => state.totalQuiz);
   const correctQuiz = useQuizSolvedStore((state) => state.correctQuiz);
   const userProfile = useProfileStore((state) => state.userProfile);
+  const reload = useReloadStore((state) => state.reload);
+  const setReload = useReloadStore((state) => state.setReload);
 
   // 해당 퀴즈의 댓글 불러오기
   const fetchComments = async (chunk: number) => {
@@ -61,7 +64,7 @@ function QuizCompletePage() {
         ...newData,
       ]);
     } catch {
-      alert('비정상적인 접근입니다');
+      alert(1);
     }
   };
 
@@ -112,6 +115,8 @@ function QuizCompletePage() {
     } catch (error) {
       console.log(error);
     }
+
+    setReload();
   };
 
   // 댓글 삭제
@@ -174,7 +179,8 @@ function QuizCompletePage() {
 
   useEffect(() => {
     fetchComments(chunk);
-  }, [handleAddComment, chunk]);
+    console.log(1);
+  }, [chunk, reload]);
 
   return (
     <div className={S.pageContainer}>
