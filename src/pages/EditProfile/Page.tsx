@@ -26,7 +26,6 @@ interface DeactivateAccountProps {
 
 function EditProfilePage() {
   const [profile, setProfile] = useState<ProfileState | null>(null);
-  const [loading, setLoading] = useState(true);
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
   const [errors, setErrors] = useState({
     password: '',
@@ -57,7 +56,6 @@ function EditProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        setLoading(true);
         const { data: sessionData } = await supabase.auth.getSession();
         if (!sessionData.session) return;
 
@@ -96,8 +94,6 @@ function EditProfilePage() {
           `프로필 불러오기 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
           { position: 'bottom-right' }
         );
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -379,7 +375,6 @@ function EditProfilePage() {
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       if (!profile || !initialProfile) return;
@@ -445,12 +440,8 @@ function EditProfilePage() {
       }
     } catch (error) {
       console.error('프로필 수정 실패:', error);
-    } finally {
-      setLoading(false);
     }
   };
-
-  if (loading) return <p>로딩 중... 🚀</p>;
 
   return (
     <div>
