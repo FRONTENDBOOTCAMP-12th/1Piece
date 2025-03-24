@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router';
-import { supabase } from '@/lib/SupabaseClient';
-
-import TextArea from '@/components/TextArea/TextArea';
 import SelectTag, { DummyKey } from '@/components/SelectTag/SelectTag';
-import Button from '@/components/Button/Button';
+import TextArea from '@/components/TextArea/TextArea';
+import toast, { Toaster } from 'react-hot-toast';
 import QuizCreate from './components/QuizCreate';
-
+import { supabase } from '@/lib/SupabaseClient';
+import Button from '@/components/Button/Button';
+import { useNavigate } from 'react-router';
 import S from './Page.module.css';
+import { useState } from 'react';
 
 function CardCreatePage() {
   const [questions, setQuestions] = useState([
@@ -155,6 +153,7 @@ function CardCreatePage() {
 
   return (
     <div className={S.questionCreateContainer}>
+      <title>Quzelly | 문제 생성 페이지</title>
       <h1 className={S.title}>문제 생성</h1>
       <div className={S.settings}>
         <div className={S.questionTitle}>

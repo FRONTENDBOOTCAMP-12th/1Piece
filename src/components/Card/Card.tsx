@@ -1,8 +1,8 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import { type CardInfo } from '@/lib/ProblemModalState';
 import CardTag from '../CardTag/CardTag';
 import BookMark from './BookMark';
 import S from './Card.module.css';
-import { type CardInfo } from '@/lib/ProblemModalState';
 
 type CardProps = React.ComponentProps<'img'> &
   React.ComponentProps<'div'> & {

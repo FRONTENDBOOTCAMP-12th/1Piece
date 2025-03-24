@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Calendar from 'react-calendar';
 import S from './Calendar.module.css';
+import { useState } from 'react';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];

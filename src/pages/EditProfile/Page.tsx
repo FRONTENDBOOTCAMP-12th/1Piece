@@ -1,14 +1,15 @@
-import { Toaster } from 'react-hot-toast';
-import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
-import toast from 'react-hot-toast';
-import useDebounce from '@/lib/useDebounce';
+import PasswordVerification from './components/PasswordVerification';
 import EditProfile from '@/components/EditProfile/EditProfile';
 import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
-import useLoginStore from '@/lib/LoginState';
-import PasswordVerification from './components/PasswordVerification';
 import withReactContent from 'sweetalert2-react-content';
+import { supabase } from '@/lib/SupabaseClient';
+import useLoginStore from '@/lib/LoginState';
+import useDebounce from '@/lib/useDebounce';
+import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
+
 interface ProfileState {
   user_id: string;
   email: string;
@@ -453,8 +454,9 @@ function EditProfilePage() {
 
   return (
     <div>
+      <title>Quzelly | 개인정보관리</title>
       <Toaster position="bottom-right" reverseOrder={false} />
-      <MyPageDiary title="P r o f i l e">
+      <MyPageDiary title="P r o f i l e" activeButton={3}>
         {!isPasswordVerified ? (
           <PasswordVerification
             onVerify={handlePasswordVerification} // 현재 비밀번호 검증 함수
