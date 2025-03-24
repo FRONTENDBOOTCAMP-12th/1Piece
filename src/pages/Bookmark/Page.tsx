@@ -37,7 +37,7 @@ function BookmarkPage() {
     try {
       const { data: fetchedData, error } = await supabase
         .from('bookmark')
-        .select('*,card(*), users(*)')
+        .select('*,card(*,users(*)), users(*)')
         .eq('bookmark_user', userProfile!.id);
 
       if (error) throw error;
@@ -47,7 +47,7 @@ function BookmarkPage() {
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
-        userName: item.users.nickname,
+        userName: item.card.users!.nickname,
         tags: Object.values(item.card.tags!),
         checked: false,
         problemTitle: item.card.problemTitle,
