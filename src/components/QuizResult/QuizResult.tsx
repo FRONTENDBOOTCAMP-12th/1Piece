@@ -18,6 +18,7 @@ function QuizResult({
       </h2>
       <img
         src="/images/solved_message.svg"
+        loading="lazy"
         alt="퀴즈를 완료했습니다! 축하합니다~"
       />
       <div className={S.quizTitle}>{quizTitle}</div>
