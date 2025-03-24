@@ -1,6 +1,6 @@
-import RoundedButton from '../../../components/RoundedButton/RoundedButton';
-import BookMark from '../../../components/Card/BookMark';
+import RoundedButton from '@/components/RoundedButton/RoundedButton';
 import { FaRegHeart, FaShareAlt } from 'react-icons/fa';
+import BookMark from '@/components/Card/BookMark';
 import { FaHeart } from 'react-icons/fa6';
 import S from './InputBox.module.css';
 import { useState } from 'react';
