@@ -21,19 +21,26 @@ interface ProfileState {
   alarm?: string | null;
   status?: string | null;
 }
-// 탈퇴 함수의 타입 정의
+// 탈퇴 함수 prop 타입
 interface DeactivateAccountProps {
   onDeactivate: () => void;
 }
 
+// 탈퇴 API 응답 타입
 interface DeleteUserResult {
   success: boolean;
   message?: string;
 }
 
 function EditProfilePage() {
+  // 상태값: 프로필 관련
   const [profile, setProfile] = useState<ProfileState | null>(null);
+  const [initialProfile, setInitialProfile] = useState<ProfileState | null>(
+    null
+  );
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
+
+  // 상태값: 입력/오류 관리
   const [errors, setErrors] = useState({
     password: '',
     confirmPassword: '',
@@ -42,27 +49,29 @@ function EditProfilePage() {
   });
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [initialProfile, setInitialProfile] = useState<ProfileState | null>(
-    null
-  );
-  // 닉네임 입력 시 디바운스 적용
-  const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
-  // 알람 시간 상태 추가
+
+  // 상태값: 알람 설정
   const [alarmTime, setAlarmTime] = useState<string | null>(null);
   const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
+
+  // 커스텀 훅
+  const debouncedNickname = useDebounce(profile?.nickname ?? '', 500);
+
+  // Zustand store
   const userProfile = useProfileStore((state) => state.userProfile);
   const setUserProfile = useProfileStore((state) => state.setUserProfile);
+
+  // 라우터
   const navigation = useNavigate();
 
-  // 프로필 데이터가 바뀌면 알람 시간도 업데이트
+  // 알람 시간 동기화
   useEffect(() => {
     if (profile?.alarm) {
       setAlarmTime(profile.alarm);
     }
   }, [profile?.alarm]);
 
-  // 로그아웃 기능: Supabase 세션을 종료하고, 로컬 스토리지에서 사용자 정보를 삭제한 후 메인 페이지로 이동
-
+  // 프로필 정보 불러오기
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -84,7 +93,6 @@ function EditProfilePage() {
         }
 
         if (data) {
-          // 기존 데이터와 다를 때만 상태 업데이트
           setProfile((prev) =>
             JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
           );
@@ -92,7 +100,7 @@ function EditProfilePage() {
             JSON.stringify(prev) !== JSON.stringify(data) ? data : prev
           );
 
-          // supabase에서 가져온 `alarm` 값이 `null`이면 `disabled`
+          // Supabase에서 가져온 alarm 값이 null이면 disabled
           setAlarmTime(data.alarm ?? null);
           setIsAlarmEnabled(data.alarm !== null);
         }
@@ -121,18 +129,18 @@ function EditProfilePage() {
     setAlarmTime(time);
   };
 
-  // handleLogout 함수 추가
   const handleLogout = async () => {
-    const resetUser = useLoginStore.getState().resetUser; // Zustand에서 `resetUser()` 가져오기
+    const resetUser = useLoginStore.getState().resetUser; // Zustand에서 resetUser() 가져오기
 
     await supabase.auth.signOut(); // Supabase 세션 종료
     localStorage.removeItem('userInfo'); // 로컬스토리지 삭제
     sessionStorage.clear(); // 세션 스토리지 삭제
-    resetUser(); // zustand 상태 초기화
+    resetUser(); // Zustand 상태 초기화
     window.location.href = '/'; // 새로고침 + 홈으로 이동
   };
+
+  // 닉네임 중복 검사
   useEffect(() => {
-    // 닉네임 중복 검사
     if (!debouncedNickname.trim() || !profile?.user_id) return;
     const checkNickname = async () => {
       const { data } = await supabase
@@ -194,7 +202,7 @@ function EditProfilePage() {
     return ''; // 에러가 없을 경우 빈 문자열 반환
   };
 
-  // 비밀번호 검증 함수 추가
+  // 비밀번호 검증
   const handlePasswordVerification = async (password: string) => {
     if (!profile?.email) {
       toast.error('이메일 정보를 불러올 수 없습니다.', {
@@ -294,7 +302,7 @@ function EditProfilePage() {
     }
   };
 
-  // 탈퇴 함수
+  // 회원 탈퇴
   const customSwal = withReactContent(Swal);
 
   const handleDeactivateAccount: DeactivateAccountProps['onDeactivate'] =
@@ -376,7 +384,7 @@ function EditProfilePage() {
       const updates: Partial<ProfileState> = {};
       let hasChanges = false;
 
-      // 닉네임 변경 감지
+      // 알람 시간 변경 감지
       if (initialProfile.nickname.trim() !== profile.nickname.trim()) {
         setUserProfile({ ...userProfile!, nickname: profile.nickname.trim() });
         updates.nickname = profile.nickname.trim();
@@ -389,7 +397,7 @@ function EditProfilePage() {
         hasChanges = true;
       }
 
-      // 비밀번호 변경 감지
+      // 비밀번호 변경 여부
       let isPasswordUpdated = false;
       if (newPassword || confirmNewPassword) {
         isPasswordUpdated = await handlePasswordChange();
@@ -446,7 +454,7 @@ function EditProfilePage() {
       <MyPageDiary title="P r o f i l e" activeButton={3}>
         {!isPasswordVerified ? (
           <PasswordVerification
-            onVerify={handlePasswordVerification} // 현재 비밀번호 검증 함수
+            onVerify={handlePasswordVerification}
             passwordError={errors.password}
           />
         ) : (
