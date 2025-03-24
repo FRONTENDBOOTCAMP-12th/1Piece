@@ -112,6 +112,11 @@ function QuizCompletePage() {
           written_at: newComment.commentedAt,
         },
       ]);
+
+      // 상태 업데이트: 화면에 즉시 렌더링 + 새 댓글을 포함한 10개만 유지
+      setComments((prevComments) =>
+        [newComment, ...prevComments].slice(0, COMMENTS_PER_CHUNK)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -179,7 +184,6 @@ function QuizCompletePage() {
 
   useEffect(() => {
     fetchComments(chunk);
-    console.log(1);
   }, [chunk, reload]);
 
   return (
