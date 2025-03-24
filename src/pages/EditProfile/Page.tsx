@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import useProfileStore from '@/lib/UserProfileState';
+import { useNavigate } from 'react-router';
 
 interface ProfileState {
   user_id: string;
@@ -48,6 +50,9 @@ function EditProfilePage() {
   // 알람 시간 상태 추가
   const [alarmTime, setAlarmTime] = useState<string | null>(null);
   const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
+  const userProfile = useProfileStore((state) => state.userProfile);
+  const setUserProfile = useProfileStore((state) => state.setUserProfile);
+  const navigation = useNavigate();
 
   // 프로필 데이터가 바뀌면 알람 시간도 업데이트
   useEffect(() => {
@@ -373,6 +378,7 @@ function EditProfilePage() {
 
       // 닉네임 변경 감지
       if (initialProfile.nickname.trim() !== profile.nickname.trim()) {
+        setUserProfile({ ...userProfile!, nickname: profile.nickname.trim() });
         updates.nickname = profile.nickname.trim();
         hasChanges = true;
       }
@@ -423,7 +429,7 @@ function EditProfilePage() {
 
       if (hasChanges || isPasswordUpdated) {
         setTimeout(() => {
-          window.location.reload();
+          navigation('/bookmark');
         }, 1500);
       } else {
         toast.error('변경된 내용이 없습니다.');

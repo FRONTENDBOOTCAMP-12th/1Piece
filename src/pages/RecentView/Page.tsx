@@ -38,7 +38,7 @@ function RecentViewPage() {
     try {
       const { data: fetchedData, error } = await supabase
         .from('recent')
-        .select('*,card(*), users(*)')
+        .select('*,card(*,users(*)), users(*)')
         .eq('solved_user', userProfile!.id)
         .order('recent_time', { ascending: false });
 
@@ -49,7 +49,7 @@ function RecentViewPage() {
         src: supabase.storage
           .from('profileImg/userProfile')
           .getPublicUrl(`${item.card.writer}.png`).data.publicUrl,
-        userName: item.users.nickname,
+        userName: item.card.users!.nickname,
         tags: Object.values(item.card.tags!),
         checked: false,
         problemTitle: item.card.problemTitle,
