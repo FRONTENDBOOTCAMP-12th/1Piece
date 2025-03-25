@@ -121,7 +121,7 @@ function SignUpPage() {
   };
 
   const idCheckAvailability = async (id: string) => {
-    if (!id.trim()) return false;
+    if (!id.trim()) return null;
 
     try {
       const { data } = await supabase
@@ -137,7 +137,7 @@ function SignUpPage() {
   };
 
   const emailCheckAvailability = async (email: string) => {
-    if (!email.trim()) return false;
+    if (!email.trim()) return null;
 
     try {
       const { data } = await supabase
@@ -162,7 +162,7 @@ function SignUpPage() {
   }, [formData.id, idRegEx]);
   const handleIdCheck = useCallback(async () => {
     const id = formData.id.trim();
-    if (!id) return setIsIdAvailable(false);
+    if (!id) return setIsIdAvailable(null);
     if (!idValidate()) {
       setIsIdAvailable(false);
       return toast.error('ID는 영어와 숫자만 포함해야 합니다.');
@@ -191,7 +191,7 @@ function SignUpPage() {
 
   const handleEmailCheck = useCallback(async () => {
     const email = formData.email.trim();
-    if (!email) return setIsEmailAvailable(false);
+    if (!email) return setIsEmailAvailable(null);
 
     if (!emailValidate()) return setIsEmailAvailable(null);
 
@@ -459,12 +459,13 @@ function SignUpPage() {
           className={S.inputBox}
         />
         <fieldset>
+          <legend className="sr-only">약관 동의</legend>
           <label htmlFor="allChecked" className={S.termsContainer}>
             <IoCheckmark
               size={20}
               className={`${S.radioIcon} ${allChecked ? S.checked : ''}`}
             />
-            <legend>전체 동의합니다.</legend>
+            전체 동의합니다.
           </label>
           <input
             type="checkbox"
