@@ -1,0 +1,69 @@
+.questionCreateContainer {
+  width: 84rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--space-10);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: var(--xxxl);
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.tagSelect {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-24);
+}
+
+.label {
+  font-size: var(--large-2);
+  font-weight: var(--semi-bold);
+  color: var(--black);
+  line-height: var(--xxxl);
+}
+
+.btnAdd {
+  position: relative;
+  width: 10rem;
+  height: 5.6rem;
+  background: var(--clicked-gray-g);
+  border: 2px solid var(--black);
+  border-radius: var(--rounded-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-family: var(--pretendard);
+  padding-bottom: 0.8rem;
+}
+
+.btnContainer {
+  width: 100%;
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-10);
+  justify-content: flex-end;
+}
+
+.btnCancel,
+.btnSubmit {
+  width: 10rem;
+  height: 5rem;
+  font-size: var(--xl);
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  align-self: center;
+  text-align: center;
+}

@@ -2,12 +2,12 @@
   display: flex;
   flex-flow: row;
   gap: var(--space-4);
-  width: 75rem;
+  width: 85rem;
   min-height: fit-content;
   margin-inline: auto;
-  position: relative;
   margin-top: var(--space-15);
   margin-bottom: var(--space-15);
+  position: relative;
 }
 
 .leftDiary {
@@ -16,6 +16,23 @@
   border: 1px solid var(--black);
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4);
+  min-width: 22rem;
+  max-width: 22rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.largerProfileImage {
+  border: 2px solid var(--black);
 }
 
 .rightDiary {
@@ -24,21 +41,19 @@
   border: 1px solid var(--black);
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: var(--space-15);
+  padding: 0 var(--space-10) var(--space-15) var(--space-10);
 }
 
 .springContainer {
   display: flex;
   position: absolute;
   flex-flow: column;
-  left: 32%;
-  top: 10%;
-  gap: 25rem;
+  left: 25%;
+  top: 20%;
 
   .topSpringContainer {
     display: flex;
@@ -47,30 +62,35 @@
 
     & div {
       height: var(--space-4);
-      width: var(--space-8);
-      background: var(--dark-gray-g);
-      border-radius: var(--rounded-full);
-    }
-  }
-
-  .bottomSpringContainer {
-    display: flex;
-    flex-flow: column;
-    gap: 3rem;
-
-    & div {
-      height: var(--space-4);
-      width: var(--space-8);
+      width: var(--space-10);
       background: var(--dark-gray-g);
       border-radius: var(--rounded-full);
     }
   }
 }
 
-.levelText {
+.bottomSpringContainer {
+  display: flex;
+  flex-flow: column;
+  gap: 3rem;
+  position: absolute;
+  left: 25%;
+  bottom: 20%;
+
+  & div {
+    height: var(--space-4);
+    width: var(--space-10);
+    background: var(--dark-gray-g);
+    border-radius: var(--rounded-full);
+  }
+}
+
+.level,
+.nickname {
   font-size: var(--large-2);
   text-align: center;
   margin-block: var(--space-4);
+  margin-top: var(--space-5);
 }
 
 .diaryProfile {
@@ -83,19 +103,25 @@
   margin-block-end: var(--space-24);
 }
 
-.myPageButtonContainer {
+.btnNavigate {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   gap: var(--space-16);
   align-items: center;
   margin-block-end: var(--space-8);
+  margin-top: var(--space-24);
 }
 
-.myPageRouterBtn {
+.customButton {
+  font-size: var(--large-2);
+  border-radius: var(--radius-xl);
+  border: 0.125rem solid var(--black);
+  width: 18rem;
+  height: 5rem;
+  cursor: pointer;
   display: flex;
   justify-content: center;
-  text-decoration: none;
-  width: 100%;
+  align-items: center;
 }
 
 .pageName {

@@ -1,30 +1,48 @@
-import { NavLink } from 'react-router';
-import { BiPlus } from 'react-icons/bi';
-import { RiInbox2Line } from 'react-icons/ri';
-import S from './Header.module.css';
-import RoundedButton from '@/components/RoundedButton/RoundedButton';
-import { useEffect, useState } from 'react';
 import HeaderSearchBar from '@/layout/Header/components/HeaderSearchBar';
+import RoundedButton from '@/components/RoundedButton/RoundedButton';
+import { NavLink, useLocation, useNavigate } from 'react-router';
+import useProfileStore from '@/lib/UserProfileState';
 import LoggedOut from './components/LoggedOut';
+import { RiInbox2Line } from 'react-icons/ri';
 import LoggedIn from './components/LoggedIn';
+import useLoginStore from '@/lib/LoginState';
+import { useEffect, useState } from 'react';
+import { BiPlus } from 'react-icons/bi';
+import S from './Header.module.css';
 
-// 유저 프로필 사진을 props로 전달
-interface HeaderProps {
-  src?: string;
-}
-
-function Header({ src }: HeaderProps) {
+function Header() {
   // 로그인 상태
-  const [isLogin, setIsLogin] = useState(false);
+  const userInfo = useLoginStore((state) => state.userInfo);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [current, setCurrent] = useState('/');
+  const profileImg = useProfileStore((state) => state.profileImg);
 
-  // useEffect를 사용한 렌더링 차이
+  // NavLink를 사용하지 않은 링크 이동
+  const handleMoveToHome = () => {
+    navigate('/');
+  };
+
+  const handleMoveToCardList = () => {
+    navigate('/card-list');
+  };
+
+  const handleMoveToCardCreate = () => {
+    navigate('/card-create');
+  };
+
+  const handleMoveToBookMark = () => {
+    navigate('/bookmark');
+  };
+
+  // 현재 pathname에 따라 홈과 목록 버튼의 색상 변경
   useEffect(() => {
-    const nextIsLogin = Boolean(src);
-    setIsLogin(nextIsLogin);
-  }, [src]);
+    const currentPage = location.pathname;
+    setCurrent(currentPage);
+  }, [location.pathname]);
 
   return (
-    <header>
+    <header className={S.header}>
       <div className={S.headerContainer}>
         <div className={S.logoContainer}>
           {/* react-router를 활용한 링크 이동 */}
@@ -32,38 +50,53 @@ function Header({ src }: HeaderProps) {
           <NavLink to="/">
             <img src="/icons/logo.svg" alt="홈으로 이동" className={S.logo} />
           </NavLink>
-          <NavLink to="/">
-            <RoundedButton color="tertiary" font="pretendard" size="regular">
-              홈
-            </RoundedButton>
-          </NavLink>
+          <RoundedButton
+            color={current === '/' ? 'tertiary' : 'darkgray'}
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToHome}
+            aria-label="홈으로 이동"
+          >
+            홈
+          </RoundedButton>
           {/* 문제 목록 페이지로 이동 */}
-          <NavLink to="/problem-list">
-            <RoundedButton color="darkgray" font="pretendard" size="regular">
-              목록
-            </RoundedButton>
-          </NavLink>
+
+          <RoundedButton
+            color={current.includes('card-list') ? 'tertiary' : 'darkgray'}
+            font="pretendard"
+            size="regular"
+            onClick={handleMoveToCardList}
+            aria-label="카드목록으로 이동"
+          >
+            목록
+          </RoundedButton>
         </div>
 
         <div className={S.userInfoContainer}>
           {/* 검색 컴포넌트 */}
           <HeaderSearchBar />
-          {/* 문제 생성 페이지로 이동 */}
-          <NavLink to="/question-create">
-            <div className={S.headerSearchIcon}>
-              <BiPlus size={24} />
-            </div>
-          </NavLink>
-          {/* 북마크 페이지로 이동 */}
-          <NavLink to="/bookmark">
-            <div className={S.headerSearchIcon}>
-              <RiInbox2Line size={24} />
-            </div>
-          </NavLink>
-          {/* 로그인 상태에 따른 헤더 렌더링 다르게 */}
-          {isLogin ? (
-            // 마이페이지로 이동(로그인 된 상태)
-            <LoggedIn src={src!} />
+          {/* 로그인 상태에 따른 UI 변동 */}
+          {userInfo ? (
+            <>
+              <button
+                type="button"
+                className={S.headerCreateIcon}
+                aria-label="문제 생성 페이지로 이동"
+                onClick={handleMoveToCardCreate}
+              >
+                <BiPlus size={24} />
+              </button>
+              {/* 북마크 페이지로 이동 */}
+              <button
+                type="button"
+                className={S.headerBookMarkIcon}
+                aria-label="북마크로 이동"
+                onClick={handleMoveToBookMark}
+              >
+                <RiInbox2Line size={24} />
+              </button>
+              <LoggedIn src={profileImg} />
+            </>
           ) : (
             <LoggedOut />
           )}

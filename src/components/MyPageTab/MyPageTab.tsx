@@ -1,32 +1,32 @@
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router'; // useLocation 추가
 import S from './MyPageTab.module.css';
 
 interface MyPageTabProps {
-  tabs: string[];
-  onTabChange: (tab: string) => void;
+  tabs: { name: string; path: string }[];
 }
 
-function MyPageTab({ tabs, onTabChange }: MyPageTabProps) {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+function MyPageTab({ tabs }: MyPageTabProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    onTabChange(tab);
+  const handleTabClick = (path: string) => {
+    navigate(path);
   };
 
   return (
     <nav className={S.tabList}>
-      {tabs.map((tab) => (
-        <button
-          key={tab}
-          className={`${S.tab} ${activeTab === tab ? S.activeTab : ''}`}
-          onClick={() => handleTabClick(tab)}
-          role="tab"
-          aria-selected={activeTab === tab}
-        >
-          {tab}
-        </button>
-      ))}
+      {tabs.map((tab) => {
+        const isActive = location.pathname === tab.path;
+        return (
+          <button
+            key={tab.path}
+            className={`${S.tab} ${isActive ? S.activeTab : ''}`}
+            onClick={() => handleTabClick(tab.path)}
+          >
+            {tab.name}
+          </button>
+        );
+      })}
     </nav>
   );
 }

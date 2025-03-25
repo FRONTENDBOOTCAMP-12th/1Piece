@@ -1,0 +1,115 @@
+.questionContainer {
+  width: 100%;
+  margin: var(--space-1) 0 var(--space-8) 0;
+  height: 49rem;
+  background: var(--primary-2-g);
+  border: 0.125rem solid var(--black);
+  border-radius: var(--radius-large);
+  padding: var(--space-8) var(--space-8) 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-5);
+  font-family: var(--pretendard);
+  color: var(--dark-gray-g);
+  padding-left: var(--space-2);
+}
+
+.cardNumber {
+  font-size: var(--large-2);
+  font-weight: var(--semi-bold);
+  color: var(--black);
+}
+
+.btnDelete {
+  box-sizing: border-box;
+  background: var(--gray-g);
+  border: 0.09375rem solid var(--black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.btnDelete:hover {
+  background: var(--white);
+}
+
+.questionLabel,
+.descriptionLabel {
+  width: 105px;
+  height: 51px;
+  box-sizing: border-box;
+  background: var(--secondary-g);
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-5);
+}
+
+.anwerLabel {
+  width: 105px;
+  height: 51px;
+  box-sizing: border-box;
+  background: var(--secondary-g);
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  font-weight: var(--semi-bold);
+  font-size: var(--large-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-5);
+}
+
+.questionAnswer {
+  display: flex;
+  gap: var(--space-5);
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.question,
+.answer {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.answerDescription {
+  width: 100%;
+}
+
+.radioQuestion {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.radioIcon {
+  background: var(--dark-gray-g);
+  display: inline-flex;
+  border-radius: var(--rounded-full);
+  padding: var(--space-2);
+  border: 2px solid var(--black);
+}
+
+.radioIconCheck {
+  background: var(--tertiary-g);
+  display: inline-flex;
+  border-radius: var(--rounded-full);
+  padding: var(--space-2);
+  border: 2px solid var(--black);
+}

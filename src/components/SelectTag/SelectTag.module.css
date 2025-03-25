@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 3rem 15rem;
-  width: 60vw;
+  width: 83rem;
   border: 2px solid var(--black);
   box-shadow: 1rem 1rem 0 0 var(--black);
   margin-inline: auto;
@@ -15,7 +15,6 @@
   cursor: pointer;
   font-size: 1.5rem;
 
-  /* aria-pressed가 참(눌려있는 상태로 인식)이라면 글자의 색상 변경 */
   &[aria-pressed='true'] {
     color: var(--bookmark);
   }

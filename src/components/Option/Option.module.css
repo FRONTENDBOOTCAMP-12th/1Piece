@@ -1,9 +1,7 @@
-@import '../../styles/Main.css';
-
 .button {
   width: 31.25rem;
   height: 7.75rem;
-  border-radius: 1.875rem; /* 30px */
+  border-radius: 1.875rem;
   border: 0.125rem solid #a6a6a6;
   background: var(--gray-g);
   box-shadow: 0rem 0.3125rem 0.25rem 0px rgba(0, 0, 0, 0.25);
@@ -11,6 +9,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &:disabled:not(.clicked) {
+    cursor: not-allowed;
+  }
 }
 
 .clicked {

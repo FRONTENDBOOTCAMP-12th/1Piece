@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import S from './SelectTag.module.css';
+import { useState } from 'react';
 import Tag from './Tag';
 
 // 태그 명은 고정된 string값만 사용되므로 type을 다음과 같이 지정
@@ -33,11 +33,13 @@ const dummy: DummyItemType[] = [
   { id: '도덕', state: false },
 ];
 
-function SelectTag() {
-  // 상태를 더미데이터를 이용해 생성
-  // 이후 zustand로 관리 가능
-  const [selectedTag, setSelectedTag] = useState(dummy);
+interface SelectTagProps {
+  onTagSelect: (tags: DummyKey[]) => void;
+  maxTags?: number;
+}
 
+function SelectTag({ onTagSelect, maxTags = 9 }: SelectTagProps) {
+  const [selectedTag, setSelectedTag] = useState(dummy);
   // 비교할 과목명, 그리고 새롭게 할당할 값을 입력 받음
   const handleUpdateTagList = (subject: DummyKey, newState: boolean) => {
     const nextSelectedTag = selectedTag.map((item) => {
@@ -52,7 +54,14 @@ function SelectTag() {
       }
     });
 
-    setSelectedTag(nextSelectedTag);
+    const selectedTags = nextSelectedTag
+      .filter((item) => item.state)
+      .map((item) => item.id);
+
+    if (selectedTags.length <= maxTags) {
+      setSelectedTag(nextSelectedTag);
+      onTagSelect(selectedTags);
+    }
   };
 
   return (
@@ -63,6 +72,10 @@ function SelectTag() {
           selected={item.state}
           key={item.id}
           onUpdate={handleUpdateTagList}
+          disabled={
+            !item.state &&
+            selectedTag.filter((tag) => tag.state).length >= maxTags
+          }
         >
           {item.id}
         </Tag>

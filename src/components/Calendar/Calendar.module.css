@@ -1,7 +1,7 @@
 .calenderContainer {
   width: 37rem;
   height: 61.8125rem;
-  background: url(/icons/calender_background.svg);
+  background: url(/images/calender_background.svg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,9 @@
 .dot {
   height: 50px;
   width: 50px;
-  background: url(/icons/calender_stamp.svg);
+  background-image: url('/images/attendance.png');
+  background-size: contain;
+  background-repeat: no-repeat;
   border-radius: 50%;
   position: absolute;
   bottom: 5px;
@@ -98,7 +100,7 @@
 
 :global(.react-calendar__month-view__days) {
   font-weight: var(--regular);
-  background: linear-gradient(#ffc9c4, #fff);
+  background: var(--secondary-g);
   height: 41.25rem;
 }
 

@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-g);
+  padding: 4rem;
+}
+
+.loginForm {
+  width: 45rem;
+  height: 45.9375rem;
+  padding: 7.125rem;
+  border-radius: 2rem;
+  background: var(--gray-g);
+}
+
+.title {
+  text-align: center;
+  font-size: var(--large-2);
+  font-weight: bold;
+  margin-bottom: var(--space-5);
+}
+
+.loginInputBox {
+  max-width: 23rem;
+  margin-bottom: 0.625rem;
+  border: 1px solid var(--white);
+  border-radius: 0.625rem;
+  font-size: var(--medium);
+}
+
+.findLink {
+  display: flex;
+  justify-content: flex-end;
+  line-height: 150%;
+  padding-bottom: 3.75rem;
+
+  & a {
+    text-decoration: none;
+  }
+}
+.separator {
+  margin: 0 8px;
+  color: #888;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.submitButton {
+  width: 20rem;
+  height: 5rem;
+  font-size: var(--large);
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  align-self: center;
+  text-align: center;
+}
+
+.submitButton:hover {
+  background: var(--clicked-dark-g);
+}

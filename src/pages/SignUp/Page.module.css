@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  justify-content: center;
+  background: var(--secondary-g);
+  padding-block: 4rem;
+}
+
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45rem;
+  height: 55.9375rem;
+  padding: 4rem;
+  border-radius: 2rem;
+  background: var(--gray-g);
+}
+
+.title {
+  font-size: var(--large-2);
+  font-weight: bold;
+  margin-bottom: var(--space-5);
+}
+
+.inputBox {
+  max-width: 20rem;
+  padding: var(--space-3);
+  border: 1px solid var(--white);
+  border-radius: 0.625rem;
+}
+
+.submitButton {
+  width: 20rem;
+  height: 5rem;
+  font-size: var(--large);
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  text-align: center;
+}
+
+.submitButton:hover {
+  background: var(--clicked-dark-g);
+}
+
+.termsContainer {
+  display: flex;
+  height: var(--space-10);
+  align-items: center;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.radioIcon {
+  cursor: pointer;
+  color: var(--line-gray);
+  transition: color 0.2s;
+}
+
+.radioIcon.checked {
+  color: var(--black);
+}
+
+.subTitle {
+  color: #898989;
+  font-size: var(--space-3);
+}
+
+.checkboxInput {
+  display: none;
+}

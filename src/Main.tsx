@@ -1,8 +1,8 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App";
+import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import App from './App';
 
-const root = document.getElementById("root");
+const root = document.getElementById('root');
 
 if (root) {
   const reactDOMRoot = createRoot(root);

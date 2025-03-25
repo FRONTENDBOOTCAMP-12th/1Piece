@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Calendar from 'react-calendar';
 import S from './Calendar.module.css';
+import { useState } from 'react';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
@@ -29,6 +29,7 @@ function Calender({ markedDates = [] }: CalenderProps) {
         formatDay={(_, date) => date.getDate().toString()}
         minDetail="month"
         maxDetail="month"
+        calendarType="gregory"
         navigationLabel={undefined}
         showNeighboringMonth={false}
         prev2Label={null}

@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  justify-content: center;
+  background: var(--secondary-g);
+  padding: 4rem;
+}
+
+.title {
+  font-size: var(--large-2);
+  font-weight: bold;
+  margin-bottom: var(--space-5);
+}
+
+.findIdForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 45rem;
+  height: 30rem;
+  padding: 7.125rem;
+  border-radius: 2rem;
+  background: var(--gray-g);
+}
+
+.inputForm {
+  max-width: 25rem;
+  margin-bottom: 0.625rem;
+  border: 1px solid var(--white);
+  border-radius: 0.625rem;
+  font-size: var(--medium);
+}
+.submitButton {
+  width: 20rem;
+  height: 5rem;
+  font-size: var(--large);
+  border: 1px solid var(--black);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  text-align: center;
+}
