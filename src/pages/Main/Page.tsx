@@ -7,7 +7,6 @@ import useReloadStore from '@/lib/ReloadState';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import S from './MainPage.module.css';
-import delay from '@/lib/Delay';
 
 interface ProblemCardData {
   id: string;
@@ -31,8 +30,6 @@ function MainPage() {
   const navigation = useNavigate();
 
   const fetchItems = async () => {
-    await delay(2000);
-
     try {
       // 조회수 순으로 내림차순 정렬된 데이터 가져오기(7개)
       const { data: dataCheck, error: errorCheck } = await supabase
