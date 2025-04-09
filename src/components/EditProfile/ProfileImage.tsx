@@ -113,7 +113,7 @@ function ProfileImage({ src, alt = 'Profile image', id }: ProfileImageProps) {
   // 최초 1회는 사용자의 프로필에 따라 렌더링
   useEffect(() => {
     setPreview(profileImg);
-  }, [src]);
+  }, [profileImg]);
 
   return (
     <div className={S.profileImageContainer}>

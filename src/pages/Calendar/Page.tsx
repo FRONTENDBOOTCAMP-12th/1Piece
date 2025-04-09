@@ -19,7 +19,7 @@ function CalendarPage() {
     });
 
     setAttendance(newDateList);
-  }, []);
+  }, [dateList]);
 
   return (
     <div className={S.MyPageContainer}>
