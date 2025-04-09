@@ -2,11 +2,10 @@ import MyPageDiary from '@/components/MyPageDiary/MyPageDiary';
 import useModalVisibleStore from '@/lib/ProblemModalState';
 import MyPageTab from '@/components/MyPageTab/MyPageTab';
 import CardModal from '@/components/CardModal/CardModal';
+import { useState, useEffect, useCallback } from 'react';
 import CardGrid from '@/components/CardGrid/CardGrid';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
-import useReloadStore from '@/lib/ReloadState';
-import { useState, useEffect } from 'react';
 import S from './Page.module.css';
 
 interface CardData {
@@ -31,9 +30,8 @@ function BookmarkPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const userProfile = useProfileStore((state) => state.userProfile);
-  const reload = useReloadStore((state) => state.reload);
 
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     try {
       const { data: fetchedData, error } = await supabase
         .from('bookmark')
@@ -61,11 +59,11 @@ function BookmarkPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userProfile]);
 
   useEffect(() => {
     fetchItems();
-  }, [reload]);
+  }, [fetchItems]);
 
   return (
     <div className={S.MyPageContainer}>

@@ -5,7 +5,7 @@ import CardModal from '@/components/CardModal/CardModal';
 import CardGrid from '@/components/CardGrid/CardGrid';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import S from './Page.module.css';
 
 interface CardData {
@@ -31,7 +31,7 @@ function RecentViewPage() {
   const cardInfo = useModalVisibleStore((state) => state.cardInfo);
   const userProfile = useProfileStore((state) => state.userProfile);
 
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     try {
       const { data: fetchedData, error } = await supabase
         .from('recent')
@@ -60,11 +60,11 @@ function RecentViewPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userProfile]);
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   return (
     <div className={S.MyPageContainer}>
