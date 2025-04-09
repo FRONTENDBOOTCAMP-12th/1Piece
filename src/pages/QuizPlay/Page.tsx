@@ -1,7 +1,7 @@
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import { useEffect, useState, useCallback } from 'react';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import { supabase } from '@/lib/SupabaseClient';
-import { useEffect, useState } from 'react';
 import Quiz from './components/Quiz';
 import S from './Page.module.css';
 
@@ -23,7 +23,7 @@ function QuizPlayPage() {
   const setTotalQuiz = useQuizSolvedStore((state) => state.setTotalQuiz);
 
   // 선택된 카드를 기반으로 데이터 가져오기
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('questions')
@@ -37,14 +37,14 @@ function QuizPlayPage() {
     } catch {
       alert('비정상적인 접근입니다');
     }
-  };
+  }, [cardInfo.count, cardInfo.id, setTotalQuiz]);
 
   // 문제 풀이 페이지로 이동 시, 항상 화면이 최상단에 고정
   // 최초 1회 데이터 불러오기
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   return (
     <div className={S.problemContainer}>

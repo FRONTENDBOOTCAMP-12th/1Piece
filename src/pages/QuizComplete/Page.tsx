@@ -2,11 +2,11 @@ import { CommentData } from '@/components/CommentList/CommentList';
 import CommentList from '@/components/CommentList/CommentList';
 import QuizResult from '@/components/QuizResult/QuizResult';
 import useModalVisibleStore from '@/lib/ProblemModalState';
+import { useState, useEffect, useCallback } from 'react';
 import useQuizSolvedStore from '@/lib/QuizSolvedState';
 import useProfileStore from '@/lib/UserProfileState';
 import { supabase } from '@/lib/SupabaseClient';
 import InputBox from './components/InputBox';
-import { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import S from './Page.module.css';
 
@@ -28,66 +28,75 @@ function QuizCompletePage() {
   const userProfile = useProfileStore((state) => state.userProfile);
 
   // 해당 퀴즈의 댓글 불러오기
-  const fetchComments = async (chunk: number) => {
-    try {
-      const { data, error } = await supabase
-        .from('comment')
-        .select('*, users(*)')
-        .eq('card_id', Number(searchParams))
-        .order('written_at', { ascending: false })
-        .range(
-          (chunk - 1) * COMMENTS_PER_CHUNK,
-          chunk * COMMENTS_PER_CHUNK - 1
-        );
+  const fetchComments = useCallback(
+    async (chunk: number) => {
+      try {
+        const { data, error } = await supabase
+          .from('comment')
+          .select('*, users(*)')
+          .eq('card_id', Number(searchParams))
+          .order('written_at', { ascending: false })
+          .range(
+            (chunk - 1) * COMMENTS_PER_CHUNK,
+            chunk * COMMENTS_PER_CHUNK - 1
+          );
 
-      if (!data) throw error;
+        if (!data) throw error;
 
-      // 다음 댓글이 있는지 확인
-      setHasMore(data.length === COMMENTS_PER_CHUNK);
+        // 다음 댓글이 있는지 확인
+        setHasMore(data.length === COMMENTS_PER_CHUNK);
 
-      const newData = data.map((item) => ({
-        id: `${item.id}`,
-        userNickname: item.users.nickname,
-        userLevel: item.users.level,
-        commentedAt: item.written_at,
-        content: item.comment,
-      }));
+        const newData = data.map((item) => ({
+          id: `${item.id}`,
+          userNickname: item.users.nickname,
+          userLevel: item.users.level,
+          commentedAt: item.written_at,
+          content: item.comment,
+        }));
 
-      // 중복 댓글 제거 후 추가
-      setComments((prevComments) => [
-        ...prevComments.filter(
-          (prevItem) => !newData.some((newItem) => newItem.id === prevItem.id)
-        ),
-        ...newData,
-      ]);
-    } catch {
-      alert('비정상적인 접근입니다');
-    }
-  };
+        // 중복 댓글 제거 후 추가
+        setComments((prevComments) => [
+          ...prevComments.filter(
+            (prevItem) => !newData.some((newItem) => newItem.id === prevItem.id)
+          ),
+          ...newData,
+        ]);
+      } catch {
+        alert('비정상적인 접근입니다');
+      }
+    },
+    [searchParams]
+  );
 
   // 사용자가 해당 퀴즈에 좋아요를 눌렀는지 확인
-  const handleSetLike = async (param: number) => {
-    const { data: LikeData } = await supabase
-      .from('like')
-      .select('*')
-      .eq('like_question', param)
-      .eq('like_user', userProfile!.id);
+  const handleSetLike = useCallback(
+    async (param: number) => {
+      const { data: LikeData } = await supabase
+        .from('like')
+        .select('*')
+        .eq('like_question', param)
+        .eq('like_user', userProfile!.id);
 
-    const nextIsLiked = LikeData!.length > 0;
-    setIsLiked(nextIsLiked);
-  };
+      const nextIsLiked = LikeData!.length > 0;
+      setIsLiked(nextIsLiked);
+    },
+    [userProfile]
+  );
 
   // 사용자가 해당 퀴즈를 북마크 했는지 확인
-  const handleSetBookmark = async (param: number) => {
-    const { data: bookmarkData } = await supabase
-      .from('bookmark')
-      .select('*')
-      .eq('bookmark_question', param)
-      .eq('bookmark_user', userProfile!.id);
+  const handleSetBookmark = useCallback(
+    async (param: number) => {
+      const { data: bookmarkData } = await supabase
+        .from('bookmark')
+        .select('*')
+        .eq('bookmark_question', param)
+        .eq('bookmark_user', userProfile!.id);
 
-    const nextIsBookmarked = bookmarkData!.length > 0;
-    setIsBookmarked(nextIsBookmarked);
-  };
+      const nextIsBookmarked = bookmarkData!.length > 0;
+      setIsBookmarked(nextIsBookmarked);
+    },
+    [userProfile]
+  );
 
   // 댓글 추가
   const handleAddComment = async (content: string) => {
@@ -162,6 +171,7 @@ function QuizCompletePage() {
   };
 
   useEffect(() => {
+    console.log(1);
     window.scrollTo(0, 0);
 
     handleSetLike(Number(searchParams));
@@ -174,11 +184,12 @@ function QuizCompletePage() {
     return () => {
       clearTimeout(clearId);
     };
-  }, [searchParams]);
+  }, [searchParams, handleSetBookmark, handleSetLike]);
 
   useEffect(() => {
+    console.log(1);
     fetchComments(chunk);
-  }, [chunk]);
+  }, [chunk, fetchComments]);
 
   return (
     <div className={S.pageContainer}>
